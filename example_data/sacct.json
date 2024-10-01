@@ -1,0 +1,3077 @@
+{
+   "jobs": [
+     {
+       "account": "",
+       "comment": {
+         "administrator": "",
+         "job": "",
+         "system": ""
+       },
+       "allocation_nodes": 3,
+       "array": {
+         "job_id": 0,
+         "limits": {
+           "max": {
+             "running": {
+               "tasks": 0
+             }
+           }
+         },
+         "task_id": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         },
+         "task": ""
+       },
+       "association": {
+       },
+       "block": "",
+       "cluster": "cepheus",
+       "constraints": "",
+       "container": "",
+       "derived_exit_code": {
+         "status": [
+           "SUCCESS"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "time": {
+         "elapsed": 1077413,
+         "eligible": 1726733411,
+         "end": 0,
+         "start": 1726733422,
+         "submission": 1726733411,
+         "suspended": 0,
+         "system": {
+           "seconds": 0,
+           "microseconds": 0
+         },
+         "limit": {
+           "set": false,
+           "infinite": true,
+           "number": 0
+         },
+         "total": {
+           "seconds": 0,
+           "microseconds": 0
+         },
+         "user": {
+           "seconds": 0,
+           "microseconds": 0
+         }
+       },
+       "exit_code": {
+         "status": [
+           "SUCCESS"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "extra": "",
+       "failed_node": "",
+       "flags": [
+         "STARTED_ON_SCHEDULE",
+         "START_RECEIVED"
+       ],
+       "group": "tfb64483",
+       "het": {
+         "job_id": 0,
+         "job_offset": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "job_id": 87046,
+       "name": "notebook",
+       "licenses": "",
+       "mcs": {
+         "label": ""
+       },
+       "nodes": "host-192-168-222-[103-105]",
+       "partition": "main",
+       "priority": {
+         "set": true,
+         "infinite": false,
+         "number": 1
+       },
+       "qos": "normal",
+       "required": {
+         "CPUs": 252,
+         "memory_per_cpu": {
+           "set": true,
+           "infinite": false,
+           "number": 2500
+         },
+         "memory_per_node": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "kill_request_user": "",
+       "reservation": {
+         "id": 0,
+         "name": ""
+       },
+       "script": "",
+       "state": {
+         "current": [
+           "RUNNING"
+         ],
+         "reason": "None"
+       },
+       "steps": [
+         {
+           "time": {
+             "elapsed": 1077413,
+             "end": {
+               "set": true,
+               "infinite": false,
+               "number": 0
+             },
+             "start": {
+               "set": true,
+               "infinite": false,
+               "number": 1726733422
+             },
+             "suspended": 0,
+             "system": {
+               "seconds": 0,
+               "microseconds": 0
+             },
+             "total": {
+               "seconds": 0,
+               "microseconds": 0
+             },
+             "user": {
+               "seconds": 0,
+               "microseconds": 0
+             }
+           },
+           "exit_code": {
+             "status": [
+               "SUCCESS"
+             ],
+             "return_code": {
+               "set": true,
+               "infinite": false,
+               "number": 0
+             },
+             "signal": {
+               "id": {
+                 "set": false,
+                 "infinite": false,
+                 "number": 0
+               },
+               "name": ""
+             }
+           },
+           "nodes": {
+             "count": 1,
+             "range": "host-192-168-222-103",
+             "list": [
+               "host-192-168-222-103"
+             ]
+           },
+           "tasks": {
+             "count": 1
+           },
+           "pid": "",
+           "CPU": {
+             "requested_frequency": {
+               "min": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               },
+               "max": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             },
+             "governor": "0"
+           },
+           "kill_request_user": "",
+           "state": [
+             "RUNNING"
+           ],
+           "statistics": {
+             "CPU": {
+               "actual_frequency": 0
+             },
+             "energy": {
+               "consumed": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             }
+           },
+           "step": {
+             "id": "87046.batch",
+             "name": "batch"
+           },
+           "task": {
+             "distribution": "Unknown"
+           },
+           "tres": {
+             "requested": {
+               "max": [
+               ],
+               "min": [
+               ],
+               "average": [
+               ],
+               "total": [
+               ]
+             },
+             "consumed": {
+               "max": [
+               ],
+               "min": [
+               ],
+               "average": [
+               ],
+               "total": [
+               ]
+             },
+             "allocated": [
+               {
+                 "type": "cpu",
+                 "name": "",
+                 "id": 1,
+                 "count": 124
+               },
+               {
+                 "type": "mem",
+                 "name": "",
+                 "id": 2,
+                 "count": 310000
+               },
+               {
+                 "type": "node",
+                 "name": "",
+                 "id": 4,
+                 "count": 1
+               }
+             ]
+           }
+         }
+       ],
+       "submit_line": "sbatch --output=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --error=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --exclusive --ntasks 252 slurm\/notebook.sh -p 9500 -d maxwin -cd conda_slurm -jc jupyter_slurm",
+       "tres": {
+         "allocated": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 372
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 930000
+           },
+           {
+             "type": "energy",
+             "name": "",
+             "id": 3,
+             "count": -2
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 3
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 372
+           }
+         ],
+         "requested": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 252
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 630000
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 1
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 252
+           }
+         ]
+       },
+       "used_gres": "",
+       "user": "tfb64483",
+       "wckey": {
+         "wckey": "",
+         "flags": [
+         ]
+       },
+       "working_directory": "\/opt\/xchem-fragalysis-2\/maxwin"
+     },
+     {
+       "account": "",
+       "comment": {
+         "administrator": "",
+         "job": "",
+         "system": ""
+       },
+       "allocation_nodes": 1,
+       "array": {
+         "job_id": 0,
+         "limits": {
+           "max": {
+             "running": {
+               "tasks": 0
+             }
+           }
+         },
+         "task_id": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         },
+         "task": ""
+       },
+       "association": {
+       },
+       "block": "",
+       "cluster": "cepheus",
+       "constraints": "",
+       "container": "",
+       "derived_exit_code": {
+         "status": [
+           "SUCCESS"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "time": {
+         "elapsed": 80522,
+         "eligible": 1727686974,
+         "end": 1727767497,
+         "start": 1727686975,
+         "submission": 1727686974,
+         "suspended": 0,
+         "system": {
+           "seconds": 3548,
+           "microseconds": 618633
+         },
+         "limit": {
+           "set": true,
+           "infinite": false,
+           "number": 11520
+         },
+         "total": {
+           "seconds": 6145,
+           "microseconds": 1366229
+         },
+         "user": {
+           "seconds": 2597,
+           "microseconds": 747596
+         }
+       },
+       "exit_code": {
+         "status": [
+           "SUCCESS"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "extra": "",
+       "failed_node": "",
+       "flags": [
+         "STARTED_ON_SCHEDULE",
+         "START_RECEIVED"
+       ],
+       "group": "tfb64483",
+       "het": {
+         "job_id": 0,
+         "job_offset": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "job_id": 102886,
+       "name": "CHIKV_prod7_routes",
+       "licenses": "",
+       "mcs": {
+         "label": ""
+       },
+       "nodes": "host-192-168-222-201",
+       "partition": "gpu",
+       "priority": {
+         "set": true,
+         "infinite": false,
+         "number": 1
+       },
+       "qos": "normal",
+       "required": {
+         "CPUs": 1,
+         "memory_per_cpu": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         },
+         "memory_per_node": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "kill_request_user": "",
+       "reservation": {
+         "id": 0,
+         "name": ""
+       },
+       "script": "",
+       "state": {
+         "current": [
+           "COMPLETED"
+         ],
+         "reason": "None"
+       },
+       "steps": [
+         {
+           "time": {
+             "elapsed": 80522,
+             "end": {
+               "set": true,
+               "infinite": false,
+               "number": 1727767497
+             },
+             "start": {
+               "set": true,
+               "infinite": false,
+               "number": 1727686975
+             },
+             "suspended": 0,
+             "system": {
+               "seconds": 3548,
+               "microseconds": 618633
+             },
+             "total": {
+               "seconds": 6145,
+               "microseconds": 1366229
+             },
+             "user": {
+               "seconds": 2597,
+               "microseconds": 747596
+             }
+           },
+           "exit_code": {
+             "status": [
+               "SUCCESS"
+             ],
+             "return_code": {
+               "set": true,
+               "infinite": false,
+               "number": 0
+             },
+             "signal": {
+               "id": {
+                 "set": false,
+                 "infinite": false,
+                 "number": 0
+               },
+               "name": ""
+             }
+           },
+           "nodes": {
+             "count": 1,
+             "range": "host-192-168-222-201",
+             "list": [
+               "host-192-168-222-201"
+             ]
+           },
+           "tasks": {
+             "count": 1
+           },
+           "pid": "",
+           "CPU": {
+             "requested_frequency": {
+               "min": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               },
+               "max": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             },
+             "governor": "0"
+           },
+           "kill_request_user": "",
+           "state": [
+             "COMPLETED"
+           ],
+           "statistics": {
+             "CPU": {
+               "actual_frequency": 4641346444098273280
+             },
+             "energy": {
+               "consumed": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             }
+           },
+           "step": {
+             "id": "102886.batch",
+             "name": "batch"
+           },
+           "task": {
+             "distribution": "Unknown"
+           },
+           "tres": {
+             "requested": {
+               "max": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 6144510,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 276287488,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1217830697894,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3188056064,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "min": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 6144510,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 276287488,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1217830697894,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3188056064,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "average": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 6144510
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 276287488
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1217830697894
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3188056064
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0
+                 }
+               ],
+               "total": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 6144510
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 276287488
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1217830697894
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3188056064
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0
+                 }
+               ]
+             },
+             "consumed": {
+               "max": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 3458770352,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "min": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 3458770352,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "average": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 3458770352
+                 }
+               ],
+               "total": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 3458770352
+                 }
+               ]
+             },
+             "allocated": [
+               {
+                 "type": "cpu",
+                 "name": "",
+                 "id": 1,
+                 "count": 12
+               },
+               {
+                 "type": "mem",
+                 "name": "",
+                 "id": 2,
+                 "count": 74962
+               },
+               {
+                 "type": "node",
+                 "name": "",
+                 "id": 4,
+                 "count": 1
+               }
+             ]
+           }
+         }
+       ],
+       "submit_line": "sbatch --output=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --error=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --job-name CHIKV_prod7_routes -pgpu --exclusive \/opt\/xchem-fragalysis-2\/maxwin\/slurm\/run_python.sh prod7_routes.py",
+       "tres": {
+         "allocated": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 12
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 74962
+           },
+           {
+             "type": "energy",
+             "name": "",
+             "id": 3,
+             "count": -2
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 1
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 12
+           }
+         ],
+         "requested": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 1
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 74962
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 1
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 1
+           }
+         ]
+       },
+       "used_gres": "",
+       "user": "tfb64483",
+       "wckey": {
+         "wckey": "",
+         "flags": [
+         ]
+       },
+       "working_directory": "\/opt\/xchem-fragalysis-2\/maxwin\/CHIKV_HIPPO\/hippo_prod"
+     },
+     {
+       "account": "",
+       "comment": {
+         "administrator": "",
+         "job": "",
+         "system": ""
+       },
+       "allocation_nodes": 1,
+       "array": {
+         "job_id": 0,
+         "limits": {
+           "max": {
+             "running": {
+               "tasks": 0
+             }
+           }
+         },
+         "task_id": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         },
+         "task": ""
+       },
+       "association": {
+       },
+       "block": "",
+       "cluster": "cepheus",
+       "constraints": "",
+       "container": "",
+       "derived_exit_code": {
+         "status": [
+           "SUCCESS"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "time": {
+         "elapsed": 24,
+         "eligible": 1727792013,
+         "end": 1727792037,
+         "start": 1727792013,
+         "submission": 1727792013,
+         "suspended": 0,
+         "system": {
+           "seconds": 3,
+           "microseconds": 670414
+         },
+         "limit": {
+           "set": true,
+           "infinite": false,
+           "number": 11520
+         },
+         "total": {
+           "seconds": 6,
+           "microseconds": 1371800
+         },
+         "user": {
+           "seconds": 3,
+           "microseconds": 701386
+         }
+       },
+       "exit_code": {
+         "status": [
+           "ERROR"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 1
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "extra": "",
+       "failed_node": "",
+       "flags": [
+         "STARTED_ON_BACKFILL",
+         "START_RECEIVED"
+       ],
+       "group": "tfb64483",
+       "het": {
+         "job_id": 0,
+         "job_offset": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "job_id": 103663,
+       "name": "CHIKV_prod7_routes",
+       "licenses": "",
+       "mcs": {
+         "label": ""
+       },
+       "nodes": "host-192-168-222-201",
+       "partition": "gpu",
+       "priority": {
+         "set": true,
+         "infinite": false,
+         "number": 1
+       },
+       "qos": "normal",
+       "required": {
+         "CPUs": 1,
+         "memory_per_cpu": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         },
+         "memory_per_node": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "kill_request_user": "",
+       "reservation": {
+         "id": 0,
+         "name": ""
+       },
+       "script": "",
+       "state": {
+         "current": [
+           "FAILED"
+         ],
+         "reason": "None"
+       },
+       "steps": [
+         {
+           "time": {
+             "elapsed": 24,
+             "end": {
+               "set": true,
+               "infinite": false,
+               "number": 1727792037
+             },
+             "start": {
+               "set": true,
+               "infinite": false,
+               "number": 1727792013
+             },
+             "suspended": 0,
+             "system": {
+               "seconds": 3,
+               "microseconds": 670414
+             },
+             "total": {
+               "seconds": 6,
+               "microseconds": 1371800
+             },
+             "user": {
+               "seconds": 3,
+               "microseconds": 701386
+             }
+           },
+           "exit_code": {
+             "status": [
+               "ERROR"
+             ],
+             "return_code": {
+               "set": true,
+               "infinite": false,
+               "number": 1
+             },
+             "signal": {
+               "id": {
+                 "set": false,
+                 "infinite": false,
+                 "number": 0
+               },
+               "name": ""
+             }
+           },
+           "nodes": {
+             "count": 1,
+             "range": "host-192-168-222-201",
+             "list": [
+               "host-192-168-222-201"
+             ]
+           },
+           "tasks": {
+             "count": 1
+           },
+           "pid": "",
+           "CPU": {
+             "requested_frequency": {
+               "min": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               },
+               "max": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             },
+             "governor": "0"
+           },
+           "kill_request_user": "",
+           "state": [
+             "FAILED"
+           ],
+           "statistics": {
+             "CPU": {
+               "actual_frequency": 4657276168561491968
+             },
+             "energy": {
+               "consumed": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             }
+           },
+           "step": {
+             "id": "103663.batch",
+             "name": "batch"
+           },
+           "task": {
+             "distribution": "Unknown"
+           },
+           "tres": {
+             "requested": {
+               "max": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 913408,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 133177344,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "min": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 913408,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 133177344,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "average": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 0
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 913408
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 0
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 133177344
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0
+                 }
+               ],
+               "total": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 0
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 913408
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 0
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 133177344
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0
+                 }
+               ]
+             },
+             "consumed": {
+               "max": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "min": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "average": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1
+                 }
+               ],
+               "total": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1
+                 }
+               ]
+             },
+             "allocated": [
+               {
+                 "type": "cpu",
+                 "name": "",
+                 "id": 1,
+                 "count": 12
+               },
+               {
+                 "type": "mem",
+                 "name": "",
+                 "id": 2,
+                 "count": 74962
+               },
+               {
+                 "type": "node",
+                 "name": "",
+                 "id": 4,
+                 "count": 1
+               }
+             ]
+           }
+         }
+       ],
+       "submit_line": "sbatch --output=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --error=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --job-name CHIKV_prod7_routes -pgpu --exclusive \/opt\/xchem-fragalysis-2\/maxwin\/slurm\/run_python.sh prod7_routes.py",
+       "tres": {
+         "allocated": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 12
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 74962
+           },
+           {
+             "type": "energy",
+             "name": "",
+             "id": 3,
+             "count": -2
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 1
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 12
+           }
+         ],
+         "requested": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 1
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 74962
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 1
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 1
+           }
+         ]
+       },
+       "used_gres": "",
+       "user": "tfb64483",
+       "wckey": {
+         "wckey": "",
+         "flags": [
+         ]
+       },
+       "working_directory": "\/opt\/xchem-fragalysis-2\/maxwin\/CHIKV_HIPPO\/hippo_prod"
+     },
+     {
+       "account": "",
+       "comment": {
+         "administrator": "",
+         "job": "",
+         "system": ""
+       },
+       "allocation_nodes": 1,
+       "array": {
+         "job_id": 0,
+         "limits": {
+           "max": {
+             "running": {
+               "tasks": 0
+             }
+           }
+         },
+         "task_id": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         },
+         "task": ""
+       },
+       "association": {
+       },
+       "block": "",
+       "cluster": "cepheus",
+       "constraints": "",
+       "container": "",
+       "derived_exit_code": {
+         "status": [
+           "SUCCESS"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "time": {
+         "elapsed": 40,
+         "eligible": 1727792190,
+         "end": 1727792231,
+         "start": 1727792191,
+         "submission": 1727792190,
+         "suspended": 0,
+         "system": {
+           "seconds": 0,
+           "microseconds": 225635
+         },
+         "limit": {
+           "set": true,
+           "infinite": false,
+           "number": 11520
+         },
+         "total": {
+           "seconds": 0,
+           "microseconds": 967895
+         },
+         "user": {
+           "seconds": 0,
+           "microseconds": 742260
+         }
+       },
+       "exit_code": {
+         "status": [
+           "SUCCESS"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "extra": "",
+       "failed_node": "",
+       "flags": [
+         "STARTED_ON_SCHEDULE",
+         "START_RECEIVED"
+       ],
+       "group": "tfb64483",
+       "het": {
+         "job_id": 0,
+         "job_offset": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "job_id": 103664,
+       "name": "CHIKV_prod7_routes",
+       "licenses": "",
+       "mcs": {
+         "label": ""
+       },
+       "nodes": "host-192-168-222-201",
+       "partition": "gpu",
+       "priority": {
+         "set": true,
+         "infinite": false,
+         "number": 1
+       },
+       "qos": "normal",
+       "required": {
+         "CPUs": 1,
+         "memory_per_cpu": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         },
+         "memory_per_node": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "kill_request_user": "tfb64483",
+       "reservation": {
+         "id": 0,
+         "name": ""
+       },
+       "script": "",
+       "state": {
+         "current": [
+           "CANCELLED"
+         ],
+         "reason": "None"
+       },
+       "steps": [
+         {
+           "time": {
+             "elapsed": 41,
+             "end": {
+               "set": true,
+               "infinite": false,
+               "number": 1727792232
+             },
+             "start": {
+               "set": true,
+               "infinite": false,
+               "number": 1727792191
+             },
+             "suspended": 0,
+             "system": {
+               "seconds": 0,
+               "microseconds": 225635
+             },
+             "total": {
+               "seconds": 0,
+               "microseconds": 967895
+             },
+             "user": {
+               "seconds": 0,
+               "microseconds": 742260
+             }
+           },
+           "exit_code": {
+             "status": [
+               "SIGNALED"
+             ],
+             "return_code": {
+               "set": false,
+               "infinite": false,
+               "number": 0
+             },
+             "signal": {
+               "id": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 15
+               },
+               "name": "TERM"
+             }
+           },
+           "nodes": {
+             "count": 1,
+             "range": "host-192-168-222-201",
+             "list": [
+               "host-192-168-222-201"
+             ]
+           },
+           "tasks": {
+             "count": 1
+           },
+           "pid": "",
+           "CPU": {
+             "requested_frequency": {
+               "min": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               },
+               "max": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             },
+             "governor": "0"
+           },
+           "kill_request_user": "",
+           "state": [
+             "CANCELLED"
+           ],
+           "statistics": {
+             "CPU": {
+               "actual_frequency": 4657276168561491968
+             },
+             "energy": {
+               "consumed": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             }
+           },
+           "step": {
+             "id": "103664.batch",
+             "name": "batch"
+           },
+           "task": {
+             "distribution": "Unknown"
+           },
+           "tres": {
+             "requested": {
+               "max": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 6640,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 272347136,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1502194848,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3181658112,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 5,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "min": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 6640,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 272347136,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1502194848,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3181658112,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 5,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "average": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 0
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 272347136
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1502194848
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3181658112
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 5
+                 }
+               ],
+               "total": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 0
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 272347136
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1502194848
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3181658112
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 5
+                 }
+               ]
+             },
+             "consumed": {
+               "max": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1306313180,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "min": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1306313180,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "average": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1306313180
+                 }
+               ],
+               "total": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1306313180
+                 }
+               ]
+             },
+             "allocated": [
+               {
+                 "type": "cpu",
+                 "name": "",
+                 "id": 1,
+                 "count": 12
+               },
+               {
+                 "type": "mem",
+                 "name": "",
+                 "id": 2,
+                 "count": 74962
+               },
+               {
+                 "type": "node",
+                 "name": "",
+                 "id": 4,
+                 "count": 1
+               }
+             ]
+           }
+         }
+       ],
+       "submit_line": "sbatch --output=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --error=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --job-name CHIKV_prod7_routes -pgpu --exclusive \/opt\/xchem-fragalysis-2\/maxwin\/slurm\/run_python.sh prod7_routes.py",
+       "tres": {
+         "allocated": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 12
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 74962
+           },
+           {
+             "type": "energy",
+             "name": "",
+             "id": 3,
+             "count": -2
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 1
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 12
+           }
+         ],
+         "requested": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 1
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 74962
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 1
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 1
+           }
+         ]
+       },
+       "used_gres": "",
+       "user": "tfb64483",
+       "wckey": {
+         "wckey": "",
+         "flags": [
+         ]
+       },
+       "working_directory": "\/opt\/xchem-fragalysis-2\/maxwin\/CHIKV_HIPPO\/hippo_prod"
+     },
+     {
+       "account": "",
+       "comment": {
+         "administrator": "",
+         "job": "",
+         "system": ""
+       },
+       "allocation_nodes": 1,
+       "array": {
+         "job_id": 0,
+         "limits": {
+           "max": {
+             "running": {
+               "tasks": 0
+             }
+           }
+         },
+         "task_id": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         },
+         "task": ""
+       },
+       "association": {
+       },
+       "block": "",
+       "cluster": "cepheus",
+       "constraints": "",
+       "container": "",
+       "derived_exit_code": {
+         "status": [
+           "SUCCESS"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "time": {
+         "elapsed": 83,
+         "eligible": 1727792384,
+         "end": 1727792470,
+         "start": 1727792387,
+         "submission": 1727792384,
+         "suspended": 0,
+         "system": {
+           "seconds": 0,
+           "microseconds": 247658
+         },
+         "limit": {
+           "set": true,
+           "infinite": false,
+           "number": 11520
+         },
+         "total": {
+           "seconds": 0,
+           "microseconds": 973757
+         },
+         "user": {
+           "seconds": 0,
+           "microseconds": 726099
+         }
+       },
+       "exit_code": {
+         "status": [
+           "SUCCESS"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "extra": "",
+       "failed_node": "",
+       "flags": [
+         "STARTED_ON_SCHEDULE",
+         "START_RECEIVED"
+       ],
+       "group": "tfb64483",
+       "het": {
+         "job_id": 0,
+         "job_offset": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "job_id": 103665,
+       "name": "CHIKV_prod7_routes",
+       "licenses": "",
+       "mcs": {
+         "label": ""
+       },
+       "nodes": "host-192-168-222-201",
+       "partition": "gpu",
+       "priority": {
+         "set": true,
+         "infinite": false,
+         "number": 1
+       },
+       "qos": "normal",
+       "required": {
+         "CPUs": 1,
+         "memory_per_cpu": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         },
+         "memory_per_node": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "kill_request_user": "tfb64483",
+       "reservation": {
+         "id": 0,
+         "name": ""
+       },
+       "script": "",
+       "state": {
+         "current": [
+           "CANCELLED"
+         ],
+         "reason": "None"
+       },
+       "steps": [
+         {
+           "time": {
+             "elapsed": 84,
+             "end": {
+               "set": true,
+               "infinite": false,
+               "number": 1727792471
+             },
+             "start": {
+               "set": true,
+               "infinite": false,
+               "number": 1727792387
+             },
+             "suspended": 0,
+             "system": {
+               "seconds": 0,
+               "microseconds": 247658
+             },
+             "total": {
+               "seconds": 0,
+               "microseconds": 973757
+             },
+             "user": {
+               "seconds": 0,
+               "microseconds": 726099
+             }
+           },
+           "exit_code": {
+             "status": [
+               "SIGNALED"
+             ],
+             "return_code": {
+               "set": false,
+               "infinite": false,
+               "number": 0
+             },
+             "signal": {
+               "id": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 15
+               },
+               "name": "TERM"
+             }
+           },
+           "nodes": {
+             "count": 1,
+             "range": "host-192-168-222-201",
+             "list": [
+               "host-192-168-222-201"
+             ]
+           },
+           "tasks": {
+             "count": 1
+           },
+           "pid": "",
+           "CPU": {
+             "requested_frequency": {
+               "min": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               },
+               "max": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             },
+             "governor": "0"
+           },
+           "kill_request_user": "",
+           "state": [
+             "CANCELLED"
+           ],
+           "statistics": {
+             "CPU": {
+               "actual_frequency": 4657276168561491968
+             },
+             "energy": {
+               "consumed": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             }
+           },
+           "step": {
+             "id": "103665.batch",
+             "name": "batch"
+           },
+           "task": {
+             "distribution": "Unknown"
+           },
+           "tres": {
+             "requested": {
+               "max": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 8800,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 273330176,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1958284567,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3181670400,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "min": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 8800,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 273330176,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1958284567,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3181670400,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "average": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 0
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 273330176
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1958284567
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3181670400
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0
+                 }
+               ],
+               "total": [
+                 {
+                   "type": "cpu",
+                   "name": "",
+                   "id": 1,
+                   "count": 0
+                 },
+                 {
+                   "type": "mem",
+                   "name": "",
+                   "id": 2,
+                   "count": 273330176
+                 },
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1958284567
+                 },
+                 {
+                   "type": "vmem",
+                   "name": "",
+                   "id": 7,
+                   "count": 3181670400
+                 },
+                 {
+                   "type": "pages",
+                   "name": "",
+                   "id": 8,
+                   "count": 0
+                 }
+               ]
+             },
+             "consumed": {
+               "max": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1307551274,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "min": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1307551274,
+                   "task": 0,
+                   "node": "host-192-168-222-201"
+                 }
+               ],
+               "average": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1307551274
+                 }
+               ],
+               "total": [
+                 {
+                   "type": "energy",
+                   "name": "",
+                   "id": 3,
+                   "count": 0
+                 },
+                 {
+                   "type": "fs",
+                   "name": "disk",
+                   "id": 6,
+                   "count": 1307551274
+                 }
+               ]
+             },
+             "allocated": [
+               {
+                 "type": "cpu",
+                 "name": "",
+                 "id": 1,
+                 "count": 12
+               },
+               {
+                 "type": "mem",
+                 "name": "",
+                 "id": 2,
+                 "count": 74962
+               },
+               {
+                 "type": "node",
+                 "name": "",
+                 "id": 4,
+                 "count": 1
+               }
+             ]
+           }
+         }
+       ],
+       "submit_line": "sbatch --output=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --error=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --job-name CHIKV_prod7_routes -pgpu --exclusive \/opt\/xchem-fragalysis-2\/maxwin\/slurm\/run_python.sh prod7_routes.py",
+       "tres": {
+         "allocated": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 12
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 74962
+           },
+           {
+             "type": "energy",
+             "name": "",
+             "id": 3,
+             "count": -2
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 1
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 12
+           }
+         ],
+         "requested": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 1
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 74962
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 1
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 1
+           }
+         ]
+       },
+       "used_gres": "",
+       "user": "tfb64483",
+       "wckey": {
+         "wckey": "",
+         "flags": [
+         ]
+       },
+       "working_directory": "\/opt\/xchem-fragalysis-2\/maxwin\/CHIKV_HIPPO\/hippo_prod"
+     },
+     {
+       "account": "",
+       "comment": {
+         "administrator": "",
+         "job": "",
+         "system": ""
+       },
+       "allocation_nodes": 1,
+       "array": {
+         "job_id": 0,
+         "limits": {
+           "max": {
+             "running": {
+               "tasks": 0
+             }
+           }
+         },
+         "task_id": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         },
+         "task": ""
+       },
+       "association": {
+       },
+       "block": "",
+       "cluster": "cepheus",
+       "constraints": "",
+       "container": "",
+       "derived_exit_code": {
+         "status": [
+           "SUCCESS"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "time": {
+         "elapsed": 18095,
+         "eligible": 1727792739,
+         "end": 0,
+         "start": 1727792740,
+         "submission": 1727792739,
+         "suspended": 0,
+         "system": {
+           "seconds": 0,
+           "microseconds": 0
+         },
+         "limit": {
+           "set": true,
+           "infinite": false,
+           "number": 11520
+         },
+         "total": {
+           "seconds": 0,
+           "microseconds": 0
+         },
+         "user": {
+           "seconds": 0,
+           "microseconds": 0
+         }
+       },
+       "exit_code": {
+         "status": [
+           "SUCCESS"
+         ],
+         "return_code": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         },
+         "signal": {
+           "id": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "name": ""
+         }
+       },
+       "extra": "",
+       "failed_node": "",
+       "flags": [
+         "STARTED_ON_SCHEDULE",
+         "START_RECEIVED"
+       ],
+       "group": "tfb64483",
+       "het": {
+         "job_id": 0,
+         "job_offset": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "job_id": 103666,
+       "name": "CHIKV_prod7_routes",
+       "licenses": "",
+       "mcs": {
+         "label": ""
+       },
+       "nodes": "host-192-168-222-201",
+       "partition": "gpu",
+       "priority": {
+         "set": true,
+         "infinite": false,
+         "number": 1
+       },
+       "qos": "normal",
+       "required": {
+         "CPUs": 1,
+         "memory_per_cpu": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         },
+         "memory_per_node": {
+           "set": true,
+           "infinite": false,
+           "number": 0
+         }
+       },
+       "kill_request_user": "",
+       "reservation": {
+         "id": 0,
+         "name": ""
+       },
+       "script": "",
+       "state": {
+         "current": [
+           "RUNNING"
+         ],
+         "reason": "None"
+       },
+       "steps": [
+         {
+           "time": {
+             "elapsed": 18095,
+             "end": {
+               "set": true,
+               "infinite": false,
+               "number": 0
+             },
+             "start": {
+               "set": true,
+               "infinite": false,
+               "number": 1727792740
+             },
+             "suspended": 0,
+             "system": {
+               "seconds": 0,
+               "microseconds": 0
+             },
+             "total": {
+               "seconds": 0,
+               "microseconds": 0
+             },
+             "user": {
+               "seconds": 0,
+               "microseconds": 0
+             }
+           },
+           "exit_code": {
+             "status": [
+               "SUCCESS"
+             ],
+             "return_code": {
+               "set": true,
+               "infinite": false,
+               "number": 0
+             },
+             "signal": {
+               "id": {
+                 "set": false,
+                 "infinite": false,
+                 "number": 0
+               },
+               "name": ""
+             }
+           },
+           "nodes": {
+             "count": 1,
+             "range": "host-192-168-222-201",
+             "list": [
+               "host-192-168-222-201"
+             ]
+           },
+           "tasks": {
+             "count": 1
+           },
+           "pid": "",
+           "CPU": {
+             "requested_frequency": {
+               "min": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               },
+               "max": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             },
+             "governor": "0"
+           },
+           "kill_request_user": "",
+           "state": [
+             "RUNNING"
+           ],
+           "statistics": {
+             "CPU": {
+               "actual_frequency": 0
+             },
+             "energy": {
+               "consumed": {
+                 "set": true,
+                 "infinite": false,
+                 "number": 0
+               }
+             }
+           },
+           "step": {
+             "id": "103666.batch",
+             "name": "batch"
+           },
+           "task": {
+             "distribution": "Unknown"
+           },
+           "tres": {
+             "requested": {
+               "max": [
+               ],
+               "min": [
+               ],
+               "average": [
+               ],
+               "total": [
+               ]
+             },
+             "consumed": {
+               "max": [
+               ],
+               "min": [
+               ],
+               "average": [
+               ],
+               "total": [
+               ]
+             },
+             "allocated": [
+               {
+                 "type": "cpu",
+                 "name": "",
+                 "id": 1,
+                 "count": 12
+               },
+               {
+                 "type": "mem",
+                 "name": "",
+                 "id": 2,
+                 "count": 74962
+               },
+               {
+                 "type": "node",
+                 "name": "",
+                 "id": 4,
+                 "count": 1
+               }
+             ]
+           }
+         }
+       ],
+       "submit_line": "sbatch --output=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --error=\/opt\/xchem-fragalysis-2\/maxwin\/logs\/%j.log --job-name CHIKV_prod7_routes -pgpu --exclusive \/opt\/xchem-fragalysis-2\/maxwin\/slurm\/run_python.sh prod7_routes.py",
+       "tres": {
+         "allocated": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 12
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 74962
+           },
+           {
+             "type": "energy",
+             "name": "",
+             "id": 3,
+             "count": -2
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 1
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 12
+           }
+         ],
+         "requested": [
+           {
+             "type": "cpu",
+             "name": "",
+             "id": 1,
+             "count": 1
+           },
+           {
+             "type": "mem",
+             "name": "",
+             "id": 2,
+             "count": 74962
+           },
+           {
+             "type": "node",
+             "name": "",
+             "id": 4,
+             "count": 1
+           },
+           {
+             "type": "billing",
+             "name": "",
+             "id": 5,
+             "count": 1
+           }
+         ]
+       },
+       "used_gres": "",
+       "user": "tfb64483",
+       "wckey": {
+         "wckey": "",
+         "flags": [
+         ]
+       },
+       "working_directory": "\/opt\/xchem-fragalysis-2\/maxwin\/CHIKV_HIPPO\/hippo_prod"
+     }
+   ],
+   "meta": {
+     "plugin": {
+       "type": "",
+       "name": "",
+       "data_parser": "data_parser\/v0.0.40",
+       "accounting_storage": "accounting_storage\/slurmdbd"
+     },
+     "client": {
+       "source": "\/dev\/pts\/0",
+       "user": "tfb64483",
+       "group": "tfb64483"
+     },
+     "command": [
+       "sacct"
+     ],
+     "slurm": {
+       "version": {
+         "major": "23",
+         "micro": "1",
+         "minor": "11"
+       },
+       "release": "23.11.1",
+       "cluster": "cepheus"
+     }
+   },
+   "errors": [
+   ],
+   "warnings": [
+     {
+       "description": "Unknown association with id#0. Unable to dump association.",
+       "source": ""
+     },
+     {
+       "description": "Unknown association with id#0. Unable to dump association.",
+       "source": ""
+     },
+     {
+       "description": "Unknown association with id#0. Unable to dump association.",
+       "source": ""
+     },
+     {
+       "description": "Unknown association with id#0. Unable to dump association.",
+       "source": ""
+     },
+     {
+       "description": "Unknown association with id#0. Unable to dump association.",
+       "source": ""
+     },
+     {
+       "description": "Unknown association with id#0. Unable to dump association.",
+       "source": ""
+     }
+   ]
+ }
