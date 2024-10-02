@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 [project]
 name = "richqueue"
-version = "0.1"
+version = "0.2"
 authors = [
     { name = "Max Winokan", email = "max@winokan.com" },
 ]
@@ -28,3 +28,6 @@ dependencies = [
 include = [
     "richqueue/*.py",
 ]
+
+[project.scripts]
+rq = "richqueue.slurm:main"
