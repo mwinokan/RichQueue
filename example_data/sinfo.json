@@ -1,0 +1,1621 @@
+{
+   "sinfo": [
+     {
+       "port": 6818,
+       "node": {
+         "state": [
+           "MIXED"
+         ]
+       },
+       "nodes": {
+         "allocated": 1,
+         "idle": 0,
+         "other": 0,
+         "total": 1,
+         "hostnames": [
+         ],
+         "addresses": [
+         ],
+         "nodes": [
+           "host-192-168-222-43"
+         ]
+       },
+       "cpus": {
+         "allocated": 30,
+         "idle": 94,
+         "other": 0,
+         "total": 124,
+         "minimum": 124,
+         "maximum": 124,
+         "load": {
+           "minimum": 1038,
+           "maximum": 1038
+         },
+         "per_node": {
+           "max": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           }
+         }
+       },
+       "sockets": {
+         "minimum": 2,
+         "maximum": 2
+       },
+       "cores": {
+         "minimum": 62,
+         "maximum": 62
+       },
+       "threads": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "disk": {
+         "minimum": 0,
+         "maximum": 0
+       },
+       "memory": {
+         "minimum": 463014,
+         "maximum": 463014,
+         "free": {
+           "minimum": {
+             "set": true,
+             "infinite": false,
+             "number": 422945
+           },
+           "maximum": {
+             "set": true,
+             "infinite": false,
+             "number": 422945
+           }
+         },
+         "allocated": 61440
+       },
+       "weight": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "features": {
+         "total": "",
+         "active": ""
+       },
+       "gres": {
+         "total": "",
+         "used": "gpu:0"
+       },
+       "cluster": "",
+       "comment": "",
+       "extra": "",
+       "reason": {
+         "description": "",
+         "time": 0,
+         "user": ""
+       },
+       "reservation": "",
+       "partition": {
+         "nodes": {
+           "allowed_allocation": "",
+           "configured": "host-192-168-222-[22-43]",
+           "total": 22
+         },
+         "accounts": {
+           "allowed": "",
+           "deny": ""
+         },
+         "groups": {
+           "allowed": ""
+         },
+         "qos": {
+           "allowed": "",
+           "deny": "",
+           "assigned": ""
+         },
+         "alternate": "",
+         "tres": {
+           "billing_weights": "",
+           "configured": "cpu=5032,mem=18560808M,node=22,billing=5032"
+         },
+         "cluster": "",
+         "cpus": {
+           "task_binding": 0,
+           "total": 5032
+         },
+         "defaults": {
+           "memory_per_cpu": -9223372036854773308,
+           "partition_memory_per_cpu": {
+             "set": true,
+             "infinite": false,
+             "number": 2500
+           },
+           "partition_memory_per_node": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "time": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "job": ""
+         },
+         "grace_time": 0,
+         "maximums": {
+           "cpus_per_node": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "cpus_per_socket": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "memory_per_cpu": -9223372036854772808,
+           "partition_memory_per_cpu": {
+             "set": true,
+             "infinite": false,
+             "number": 3000
+           },
+           "partition_memory_per_node": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "nodes": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "shares": 1,
+           "oversubscribe": {
+             "jobs": 1,
+             "flags": [
+             ]
+           },
+           "time": {
+             "set": true,
+             "infinite": false,
+             "number": 11520
+           },
+           "over_time_limit": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "minimums": {
+           "nodes": 0
+         },
+         "name": "mx",
+         "node_sets": "",
+         "priority": {
+           "job_factor": 1,
+           "tier": 2
+         },
+         "timeouts": {
+           "resume": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "suspend": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "partition": {
+           "state": [
+             "UP"
+           ]
+         },
+         "suspend_time": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       }
+     },
+     {
+       "port": 6818,
+       "node": {
+         "state": [
+           "ALLOCATED"
+         ]
+       },
+       "nodes": {
+         "allocated": 21,
+         "idle": 0,
+         "other": 0,
+         "total": 21,
+         "hostnames": [
+         ],
+         "addresses": [
+         ],
+         "nodes": [
+           "host-192-168-222-22",
+           "host-192-168-222-23",
+           "host-192-168-222-24",
+           "host-192-168-222-25",
+           "host-192-168-222-26",
+           "host-192-168-222-27",
+           "host-192-168-222-28",
+           "host-192-168-222-29",
+           "host-192-168-222-30",
+           "host-192-168-222-31",
+           "host-192-168-222-32",
+           "host-192-168-222-33",
+           "host-192-168-222-34",
+           "host-192-168-222-35",
+           "host-192-168-222-36",
+           "host-192-168-222-37",
+           "host-192-168-222-38",
+           "host-192-168-222-39",
+           "host-192-168-222-40",
+           "host-192-168-222-41",
+           "host-192-168-222-42"
+         ]
+       },
+       "cpus": {
+         "allocated": 4908,
+         "idle": 0,
+         "other": 0,
+         "total": 4908,
+         "minimum": 124,
+         "maximum": 252,
+         "load": {
+           "minimum": 404,
+           "maximum": 2203
+         },
+         "per_node": {
+           "max": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           }
+         }
+       },
+       "sockets": {
+         "minimum": 2,
+         "maximum": 2
+       },
+       "cores": {
+         "minimum": 62,
+         "maximum": 126
+       },
+       "threads": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "disk": {
+         "minimum": 0,
+         "maximum": 0
+       },
+       "memory": {
+         "minimum": 463014,
+         "maximum": 928264,
+         "free": {
+           "minimum": {
+             "set": true,
+             "infinite": false,
+             "number": 410522
+           },
+           "maximum": {
+             "set": true,
+             "infinite": false,
+             "number": 1824208
+           }
+         },
+         "allocated": 310000
+       },
+       "weight": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "features": {
+         "total": "",
+         "active": ""
+       },
+       "gres": {
+         "total": "",
+         "used": "gpu:0"
+       },
+       "cluster": "",
+       "comment": "",
+       "extra": "",
+       "reason": {
+         "description": "",
+         "time": 0,
+         "user": ""
+       },
+       "reservation": "",
+       "partition": {
+         "nodes": {
+           "allowed_allocation": "",
+           "configured": "host-192-168-222-[22-43]",
+           "total": 22
+         },
+         "accounts": {
+           "allowed": "",
+           "deny": ""
+         },
+         "groups": {
+           "allowed": ""
+         },
+         "qos": {
+           "allowed": "",
+           "deny": "",
+           "assigned": ""
+         },
+         "alternate": "",
+         "tres": {
+           "billing_weights": "",
+           "configured": "cpu=5032,mem=18560808M,node=22,billing=5032"
+         },
+         "cluster": "",
+         "cpus": {
+           "task_binding": 0,
+           "total": 5032
+         },
+         "defaults": {
+           "memory_per_cpu": -9223372036854773308,
+           "partition_memory_per_cpu": {
+             "set": true,
+             "infinite": false,
+             "number": 2500
+           },
+           "partition_memory_per_node": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "time": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "job": ""
+         },
+         "grace_time": 0,
+         "maximums": {
+           "cpus_per_node": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "cpus_per_socket": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "memory_per_cpu": -9223372036854772808,
+           "partition_memory_per_cpu": {
+             "set": true,
+             "infinite": false,
+             "number": 3000
+           },
+           "partition_memory_per_node": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "nodes": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "shares": 1,
+           "oversubscribe": {
+             "jobs": 1,
+             "flags": [
+             ]
+           },
+           "time": {
+             "set": true,
+             "infinite": false,
+             "number": 11520
+           },
+           "over_time_limit": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "minimums": {
+           "nodes": 0
+         },
+         "name": "mx",
+         "node_sets": "",
+         "priority": {
+           "job_factor": 1,
+           "tier": 2
+         },
+         "timeouts": {
+           "resume": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "suspend": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "partition": {
+           "state": [
+             "UP"
+           ]
+         },
+         "suspend_time": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       }
+     },
+     {
+       "port": 6818,
+       "node": {
+         "state": [
+           "MIXED"
+         ]
+       },
+       "nodes": {
+         "allocated": 1,
+         "idle": 0,
+         "other": 0,
+         "total": 1,
+         "hostnames": [
+         ],
+         "addresses": [
+         ],
+         "nodes": [
+           "host-192-168-222-43"
+         ]
+       },
+       "cpus": {
+         "allocated": 30,
+         "idle": 94,
+         "other": 0,
+         "total": 124,
+         "minimum": 124,
+         "maximum": 124,
+         "load": {
+           "minimum": 1038,
+           "maximum": 1038
+         },
+         "per_node": {
+           "max": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           }
+         }
+       },
+       "sockets": {
+         "minimum": 2,
+         "maximum": 2
+       },
+       "cores": {
+         "minimum": 62,
+         "maximum": 62
+       },
+       "threads": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "disk": {
+         "minimum": 0,
+         "maximum": 0
+       },
+       "memory": {
+         "minimum": 463014,
+         "maximum": 463014,
+         "free": {
+           "minimum": {
+             "set": true,
+             "infinite": false,
+             "number": 422945
+           },
+           "maximum": {
+             "set": true,
+             "infinite": false,
+             "number": 422945
+           }
+         },
+         "allocated": 61440
+       },
+       "weight": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "features": {
+         "total": "",
+         "active": ""
+       },
+       "gres": {
+         "total": "",
+         "used": "gpu:0"
+       },
+       "cluster": "",
+       "comment": "",
+       "extra": "",
+       "reason": {
+         "description": "",
+         "time": 0,
+         "user": ""
+       },
+       "reservation": "",
+       "partition": {
+         "nodes": {
+           "allowed_allocation": "",
+           "configured": "host-192-168-222-[22-43,101-105]",
+           "total": 27
+         },
+         "accounts": {
+           "allowed": "",
+           "deny": ""
+         },
+         "groups": {
+           "allowed": ""
+         },
+         "qos": {
+           "allowed": "",
+           "deny": "",
+           "assigned": ""
+         },
+         "alternate": "",
+         "tres": {
+           "billing_weights": "",
+           "configured": "cpu=5780,mem=21341128M,node=27,billing=5780"
+         },
+         "cluster": "",
+         "cpus": {
+           "task_binding": 0,
+           "total": 5780
+         },
+         "defaults": {
+           "memory_per_cpu": -9223372036854773308,
+           "partition_memory_per_cpu": {
+             "set": true,
+             "infinite": false,
+             "number": 2500
+           },
+           "partition_memory_per_node": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "time": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "job": ""
+         },
+         "grace_time": 0,
+         "maximums": {
+           "cpus_per_node": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "cpus_per_socket": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "memory_per_cpu": -9223372036854772808,
+           "partition_memory_per_cpu": {
+             "set": true,
+             "infinite": false,
+             "number": 3000
+           },
+           "partition_memory_per_node": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "nodes": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "shares": 1,
+           "oversubscribe": {
+             "jobs": 1,
+             "flags": [
+             ]
+           },
+           "time": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "over_time_limit": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "minimums": {
+           "nodes": 0
+         },
+         "name": "main",
+         "node_sets": "",
+         "priority": {
+           "job_factor": 1,
+           "tier": 1
+         },
+         "timeouts": {
+           "resume": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "suspend": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "partition": {
+           "state": [
+             "UP"
+           ]
+         },
+         "suspend_time": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       }
+     },
+     {
+       "port": 6818,
+       "node": {
+         "state": [
+           "ALLOCATED"
+         ]
+       },
+       "nodes": {
+         "allocated": 26,
+         "idle": 0,
+         "other": 0,
+         "total": 26,
+         "hostnames": [
+         ],
+         "addresses": [
+         ],
+         "nodes": [
+           "host-192-168-222-22",
+           "host-192-168-222-23",
+           "host-192-168-222-24",
+           "host-192-168-222-25",
+           "host-192-168-222-26",
+           "host-192-168-222-27",
+           "host-192-168-222-28",
+           "host-192-168-222-29",
+           "host-192-168-222-30",
+           "host-192-168-222-31",
+           "host-192-168-222-32",
+           "host-192-168-222-33",
+           "host-192-168-222-34",
+           "host-192-168-222-35",
+           "host-192-168-222-36",
+           "host-192-168-222-37",
+           "host-192-168-222-38",
+           "host-192-168-222-39",
+           "host-192-168-222-40",
+           "host-192-168-222-41",
+           "host-192-168-222-42",
+           "host-192-168-222-101",
+           "host-192-168-222-102",
+           "host-192-168-222-103",
+           "host-192-168-222-104",
+           "host-192-168-222-105"
+         ]
+       },
+       "cpus": {
+         "allocated": 5656,
+         "idle": 0,
+         "other": 0,
+         "total": 5656,
+         "minimum": 124,
+         "maximum": 252,
+         "load": {
+           "minimum": 0,
+           "maximum": 2203
+         },
+         "per_node": {
+           "max": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           }
+         }
+       },
+       "sockets": {
+         "minimum": 2,
+         "maximum": 2
+       },
+       "cores": {
+         "minimum": 62,
+         "maximum": 126
+       },
+       "threads": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "disk": {
+         "minimum": 0,
+         "maximum": 0
+       },
+       "memory": {
+         "minimum": 463014,
+         "maximum": 928264,
+         "free": {
+           "minimum": {
+             "set": true,
+             "infinite": false,
+             "number": 405031
+           },
+           "maximum": {
+             "set": true,
+             "infinite": false,
+             "number": 1824208
+           }
+         },
+         "allocated": 310000
+       },
+       "weight": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "features": {
+         "total": "",
+         "active": ""
+       },
+       "gres": {
+         "total": "",
+         "used": "gpu:0"
+       },
+       "cluster": "",
+       "comment": "",
+       "extra": "",
+       "reason": {
+         "description": "",
+         "time": 0,
+         "user": ""
+       },
+       "reservation": "",
+       "partition": {
+         "nodes": {
+           "allowed_allocation": "",
+           "configured": "host-192-168-222-[22-43,101-105]",
+           "total": 27
+         },
+         "accounts": {
+           "allowed": "",
+           "deny": ""
+         },
+         "groups": {
+           "allowed": ""
+         },
+         "qos": {
+           "allowed": "",
+           "deny": "",
+           "assigned": ""
+         },
+         "alternate": "",
+         "tres": {
+           "billing_weights": "",
+           "configured": "cpu=5780,mem=21341128M,node=27,billing=5780"
+         },
+         "cluster": "",
+         "cpus": {
+           "task_binding": 0,
+           "total": 5780
+         },
+         "defaults": {
+           "memory_per_cpu": -9223372036854773308,
+           "partition_memory_per_cpu": {
+             "set": true,
+             "infinite": false,
+             "number": 2500
+           },
+           "partition_memory_per_node": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "time": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "job": ""
+         },
+         "grace_time": 0,
+         "maximums": {
+           "cpus_per_node": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "cpus_per_socket": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "memory_per_cpu": -9223372036854772808,
+           "partition_memory_per_cpu": {
+             "set": true,
+             "infinite": false,
+             "number": 3000
+           },
+           "partition_memory_per_node": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "nodes": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "shares": 1,
+           "oversubscribe": {
+             "jobs": 1,
+             "flags": [
+             ]
+           },
+           "time": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "over_time_limit": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "minimums": {
+           "nodes": 0
+         },
+         "name": "main",
+         "node_sets": "",
+         "priority": {
+           "job_factor": 1,
+           "tier": 1
+         },
+         "timeouts": {
+           "resume": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "suspend": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "partition": {
+           "state": [
+             "UP"
+           ]
+         },
+         "suspend_time": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       }
+     },
+     {
+       "port": 6818,
+       "node": {
+         "state": [
+           "ALLOCATED"
+         ]
+       },
+       "nodes": {
+         "allocated": 5,
+         "idle": 0,
+         "other": 0,
+         "total": 5,
+         "hostnames": [
+         ],
+         "addresses": [
+         ],
+         "nodes": [
+           "host-192-168-222-101",
+           "host-192-168-222-102",
+           "host-192-168-222-103",
+           "host-192-168-222-104",
+           "host-192-168-222-105"
+         ]
+       },
+       "cpus": {
+         "allocated": 748,
+         "idle": 0,
+         "other": 0,
+         "total": 748,
+         "minimum": 124,
+         "maximum": 252,
+         "load": {
+           "minimum": 0,
+           "maximum": 1500
+         },
+         "per_node": {
+           "max": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           }
+         }
+       },
+       "sockets": {
+         "minimum": 2,
+         "maximum": 2
+       },
+       "cores": {
+         "minimum": 62,
+         "maximum": 126
+       },
+       "threads": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "disk": {
+         "minimum": 0,
+         "maximum": 0
+       },
+       "memory": {
+         "minimum": 463014,
+         "maximum": 928264,
+         "free": {
+           "minimum": {
+             "set": true,
+             "infinite": false,
+             "number": 405031
+           },
+           "maximum": {
+             "set": true,
+             "infinite": false,
+             "number": 888652
+           }
+         },
+         "allocated": 310000
+       },
+       "weight": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "features": {
+         "total": "",
+         "active": ""
+       },
+       "gres": {
+         "total": "",
+         "used": "gpu:0"
+       },
+       "cluster": "",
+       "comment": "",
+       "extra": "",
+       "reason": {
+         "description": "",
+         "time": 0,
+         "user": ""
+       },
+       "reservation": "",
+       "partition": {
+         "nodes": {
+           "allowed_allocation": "",
+           "configured": "host-192-168-222-[101-105]",
+           "total": 5
+         },
+         "accounts": {
+           "allowed": "",
+           "deny": ""
+         },
+         "groups": {
+           "allowed": ""
+         },
+         "qos": {
+           "allowed": "",
+           "deny": "",
+           "assigned": ""
+         },
+         "alternate": "",
+         "tres": {
+           "billing_weights": "",
+           "configured": "cpu=748,mem=2780320M,node=5,billing=748"
+         },
+         "cluster": "",
+         "cpus": {
+           "task_binding": 0,
+           "total": 748
+         },
+         "defaults": {
+           "memory_per_cpu": -9223372036854773308,
+           "partition_memory_per_cpu": {
+             "set": true,
+             "infinite": false,
+             "number": 2500
+           },
+           "partition_memory_per_node": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "time": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "job": ""
+         },
+         "grace_time": 0,
+         "maximums": {
+           "cpus_per_node": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "cpus_per_socket": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "memory_per_cpu": -9223372036854772808,
+           "partition_memory_per_cpu": {
+             "set": true,
+             "infinite": false,
+             "number": 3000
+           },
+           "partition_memory_per_node": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "nodes": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "shares": 1,
+           "oversubscribe": {
+             "jobs": 1,
+             "flags": [
+             ]
+           },
+           "time": {
+             "set": true,
+             "infinite": false,
+             "number": 11520
+           },
+           "over_time_limit": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "minimums": {
+           "nodes": 0
+         },
+         "name": "conexs",
+         "node_sets": "",
+         "priority": {
+           "job_factor": 1,
+           "tier": 2
+         },
+         "timeouts": {
+           "resume": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "suspend": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "partition": {
+           "state": [
+             "UP"
+           ]
+         },
+         "suspend_time": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       }
+     },
+     {
+       "port": 6818,
+       "node": {
+         "state": [
+           "ALLOCATED"
+         ]
+       },
+       "nodes": {
+         "allocated": 2,
+         "idle": 0,
+         "other": 0,
+         "total": 2,
+         "hostnames": [
+         ],
+         "addresses": [
+         ],
+         "nodes": [
+           "host-192-168-222-201",
+           "host-192-168-222-203"
+         ]
+       },
+       "cpus": {
+         "allocated": 24,
+         "idle": 0,
+         "other": 0,
+         "total": 24,
+         "minimum": 12,
+         "maximum": 12,
+         "load": {
+           "minimum": 104,
+           "maximum": 115
+         },
+         "per_node": {
+           "max": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           }
+         }
+       },
+       "sockets": {
+         "minimum": 6,
+         "maximum": 6
+       },
+       "cores": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "threads": {
+         "minimum": 2,
+         "maximum": 2
+       },
+       "disk": {
+         "minimum": 0,
+         "maximum": 0
+       },
+       "memory": {
+         "minimum": 74962,
+         "maximum": 74962,
+         "free": {
+           "minimum": {
+             "set": true,
+             "infinite": false,
+             "number": 2989
+           },
+           "maximum": {
+             "set": true,
+             "infinite": false,
+             "number": 54100
+           }
+         },
+         "allocated": 74962
+       },
+       "weight": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "features": {
+         "total": "NVIDIA_V100,NVIDIA_Volta",
+         "active": "NVIDIA_V100,NVIDIA_Volta"
+       },
+       "gres": {
+         "total": "gpu:1",
+         "used": "gpu:1"
+       },
+       "cluster": "",
+       "comment": "",
+       "extra": "",
+       "reason": {
+         "description": "",
+         "time": 0,
+         "user": ""
+       },
+       "reservation": "",
+       "partition": {
+         "nodes": {
+           "allowed_allocation": "",
+           "configured": "host-192-168-222-[201-215]",
+           "total": 15
+         },
+         "accounts": {
+           "allowed": "",
+           "deny": ""
+         },
+         "groups": {
+           "allowed": ""
+         },
+         "qos": {
+           "allowed": "",
+           "deny": "",
+           "assigned": ""
+         },
+         "alternate": "",
+         "tres": {
+           "billing_weights": "",
+           "configured": "cpu=280,mem=1779606M,node=15,billing=280"
+         },
+         "cluster": "",
+         "cpus": {
+           "task_binding": 0,
+           "total": 280
+         },
+         "defaults": {
+           "memory_per_cpu": 0,
+           "partition_memory_per_cpu": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "partition_memory_per_node": {
+             "set": true,
+             "infinite": false,
+             "number": 0
+           },
+           "time": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "job": ""
+         },
+         "grace_time": 0,
+         "maximums": {
+           "cpus_per_node": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "cpus_per_socket": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "memory_per_cpu": 0,
+           "partition_memory_per_cpu": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "partition_memory_per_node": {
+             "set": true,
+             "infinite": false,
+             "number": 0
+           },
+           "nodes": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "shares": 1,
+           "oversubscribe": {
+             "jobs": 1,
+             "flags": [
+             ]
+           },
+           "time": {
+             "set": true,
+             "infinite": false,
+             "number": 11520
+           },
+           "over_time_limit": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "minimums": {
+           "nodes": 0
+         },
+         "name": "gpu",
+         "node_sets": "",
+         "priority": {
+           "job_factor": 1,
+           "tier": 2
+         },
+         "timeouts": {
+           "resume": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "suspend": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "partition": {
+           "state": [
+             "UP"
+           ]
+         },
+         "suspend_time": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       }
+     },
+     {
+       "port": 6818,
+       "node": {
+         "state": [
+           "IDLE"
+         ]
+       },
+       "nodes": {
+         "allocated": 0,
+         "idle": 13,
+         "other": 0,
+         "total": 13,
+         "hostnames": [
+         ],
+         "addresses": [
+         ],
+         "nodes": [
+           "host-192-168-222-202",
+           "host-192-168-222-204",
+           "host-192-168-222-205",
+           "host-192-168-222-206",
+           "host-192-168-222-207",
+           "host-192-168-222-208",
+           "host-192-168-222-209",
+           "host-192-168-222-210",
+           "host-192-168-222-211",
+           "host-192-168-222-212",
+           "host-192-168-222-213",
+           "host-192-168-222-214",
+           "host-192-168-222-215"
+         ]
+       },
+       "cpus": {
+         "allocated": 0,
+         "idle": 256,
+         "other": 0,
+         "total": 256,
+         "minimum": 12,
+         "maximum": 30,
+         "load": {
+           "minimum": 0,
+           "maximum": 8
+         },
+         "per_node": {
+           "max": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           }
+         }
+       },
+       "sockets": {
+         "minimum": 2,
+         "maximum": 30
+       },
+       "cores": {
+         "minimum": 1,
+         "maximum": 14
+       },
+       "threads": {
+         "minimum": 1,
+         "maximum": 2
+       },
+       "disk": {
+         "minimum": 0,
+         "maximum": 0
+       },
+       "memory": {
+         "minimum": 74962,
+         "maximum": 226158,
+         "free": {
+           "minimum": {
+             "set": true,
+             "infinite": false,
+             "number": 9845
+           },
+           "maximum": {
+             "set": true,
+             "infinite": false,
+             "number": 212966
+           }
+         },
+         "allocated": 0
+       },
+       "weight": {
+         "minimum": 1,
+         "maximum": 1
+       },
+       "features": {
+         "total": "NVIDIA_A100,NVIDIA_Ampere",
+         "active": "NVIDIA_A100,NVIDIA_Ampere"
+       },
+       "gres": {
+         "total": "gpu:1",
+         "used": "gpu:0"
+       },
+       "cluster": "",
+       "comment": "",
+       "extra": "",
+       "reason": {
+         "description": "",
+         "time": 0,
+         "user": ""
+       },
+       "reservation": "",
+       "partition": {
+         "nodes": {
+           "allowed_allocation": "",
+           "configured": "host-192-168-222-[201-215]",
+           "total": 15
+         },
+         "accounts": {
+           "allowed": "",
+           "deny": ""
+         },
+         "groups": {
+           "allowed": ""
+         },
+         "qos": {
+           "allowed": "",
+           "deny": "",
+           "assigned": ""
+         },
+         "alternate": "",
+         "tres": {
+           "billing_weights": "",
+           "configured": "cpu=280,mem=1779606M,node=15,billing=280"
+         },
+         "cluster": "",
+         "cpus": {
+           "task_binding": 0,
+           "total": 280
+         },
+         "defaults": {
+           "memory_per_cpu": 0,
+           "partition_memory_per_cpu": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "partition_memory_per_node": {
+             "set": true,
+             "infinite": false,
+             "number": 0
+           },
+           "time": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "job": ""
+         },
+         "grace_time": 0,
+         "maximums": {
+           "cpus_per_node": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "cpus_per_socket": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "memory_per_cpu": 0,
+           "partition_memory_per_cpu": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "partition_memory_per_node": {
+             "set": true,
+             "infinite": false,
+             "number": 0
+           },
+           "nodes": {
+             "set": false,
+             "infinite": true,
+             "number": 0
+           },
+           "shares": 1,
+           "oversubscribe": {
+             "jobs": 1,
+             "flags": [
+             ]
+           },
+           "time": {
+             "set": true,
+             "infinite": false,
+             "number": 11520
+           },
+           "over_time_limit": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "minimums": {
+           "nodes": 0
+         },
+         "name": "gpu",
+         "node_sets": "",
+         "priority": {
+           "job_factor": 1,
+           "tier": 2
+         },
+         "timeouts": {
+           "resume": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           },
+           "suspend": {
+             "set": false,
+             "infinite": false,
+             "number": 0
+           }
+         },
+         "partition": {
+           "state": [
+             "UP"
+           ]
+         },
+         "suspend_time": {
+           "set": false,
+           "infinite": false,
+           "number": 0
+         }
+       }
+     }
+   ],
+   "meta": {
+     "plugin": {
+       "type": "",
+       "name": "",
+       "data_parser": "data_parser\/v0.0.40",
+       "accounting_storage": "accounting_storage\/slurmdbd"
+     },
+     "client": {
+       "source": "\/dev\/pts\/0",
+       "user": "tfb64483",
+       "group": "tfb64483"
+     },
+     "command": [
+       "sinfo"
+     ],
+     "slurm": {
+       "version": {
+         "major": "23",
+         "micro": "1",
+         "minor": "11"
+       },
+       "release": "23.11.1",
+       "cluster": "cepheus"
+     }
+   },
+   "errors": [
+   ],
+   "warnings": [
+   ]
+ }
