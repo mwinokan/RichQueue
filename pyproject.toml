@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+[project]
+name = "richqueue"
+version = "0.1"
+authors = [
+    { name = "Max Winokan", email = "max@winokan.com" },
+]
+description = "RichQueue"
+readme = "README.md"
+requires-python = ">=3.10"
+requires = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "typer",
+    "rich",
+    "pandas",
+]
+[project.urls]
+"Homepage" = "https://github.com/mwinokan/RichQueue/issues"
+"Bug Tracker" = "https://github.com/mwinokan/RichQueue/issues"
+[tool.hatch.build]
+include = [
+    "richqueue/*.py",
+]
