@@ -1,57 +1,58 @@
-
 import datetime
+
 
 def human_timedelta(delta):
 
-	bits = []
+    bits = []
 
-	days = delta.days
-	
-	s = delta.seconds
-	
-	m, s = divmod(s, 60)
-	h, m = divmod(m, 60)
+    days = delta.days
 
-	if days:
-		bits.append(f"{days}d")
+    s = delta.seconds
 
-	if h:
-		bits.append(f"{h}h")
+    m, s = divmod(s, 60)
+    h, m = divmod(m, 60)
 
-	if m: 
-		bits.append(f"{m}m")
+    if days:
+        bits.append(f"{days}d")
 
-	if s:
-		bits.append(f"{s}s")
+    if h:
+        bits.append(f"{h}h")
 
-	bits = (str(b) for b in bits)
+    if m:
+        bits.append(f"{m}m")
 
-	return " ".join(bits)
+    if s:
+        bits.append(f"{s}s")
+
+    bits = (str(b) for b in bits)
+
+    return " ".join(bits)
+
 
 def human_datetime(dt):
-	
-	now = datetime.datetime.now()
 
-	bits = []
+    now = datetime.datetime.now()
 
-	bits.append(dt.strftime("%b"))
+    bits = []
 
-	day = dt.day
+    bits.append(dt.strftime("%b"))
 
-	match day%10:
-		case 1:
-			suffix = "st"
-		case 2:
-			suffix = "nd"
-		case 3:
-			suffix = "rd"
-		case _:
-			suffix = "th"
+    day = dt.day
 
-	bits.append(f"{day}{suffix}")
+    match day % 10:
+        case 1:
+            suffix = "st"
+        case 2:
+            suffix = "nd"
+        case 3:
+            suffix = "rd"
+        case _:
+            suffix = "th"
 
-	bits.append(dt.strftime("%H:%M"))
+    bits.append(f"{day}{suffix}")
 
-	bits = (str(b) for b in bits)
+    bits.append(dt.strftime("%H:%M"))
 
-	return " ".join(bits)
+    bits = (str(b) for b in bits)
+
+    return " ".join(bits)
