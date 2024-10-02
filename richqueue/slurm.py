@@ -12,6 +12,7 @@ METADATA = {}
 
 app = Typer()
 
+
 def color_by_state(state):
 
     if state == "RUNNING":
@@ -27,10 +28,11 @@ def color_by_state(state):
     else:
         return state
 
+
 def extract_inner(df, key, inner):
 
     def _inner(x):
-        d = x[key] 
+        d = x[key]
         if "set" in d:
             if d["set"]:
                 return d[inner]
@@ -41,10 +43,24 @@ def extract_inner(df, key, inner):
 
     df[key] = df.apply(_inner, axis=1)
 
+
 def extract_time(df, key):
     df[key] = df.apply(
         lambda x: datetime.datetime.fromtimestamp(x[key]["number"]), axis=1
     )
+
+
+def extract_sacct_times(df):
+    df["start_time"] = df.apply(
+        lambda x: datetime.datetime.fromtimestamp(x["time"]["start"]), axis=1
+    )
+    df["end_time"] = df.apply(
+        lambda x: datetime.datetime.fromtimestamp(x["time"]["end"]), axis=1
+    )
+    df["submit_time"] = df.apply(
+        lambda x: datetime.datetime.fromtimestamp(x["time"]["submission"]), axis=1
+    )
+
 
 def extract_list(df, key):
     def inner(x):
@@ -60,6 +76,7 @@ def job_table(
     df,
     title: str = "jobs",
     long: bool = False,
+    force_submit_time: bool = False,
     return_table: bool = False,
     box: bool = False,
     panel: bool = True,
@@ -77,6 +94,8 @@ def job_table(
     num_nodes = "node_count" in df.columns
     num_cores = "cpus" in df.columns
     start_time = "start_time" in df.columns
+    end_time = "end_time" in df.columns
+    submit_time = "submit_time" in df.columns
 
     table = Table(title=title, box=box, header_style="")
 
@@ -95,9 +114,17 @@ def job_table(
             "[underline magenta]#C", justify="right", style="magenta", no_wrap=True
         )
 
+    if force_submit_time or long and submit_time:
+        table.add_column(
+            "[underline dodger_blue2]Submitted",
+            justify="right",
+            style="dodger_blue2",
+            no_wrap=True,
+        )
+
     if long and start_time:
         table.add_column(
-            "[underline dodger_blue2]Start Time",
+            "[underline dodger_blue2]Started",
             justify="right",
             style="dodger_blue2",
             no_wrap=True,
@@ -125,15 +152,20 @@ def job_table(
             no_wrap=False,
         )
 
-    table.add_column(
-        "[underline bold]State", justify="left", style=None, no_wrap=True
-    )
+    table.add_column("[underline bold]State", justify="left", style=None, no_wrap=True)
 
     for i, row in df.iterrows():
 
+        if submit_time:
+            submit_time = human_datetime(row.submit_time)
+
         if start_time:
             start_time = human_datetime(row.start_time)
-            run_time = human_timedelta(datetime.datetime.now() - row.start_time)
+
+            if end_time:
+                run_time = human_timedelta(row.end_time - row.start_time)
+            else:
+                run_time = human_timedelta(datetime.datetime.now() - row.start_time)
 
         values = [row.job_id, row["name"]]
 
@@ -141,6 +173,9 @@ def job_table(
             values.append(row.node_count)
         if num_cores:
             values.append(row.cpus)
+
+        if force_submit_time or long and submit_time:
+            values.append(submit_time)
 
         if long and start_time:
             values.append(start_time)
@@ -197,7 +232,6 @@ def parse_squeue_json(payload: dict) -> "DataFrame":
     extract_inner(df, "cpus_per_task", "number")
     extract_inner(df, "threads_per_core", "number")
 
-    extract_time(df, "end_time")
     extract_time(df, "start_time")
     extract_time(df, "submit_time")
     extract_time(df, "time_limit")
@@ -206,17 +240,20 @@ def parse_squeue_json(payload: dict) -> "DataFrame":
 
     return df
 
+
 def parse_sacct_json(payload: dict) -> "DataFrame":
 
     command = "sacct"
 
     global METADATA
 
-    METADATA.update({
-        "cluster_name": payload["meta"]["slurm"]["cluster"],
-        "user": payload["meta"]["client"]["user"],
-        "group": payload["meta"]["client"]["group"],
-    })
+    METADATA.update(
+        {
+            "cluster_name": payload["meta"]["slurm"]["cluster"],
+            "user": payload["meta"]["client"]["user"],
+            "group": payload["meta"]["client"]["group"],
+        }
+    )
 
     # parse payload
     df = DataFrame(payload["jobs"])
@@ -234,25 +271,18 @@ def parse_sacct_json(payload: dict) -> "DataFrame":
             if key not in df.columns:
                 raise KeyError(key)
 
-    df = df.rename(columns={"user":"user_name", "state":"job_state"})
+    df = df.rename(columns={"user": "user_name", "state": "job_state"})
 
     extract_inner(df, "job_state", "current")
 
-    # extract_number(df, "cpus")
-    # extract_number(df, "node_count")
-    # extract_number(df, "cpus_per_task")
-    # extract_number(df, "threads_per_core")
-
-    # extract_time(df, "end_time")
-    # extract_time(df, "start_time")
-    # extract_time(df, "submit_time")
-    # extract_time(df, "time_limit")
+    extract_sacct_times(df)
 
     extract_list(df, "job_state")
 
     df = df[df["job_state"] != "RUNNING"]
 
     return df
+
 
 def show_queue(
     command: str,
@@ -296,7 +326,17 @@ def show_queue(
     else:
         title = f"[bold]jobs on {cluster}"
 
-    return job_table(df, title=title, long=long, return_table=return_table, box=box)
+    force_submit_time = command == "sacct"
+
+    return job_table(
+        df,
+        title=title,
+        long=long,
+        force_submit_time=force_submit_time,
+        return_table=return_table,
+        box=box,
+    )
+
 
 def dual_layout(
     user: None | str = None,
@@ -313,8 +353,8 @@ def dual_layout(
     upper = Layout(renderable=panel1, name="upper")
     lower = Layout(renderable=panel2, name="lower")
 
-    upper.size = panel1.renderable.row_count+4
-    lower.size = panel2.renderable.row_count+4
+    upper.size = panel1.renderable.row_count + 4
+    lower.size = panel2.renderable.row_count + 4
 
     layout.split_column(
         upper,
@@ -325,6 +365,7 @@ def dual_layout(
         console.print(layout)
     else:
         return layout
+
 
 @app.command()
 def show(user: None | str = None, long: bool = False):
@@ -354,50 +395,54 @@ def show(user: None | str = None, long: bool = False):
 
 
 def main():
-    app()
-    
-PARSERS = {"squeue":parse_squeue_json, "sacct":parse_sacct_json}
+
+    squeue = json.load(open("../example_data/squeue.json"))
+
+    parse_squeue_json(squeue)
+
+
+PARSERS = {"squeue": parse_squeue_json, "sacct": parse_sacct_json}
 
 COLUMNS = {
-"sacct":[
-    "job_id",
-    "state",
-    "name",
-    "nodes",
-    "partition",
-    "user",
-],
-
-"squeue":[
-    "command",
-    "cpus_per_task",
-    "dependency",
-    "derived_exit_code",
-    "end_time",
-    "group_name",
-    "job_id",
-    "job_state",
-    "name",
-    "nodes",
-    "node_count",
-    "cpus",
-    "tasks",
-    "partition",
-    "memory_per_cpu",
-    "memory_per_node",
-    "qos",
-    "restart_cnt",
-    "requeue",
-    "exclusive",
-    "start_time",
-    "standard_error",
-    "standard_output",
-    "submit_time",
-    "time_limit",
-    "threads_per_core",
-    "user_name",
-    "current_working_directory",
-]}
+    "sacct": [
+        "job_id",
+        "state",
+        "name",
+        "nodes",
+        "partition",
+        "user",
+        "time",
+    ],
+    "squeue": [
+        "command",
+        "cpus_per_task",
+        "dependency",
+        "derived_exit_code",
+        "group_name",
+        "job_id",
+        "job_state",
+        "name",
+        "nodes",
+        "node_count",
+        "cpus",
+        "tasks",
+        "partition",
+        "memory_per_cpu",
+        "memory_per_node",
+        "qos",
+        "restart_cnt",
+        "requeue",
+        "exclusive",
+        "start_time",
+        "standard_error",
+        "standard_output",
+        "submit_time",
+        "time_limit",
+        "threads_per_core",
+        "user_name",
+        "current_working_directory",
+    ],
+}
 
 
 if __name__ == "__main__":
