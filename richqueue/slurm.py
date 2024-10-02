@@ -46,6 +46,11 @@ def extract_time(df, key):
         lambda x: datetime.datetime.fromtimestamp(x[key]["number"]), axis=1
     )
 
+def extract_sacct_times(df):
+    df["start_time"] = df.apply(lambda x: datetime.datetime.fromtimestamp(x["time"]["start"]), axis=1)
+    df["end_time"] = df.apply(lambda x: datetime.datetime.fromtimestamp(x["time"]["end"]), axis=1)
+    df["submit_time"] = df.apply(lambda x: datetime.datetime.fromtimestamp(x["time"]["submission"]), axis=1)
+
 def extract_list(df, key):
     def inner(x):
         if len(x[key]) == 1:
@@ -60,6 +65,7 @@ def job_table(
     df,
     title: str = "jobs",
     long: bool = False,
+    force_submit_time: bool = False,
     return_table: bool = False,
     box: bool = False,
     panel: bool = True,
@@ -77,6 +83,8 @@ def job_table(
     num_nodes = "node_count" in df.columns
     num_cores = "cpus" in df.columns
     start_time = "start_time" in df.columns
+    end_time = "end_time" in df.columns
+    submit_time = "submit_time" in df.columns
 
     table = Table(title=title, box=box, header_style="")
 
@@ -95,9 +103,17 @@ def job_table(
             "[underline magenta]#C", justify="right", style="magenta", no_wrap=True
         )
 
+    if force_submit_time or long and submit_time:
+        table.add_column(
+            "[underline dodger_blue2]Submitted",
+            justify="right",
+            style="dodger_blue2",
+            no_wrap=True,
+        )
+
     if long and start_time:
         table.add_column(
-            "[underline dodger_blue2]Start Time",
+            "[underline dodger_blue2]Started",
             justify="right",
             style="dodger_blue2",
             no_wrap=True,
@@ -130,10 +146,17 @@ def job_table(
     )
 
     for i, row in df.iterrows():
+        
+        if submit_time:
+            submit_time = human_datetime(row.submit_time)
 
         if start_time:
             start_time = human_datetime(row.start_time)
-            run_time = human_timedelta(datetime.datetime.now() - row.start_time)
+
+            if end_time:
+                run_time = human_timedelta(row.end_time - row.start_time)
+            else:
+                run_time = human_timedelta(datetime.datetime.now() - row.start_time)
 
         values = [row.job_id, row["name"]]
 
@@ -141,6 +164,9 @@ def job_table(
             values.append(row.node_count)
         if num_cores:
             values.append(row.cpus)
+
+        if force_submit_time or long and submit_time:
+            values.append(submit_time)
 
         if long and start_time:
             values.append(start_time)
@@ -197,7 +223,6 @@ def parse_squeue_json(payload: dict) -> "DataFrame":
     extract_inner(df, "cpus_per_task", "number")
     extract_inner(df, "threads_per_core", "number")
 
-    extract_time(df, "end_time")
     extract_time(df, "start_time")
     extract_time(df, "submit_time")
     extract_time(df, "time_limit")
@@ -238,15 +263,7 @@ def parse_sacct_json(payload: dict) -> "DataFrame":
 
     extract_inner(df, "job_state", "current")
 
-    # extract_number(df, "cpus")
-    # extract_number(df, "node_count")
-    # extract_number(df, "cpus_per_task")
-    # extract_number(df, "threads_per_core")
-
-    # extract_time(df, "end_time")
-    # extract_time(df, "start_time")
-    # extract_time(df, "submit_time")
-    # extract_time(df, "time_limit")
+    extract_sacct_times(df)
 
     extract_list(df, "job_state")
 
@@ -296,7 +313,9 @@ def show_queue(
     else:
         title = f"[bold]jobs on {cluster}"
 
-    return job_table(df, title=title, long=long, return_table=return_table, box=box)
+    force_submit_time = command == "sacct"
+
+    return job_table(df, title=title, long=long, force_submit_time=force_submit_time, return_table=return_table, box=box)
 
 def dual_layout(
     user: None | str = None,
@@ -369,6 +388,7 @@ COLUMNS = {
     "nodes",
     "partition",
     "user",
+    "time",
 ],
 
 "squeue":[
@@ -376,7 +396,6 @@ COLUMNS = {
     "cpus_per_task",
     "dependency",
     "derived_exit_code",
-    "end_time",
     "group_name",
     "job_id",
     "job_state",
