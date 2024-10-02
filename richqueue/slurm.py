@@ -12,6 +12,7 @@ METADATA = {}
 
 app = Typer()
 
+
 def color_by_state(state):
 
     if state == "RUNNING":
@@ -27,10 +28,11 @@ def color_by_state(state):
     else:
         return state
 
+
 def extract_inner(df, key, inner):
 
     def _inner(x):
-        d = x[key] 
+        d = x[key]
         if "set" in d:
             if d["set"]:
                 return d[inner]
@@ -41,15 +43,24 @@ def extract_inner(df, key, inner):
 
     df[key] = df.apply(_inner, axis=1)
 
+
 def extract_time(df, key):
     df[key] = df.apply(
         lambda x: datetime.datetime.fromtimestamp(x[key]["number"]), axis=1
     )
 
+
 def extract_sacct_times(df):
-    df["start_time"] = df.apply(lambda x: datetime.datetime.fromtimestamp(x["time"]["start"]), axis=1)
-    df["end_time"] = df.apply(lambda x: datetime.datetime.fromtimestamp(x["time"]["end"]), axis=1)
-    df["submit_time"] = df.apply(lambda x: datetime.datetime.fromtimestamp(x["time"]["submission"]), axis=1)
+    df["start_time"] = df.apply(
+        lambda x: datetime.datetime.fromtimestamp(x["time"]["start"]), axis=1
+    )
+    df["end_time"] = df.apply(
+        lambda x: datetime.datetime.fromtimestamp(x["time"]["end"]), axis=1
+    )
+    df["submit_time"] = df.apply(
+        lambda x: datetime.datetime.fromtimestamp(x["time"]["submission"]), axis=1
+    )
+
 
 def extract_list(df, key):
     def inner(x):
@@ -141,12 +152,10 @@ def job_table(
             no_wrap=False,
         )
 
-    table.add_column(
-        "[underline bold]State", justify="left", style=None, no_wrap=True
-    )
+    table.add_column("[underline bold]State", justify="left", style=None, no_wrap=True)
 
     for i, row in df.iterrows():
-        
+
         if submit_time:
             submit_time = human_datetime(row.submit_time)
 
@@ -231,17 +240,20 @@ def parse_squeue_json(payload: dict) -> "DataFrame":
 
     return df
 
+
 def parse_sacct_json(payload: dict) -> "DataFrame":
 
     command = "sacct"
 
     global METADATA
 
-    METADATA.update({
-        "cluster_name": payload["meta"]["slurm"]["cluster"],
-        "user": payload["meta"]["client"]["user"],
-        "group": payload["meta"]["client"]["group"],
-    })
+    METADATA.update(
+        {
+            "cluster_name": payload["meta"]["slurm"]["cluster"],
+            "user": payload["meta"]["client"]["user"],
+            "group": payload["meta"]["client"]["group"],
+        }
+    )
 
     # parse payload
     df = DataFrame(payload["jobs"])
@@ -259,7 +271,7 @@ def parse_sacct_json(payload: dict) -> "DataFrame":
             if key not in df.columns:
                 raise KeyError(key)
 
-    df = df.rename(columns={"user":"user_name", "state":"job_state"})
+    df = df.rename(columns={"user": "user_name", "state": "job_state"})
 
     extract_inner(df, "job_state", "current")
 
@@ -270,6 +282,7 @@ def parse_sacct_json(payload: dict) -> "DataFrame":
     df = df[df["job_state"] != "RUNNING"]
 
     return df
+
 
 def show_queue(
     command: str,
@@ -315,7 +328,15 @@ def show_queue(
 
     force_submit_time = command == "sacct"
 
-    return job_table(df, title=title, long=long, force_submit_time=force_submit_time, return_table=return_table, box=box)
+    return job_table(
+        df,
+        title=title,
+        long=long,
+        force_submit_time=force_submit_time,
+        return_table=return_table,
+        box=box,
+    )
+
 
 def dual_layout(
     user: None | str = None,
@@ -332,8 +353,8 @@ def dual_layout(
     upper = Layout(renderable=panel1, name="upper")
     lower = Layout(renderable=panel2, name="lower")
 
-    upper.size = panel1.renderable.row_count+4
-    lower.size = panel2.renderable.row_count+4
+    upper.size = panel1.renderable.row_count + 4
+    lower.size = panel2.renderable.row_count + 4
 
     layout.split_column(
         upper,
@@ -344,6 +365,7 @@ def dual_layout(
         console.print(layout)
     else:
         return layout
+
 
 @app.command()
 def show(user: None | str = None, long: bool = False):
@@ -378,48 +400,49 @@ def main():
 
     parse_squeue_json(squeue)
 
-PARSERS = {"squeue":parse_squeue_json, "sacct":parse_sacct_json}
+
+PARSERS = {"squeue": parse_squeue_json, "sacct": parse_sacct_json}
 
 COLUMNS = {
-"sacct":[
-    "job_id",
-    "state",
-    "name",
-    "nodes",
-    "partition",
-    "user",
-    "time",
-],
-
-"squeue":[
-    "command",
-    "cpus_per_task",
-    "dependency",
-    "derived_exit_code",
-    "group_name",
-    "job_id",
-    "job_state",
-    "name",
-    "nodes",
-    "node_count",
-    "cpus",
-    "tasks",
-    "partition",
-    "memory_per_cpu",
-    "memory_per_node",
-    "qos",
-    "restart_cnt",
-    "requeue",
-    "exclusive",
-    "start_time",
-    "standard_error",
-    "standard_output",
-    "submit_time",
-    "time_limit",
-    "threads_per_core",
-    "user_name",
-    "current_working_directory",
-]}
+    "sacct": [
+        "job_id",
+        "state",
+        "name",
+        "nodes",
+        "partition",
+        "user",
+        "time",
+    ],
+    "squeue": [
+        "command",
+        "cpus_per_task",
+        "dependency",
+        "derived_exit_code",
+        "group_name",
+        "job_id",
+        "job_state",
+        "name",
+        "nodes",
+        "node_count",
+        "cpus",
+        "tasks",
+        "partition",
+        "memory_per_cpu",
+        "memory_per_node",
+        "qos",
+        "restart_cnt",
+        "requeue",
+        "exclusive",
+        "start_time",
+        "standard_error",
+        "standard_output",
+        "submit_time",
+        "time_limit",
+        "threads_per_core",
+        "user_name",
+        "current_working_directory",
+    ],
+}
 
 
 if __name__ == "__main__":
