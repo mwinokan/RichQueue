@@ -147,8 +147,6 @@ def parse_squeue_json(payload: dict) -> "DataFrame":
 
 @app.command()
 def show(user: None | str = None, long: bool = False):
-
-	print()
 	
 	squeue = json.load(open("example_data/squeue.json"))
 	df = parse_squeue_json(squeue)
@@ -166,6 +164,7 @@ def show(user: None | str = None, long: bool = False):
 	else:
 		title = f"[bold]jobs on {cluster}"
 
+	print()
 	job_table(df, title=title, long=long)
 
 def main():
