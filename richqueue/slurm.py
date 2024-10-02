@@ -395,11 +395,7 @@ def show(user: None | str = None, long: bool = False):
 
 
 def main():
-
-    squeue = json.load(open("../example_data/squeue.json"))
-
-    parse_squeue_json(squeue)
-
+    app()
 
 PARSERS = {"squeue": parse_squeue_json, "sacct": parse_sacct_json}
 
