@@ -1,7 +1,6 @@
 
 from typer import Typer
 
-from pandas import DataFrame
 import json
 from rich import print
 import datetime
@@ -92,7 +91,9 @@ def job_table(df, title: str='jobs', long: bool = False):
 
 	print(table)
 
-def parse_squeue_json(payload: dict) -> DataFrame:
+def parse_squeue_json(payload: dict) -> "DataFrame":
+
+	from pandas import DataFrame
 
 	global METADATA
 
