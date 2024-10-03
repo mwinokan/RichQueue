@@ -5,6 +5,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.layout import Layout
 from pandas import DataFrame
+import subprocess
 
 console = Console()
 
@@ -110,16 +111,7 @@ def node_table(
 
         box = SIMPLE
 
-
-
-
     table = Table(title=title, box=box, header_style="")
-
-    # for col in df.columns:
-    #     table.add_column(col)
-
-    print(df.columns)
-
 
     table.add_column("[bold underline]Node", justify='left', no_wrap=True, style="bold")
     table.add_column("[bold underline]State", justify='left', no_wrap=True, style="bold")
@@ -374,10 +366,10 @@ def show_queue(
     user: None | str = None,
     long: bool = False,
     return_table: bool = False,
+    hist: int = 2,
+    hist_unit: str= "weeks",
     box: bool = False,
 ):
-
-    import subprocess
 
     if user == "all":
         user = None
@@ -389,7 +381,10 @@ def show_queue(
     if user:
         s_command = f"{command} -u {user} --json"
     else:
-        s_command = f"{command} --json"
+        s_command = f"{command} -u {user} --json"
+
+    if command == "sacct":
+        s_command += f" -S now-{hist}{hist_unit}"
 
     x = subprocess.Popen([s_command], shell=True, stdout=subprocess.PIPE)
     output = x.communicate()
@@ -403,7 +398,7 @@ def show_queue(
     cluster = METADATA["cluster_name"]
 
     if command == "sacct":
-        title = f"[bold]{user}'s history on {cluster}"
+        title = f"[bold]{user}'s previous jobs (last {hist} {hist_unit})"
 
     elif user:
         df = df[df["user_name"] == user]
@@ -472,23 +467,30 @@ def parse_sinfo_json(payload: dict) -> "DataFrame":
     return df2
 
 def idle_queue():
-    
-    # panel = Panel()
 
-    # table = Table()
+    s_command = "sinfo -N --json"
 
-    df = parse_sinfo_json(json.load(open('example_data/sinfo_N.json')))
+    x = subprocess.Popen([s_command], shell=True, stdout=subprocess.PIPE)
+    output = x.communicate()
+
+    payload = json.loads(output[0])
+
+    df = parse_sinfo_json(payload)
 
     table = node_table(df)
 
     console.print(table)
 
 @app.command()
-def show(user: None | str = None, long: bool = False, idle: bool = False):
+def show(user: None | str = None, long: bool = False, idle: bool = False, hist: int | None = None, hist_unit: str = "weeks"):
 
     loop = True
 
-    if idle:
+    if hist:
+
+        show_queue(user=user, command="sacct", long=long, hist=hist, hist_unit=hist_unit)
+
+    elif idle:
         idle_queue()
 
     elif loop:
