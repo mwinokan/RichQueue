@@ -157,16 +157,63 @@ def job_table(
     return_table: bool = False,
     box: bool = False,
     panel: bool = True,
+    max_height: int | None = None,
 ):
 
     from rich.table import Table
+
+    padding = 2
+
+    hide_pending = False
 
     if box:
         from rich.box import SIMPLE
 
         box = SIMPLE
 
+        padding += 2
+
     from .tools import human_timedelta, human_datetime
+
+    states = set(df["job_state"])
+
+    count_by_state = {}
+
+    for state in states:
+        count_by_state[state] = len(df[df["job_state"] == state])
+
+    if max_height and len(df) > max_height - padding:
+        # console.print(f"Content too big {len(df)=}")
+        # console.print(count_by_state)
+
+        if "RUNNING" in count_by_state:
+            if count_by_state["RUNNING"] - count_by_state["PENDING"] < max_height - padding:
+                hide_pending = True
+                df = df[df["job_state"] != "PENDING"]
+
+                # append summary of those removed
+
+                # console.print(df.columns)
+
+                # summary = {
+                #     "job_id":f"{count_by_state['PENDING']} Jobs",
+                #     "job_state":"PENDING",
+                #     "name":"-",
+                #     "nodes":"-",
+                #     "partition":"-",
+                #     "user_name":"-",
+                #     "time":"-",
+                #     "start_time":"-",
+                #     "end_time":"-",
+                #     "submit_time":"-",
+                # }
+
+                # df = df.append(summary, ignore_index=True)
+
+        else:
+            df = df.sort_values(by="submit_time", ascending=True)
+            df = df[-(max_height-padding):]
+            title = title.replace("jobs", f"{max_height-padding} jobs")
 
     num_nodes = "node_count" in df.columns
     num_cores = "cpus" in df.columns
@@ -357,6 +404,7 @@ def parse_sacct_json(payload: dict) -> "DataFrame":
     extract_list(df, "job_state")
 
     df = df[df["job_state"] != "RUNNING"]
+    df = df[df["job_state"] != "PENDING"]
 
     return df
 
@@ -369,6 +417,7 @@ def show_queue(
     hist: int = 2,
     hist_unit: str= "weeks",
     box: bool = False,
+    max_height: int | None = None,
 ):
 
     if user == "all":
@@ -415,6 +464,7 @@ def show_queue(
         force_submit_time=force_submit_time,
         return_table=return_table,
         box=box,
+        max_height=max_height,
     )
 
 
@@ -427,14 +477,20 @@ def dual_layout(
 
     layout = Layout()
 
-    panel1 = show_queue(user=user, command="squeue", long=long, return_table=True)
-    panel2 = show_queue(user=user, command="sacct", long=long, return_table=True)
+    console_height = console.size.height
+
+    panel1 = show_queue(user=user, command="squeue", long=long, return_table=True, max_height=console_height//2)
+    panel2 = show_queue(user=user, command="sacct", long=long, return_table=True, max_height=console_height//2)
 
     upper = Layout(renderable=panel1, name="upper")
     lower = Layout(renderable=panel2, name="lower")
 
     upper.size = panel1.renderable.row_count + 4
     lower.size = panel2.renderable.row_count + 4
+    layout_height = upper.size + lower.size
+
+    if layout_height > console.size.height:
+        console.print(f"Layout too big {layout_height} {console.size}")
 
     layout.split_column(
         upper,
@@ -482,7 +538,14 @@ def idle_queue():
     console.print(table)
 
 @app.command()
-def show(user: None | str = None, long: bool = False, idle: bool = False, hist: int | None = None, hist_unit: str = "weeks"):
+def show(
+    user: None | str = None, 
+    long: bool = False, 
+    idle: bool = False, 
+    hist: int | None = None, 
+    hist_unit: str = "weeks",
+    screen: bool = True,
+):
 
     loop = True
 
@@ -500,13 +563,18 @@ def show(user: None | str = None, long: bool = False, idle: bool = False, hist: 
 
         layout = dual_layout(user=user, long=long)
 
-        with Live(layout, refresh_per_second=4, screen=True) as live:
-            while True:
+        with Live(layout, refresh_per_second=4, screen=screen, transient=True, vertical_overflow="visible") as live:
 
-                layout = dual_layout(user=user, long=long)
-                live.update(layout)
+            try: 
+                while True:
 
-                time.sleep(1)
+                    layout = dual_layout(user=user, long=long)
+                    live.update(layout)
+
+                    time.sleep(1)
+            except KeyboardInterrupt:
+                live.stop()
+                console.print(console.size)
 
     else:
         layout = dual_layout(user=user, long=long)
