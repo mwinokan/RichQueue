@@ -29,6 +29,7 @@ def color_by_state(state):
     else:
         return state
 
+
 def color_by_node_state(state):
 
     if state == "ALLOCATED":
@@ -39,6 +40,7 @@ def color_by_node_state(state):
         return "[bright_green]Idle"
     else:
         return f"[red]{state}"
+
 
 def extract_inner(df, key, inner):
 
@@ -82,13 +84,15 @@ def extract_list(df, key):
 
     df[key] = df.apply(inner, axis=1)
 
+
 def mem_string(mb):
-    
+
     # gb, mb = divmod(mb, 1024)
 
     # return f"{gb}G {mb}M"
 
     return f"{mb/1024:.0f}G"
+
 
 def node_table(
     df,
@@ -100,7 +104,7 @@ def node_table(
 
     if idle:
         df = df[df["node"].isin(["IDLE", "MIXED"])]
-        title = title or "idle nodes" 
+        title = title or "idle nodes"
     else:
         title = title or "nodes"
 
@@ -113,19 +117,37 @@ def node_table(
 
     table = Table(title=title, box=box, header_style="")
 
-    table.add_column("[bold underline]Node", justify='left', no_wrap=True, style="bold")
-    table.add_column("[bold underline]State", justify='left', no_wrap=True, style="bold")
-    table.add_column("[green_yellow underline]Partition", justify='left', no_wrap=True, style="green_yellow")
-    table.add_column("[magenta underline]#C", justify='right', no_wrap=True, style="magenta")
-    table.add_column("[magenta underline]Memory", justify='right', no_wrap=True, style="magenta")
-    table.add_column("[dodger_blue2 underline]Features", justify='left', no_wrap=True, style="dodger_blue2")
+    table.add_column("[bold underline]Node", justify="left", no_wrap=True, style="bold")
+    table.add_column(
+        "[bold underline]State", justify="left", no_wrap=True, style="bold"
+    )
+    table.add_column(
+        "[green_yellow underline]Partition",
+        justify="left",
+        no_wrap=True,
+        style="green_yellow",
+    )
+    table.add_column(
+        "[magenta underline]#C", justify="right", no_wrap=True, style="magenta"
+    )
+    table.add_column(
+        "[magenta underline]Memory", justify="right", no_wrap=True, style="magenta"
+    )
+    table.add_column(
+        "[dodger_blue2 underline]Features",
+        justify="left",
+        no_wrap=True,
+        style="dodger_blue2",
+    )
 
     reservation = any(df["reservation"].values)
 
     if reservation:
-        table.add_column("[bold underline]Reservation", justify='left', no_wrap=True, style="bold")
+        table.add_column(
+            "[bold underline]Reservation", justify="left", no_wrap=True, style="bold"
+        )
 
-    for i,row in df.iterrows():
+    for i, row in df.iterrows():
 
         values = []
 
@@ -148,6 +170,7 @@ def node_table(
         return Panel(table, expand=False)
 
     return table
+
 
 def job_table(
     df,
@@ -187,7 +210,10 @@ def job_table(
         # console.print(count_by_state)
 
         if "RUNNING" in count_by_state:
-            if count_by_state["RUNNING"] - count_by_state["PENDING"] < max_height - padding:
+            if (
+                count_by_state["RUNNING"] - count_by_state["PENDING"]
+                < max_height - padding
+            ):
                 hide_pending = True
                 df = df[df["job_state"] != "PENDING"]
 
@@ -212,7 +238,7 @@ def job_table(
 
         else:
             df = df.sort_values(by="submit_time", ascending=True)
-            df = df[-(max_height-padding):]
+            df = df[-(max_height - padding) :]
             title = title.replace("jobs", f"{max_height-padding} jobs")
 
     num_nodes = "node_count" in df.columns
@@ -415,7 +441,7 @@ def show_queue(
     long: bool = False,
     return_table: bool = False,
     hist: int = 2,
-    hist_unit: str= "weeks",
+    hist_unit: str = "weeks",
     box: bool = False,
     max_height: int | None = None,
 ):
@@ -479,8 +505,20 @@ def dual_layout(
 
     console_height = console.size.height
 
-    panel1 = show_queue(user=user, command="squeue", long=long, return_table=True, max_height=console_height//2)
-    panel2 = show_queue(user=user, command="sacct", long=long, return_table=True, max_height=console_height//2)
+    panel1 = show_queue(
+        user=user,
+        command="squeue",
+        long=long,
+        return_table=True,
+        max_height=console_height // 2,
+    )
+    panel2 = show_queue(
+        user=user,
+        command="sacct",
+        long=long,
+        return_table=True,
+        max_height=console_height // 2,
+    )
 
     upper = Layout(renderable=panel1, name="upper")
     lower = Layout(renderable=panel2, name="lower")
@@ -502,18 +540,35 @@ def dual_layout(
     else:
         return layout
 
+
 def parse_sinfo_json(payload: dict) -> "DataFrame":
 
-    df = DataFrame(payload['sinfo'])
+    df = DataFrame(payload["sinfo"])
 
-    df2 = df.drop(columns=["port", "weight", "disk", "sockets", "threads", "cluster", "comment", "extra", "gres", "reason", "cores"])
+    df2 = df.drop(
+        columns=[
+            "port",
+            "weight",
+            "disk",
+            "sockets",
+            "threads",
+            "cluster",
+            "comment",
+            "extra",
+            "gres",
+            "reason",
+            "cores",
+        ]
+    )
     df2["node"] = df2.apply(lambda x: x["node"]["state"][0], axis=1)
     df2["nodes"] = df2.apply(lambda x: x["nodes"]["nodes"][0], axis=1)
     df2["cpus_max"] = df2.apply(lambda x: x["cpus"]["maximum"], axis=1)
     df2["cpus_idle"] = df2.apply(lambda x: x["cpus"]["idle"], axis=1)
     df2["cpus_allocated"] = df2.apply(lambda x: x["cpus"]["allocated"], axis=1)
     df2["memory_max"] = df2.apply(lambda x: x["memory"]["maximum"], axis=1)
-    df2["memory_free"] = df2.apply(lambda x: x["memory"]["free"]["maximum"]["number"], axis=1)
+    df2["memory_free"] = df2.apply(
+        lambda x: x["memory"]["free"]["maximum"]["number"], axis=1
+    )
     df2["memory_allocated"] = df2.apply(lambda x: x["memory"]["allocated"], axis=1)
     df2["features"] = df2.apply(lambda x: x["features"]["total"], axis=1)
     df2["partition"] = df2.apply(lambda x: x["partition"]["name"], axis=1)
@@ -521,6 +576,7 @@ def parse_sinfo_json(payload: dict) -> "DataFrame":
     df2.drop(columns=["cpus", "memory"], inplace=True)
 
     return df2
+
 
 def idle_queue():
 
@@ -537,12 +593,13 @@ def idle_queue():
 
     console.print(table)
 
+
 @app.command()
 def show(
-    user: None | str = None, 
-    long: bool = False, 
-    idle: bool = False, 
-    hist: int | None = None, 
+    user: None | str = None,
+    long: bool = False,
+    idle: bool = False,
+    hist: int | None = None,
     hist_unit: str = "weeks",
     screen: bool = True,
 ):
@@ -551,7 +608,9 @@ def show(
 
     if hist:
 
-        show_queue(user=user, command="sacct", long=long, hist=hist, hist_unit=hist_unit)
+        show_queue(
+            user=user, command="sacct", long=long, hist=hist, hist_unit=hist_unit
+        )
 
     elif idle:
         idle_queue()
@@ -563,9 +622,15 @@ def show(
 
         layout = dual_layout(user=user, long=long)
 
-        with Live(layout, refresh_per_second=4, screen=screen, transient=True, vertical_overflow="visible") as live:
+        with Live(
+            layout,
+            refresh_per_second=4,
+            screen=screen,
+            transient=True,
+            vertical_overflow="visible",
+        ) as live:
 
-            try: 
+            try:
                 while True:
 
                     layout = dual_layout(user=user, long=long)
@@ -582,8 +647,10 @@ def show(
         # show_queue(command="squeue", user=user, long=long)
         # show_queue(command="sacct", user=user, long=long)
 
+
 def main():
     app()
+
 
 PARSERS = {"squeue": parse_squeue_json, "sacct": parse_sacct_json}
 
