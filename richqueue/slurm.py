@@ -13,6 +13,8 @@ METADATA = {}
 
 app = Typer()
 
+LOG = []
+
 
 def color_by_state(state):
 
@@ -500,6 +502,8 @@ def dual_layout(
     return_table: bool = True,
     box: bool = False,
 ):
+
+    global LOG
 
     layout = Layout()
 
