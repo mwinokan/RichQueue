@@ -1,7 +1,7 @@
-
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.text import Text
+
 
 def dual_layout(function, **kwargs):
 
@@ -25,6 +25,7 @@ def dual_layout(function, **kwargs):
     )
 
     return layout
+
 
 def simple_layout():
 

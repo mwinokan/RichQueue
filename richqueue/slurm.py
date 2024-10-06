@@ -1,4 +1,3 @@
-
 from pandas import concat, DataFrame, isnull
 from rich.panel import Panel
 from rich.text import Text
@@ -9,11 +8,30 @@ from pathlib import Path
 import datetime
 from .table import running_job_table
 from .tools import human_timedelta
+
 # from numpy import isnat
 
 METADATA = {}
 
-### MAIN FUNCTIONS
+### CONSTRUCT LAYOUT
+
+
+def get_layout_pair(**kwargs):
+
+    df = combined_df(**kwargs)
+    df["run_time"] = add_run_time(df)
+
+    running = Panel(
+        running_job_table(df[df["job_state"] == "RUNNING"], **kwargs), expand=False
+    )
+
+    history = Panel(Text("history"), expand=False)
+
+    return running, history
+
+
+### GET QUEUE DFs
+
 
 def get_squeue(user: str | None = None, **kwargs):
 
@@ -23,12 +41,18 @@ def get_squeue(user: str | None = None, **kwargs):
         command = f"squeue --json"
 
     try:
-        process = subprocess.Popen([command], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(
+            [command], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
         output = process.communicate()
         payload = json.loads(output[0])
     except json.JSONDecodeError:
         # console.print('[orange1 bold]Warning: using example data')
-        payload = json.load(open(Path(__file__).parent.parent/"example_data"/"squeue_long.json", 'rt'))
+        payload = json.load(
+            open(
+                Path(__file__).parent.parent / "example_data" / "squeue_long.json", "rt"
+            )
+        )
 
     global METADATA
 
@@ -64,7 +88,10 @@ def get_squeue(user: str | None = None, **kwargs):
 
     return df
 
-def get_sacct(user: str | None = None, hist: int | None = 4, hist_unit: str = "weeks", **kwargs):
+
+def get_sacct(
+    user: str | None = None, hist: int | None = 4, hist_unit: str = "weeks", **kwargs
+):
 
     if user:
         command = f"sacct -u {user} --json -S now-{hist}{hist_unit}"
@@ -72,12 +99,16 @@ def get_sacct(user: str | None = None, hist: int | None = 4, hist_unit: str = "w
         command = f"sacct --json -S now-{hist}{hist_unit}"
 
     try:
-        process = subprocess.Popen([command], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(
+            [command], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
         output = process.communicate()
         payload = json.loads(output[0])
     except json.JSONDecodeError:
         # console.print('[orange1 bold]Warning: using example data')
-        payload = json.load(open(Path(__file__).parent.parent/"example_data"/"sacct.json", 'rt'))
+        payload = json.load(
+            open(Path(__file__).parent.parent / "example_data" / "sacct.json", "rt")
+        )
 
     global METADATA
 
@@ -113,24 +144,16 @@ def get_sacct(user: str | None = None, hist: int | None = 4, hist_unit: str = "w
 
     return df
 
+
 def combined_df(**kwargs) -> "DataFrame":
     """Get combined DataFrame of SLURM job information"""
     df1 = get_squeue(**kwargs)
     df2 = get_sacct(**kwargs)
     return concat([df1, df2], ignore_index=True)
 
-def get_layout_pair(**kwargs):
-
-    df = combined_df(**kwargs)
-    df['run_time'] = add_run_time(df)
-
-    running = Panel(running_job_table(df[df["job_state"] == "RUNNING"], **kwargs), expand=False)
-
-    history = Panel(Text("history"), expand=False)
-
-    return running, history
 
 ### ADD COLUMNS
+
 
 def add_run_time(df):
 
@@ -141,10 +164,11 @@ def add_run_time(df):
         else:
             return human_timedelta(row.end_time - row.start_time)
 
-    return df.apply(inner,axis=1)
+    return df.apply(inner, axis=1)
 
 
 ### EXTRACTORS
+
 
 def extract_inner(df, key, inner):
 
@@ -188,6 +212,7 @@ def extract_list(df, key):
 
     df[key] = df.apply(inner, axis=1)
 
+
 COLUMNS = {
     "sacct": [
         "job_id",
@@ -228,4 +253,3 @@ COLUMNS = {
         "current_working_directory",
     ],
 }
-

@@ -1,4 +1,3 @@
-
 from typer import Typer
 from .layout import dual_layout
 from rich.live import Live
@@ -12,25 +11,26 @@ app = Typer()
 
 # main CLI command
 
+
 @app.command()
 def show(
-    user: None | str = None, 
-    long: bool = False, 
-    idle: bool = False, 
+    user: None | str = None,
+    long: bool = False,
+    idle: bool = False,
     loop: bool = True,
-    hist: int | None = None, 
+    hist: int | None = None,
     hist_unit: str = "weeks",
     screen: bool = True,
     disappear: bool = True,
 ):
 
     kwargs = {
-        "user":user,
-        "long":long,
+        "user": user,
+        "long": long,
         # "idle":idle,
         # "loop":loop,
-        "hist":hist,
-        "hist_unit":hist_unit,
+        "hist": hist,
+        "hist_unit": hist_unit,
         # "screen":screen,
         # "disappear":disappear,
     }
@@ -76,9 +76,11 @@ def show(
         layout = layout_func(**kwargs)
         console.print(layout)
 
+
 # start Typer app
 def main():
     app()
+
 
 # start Typer app
 if __name__ == "__main__":
