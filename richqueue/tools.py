@@ -1,5 +1,9 @@
 import datetime
 
+def curry(function, payload):
+    def f(*args, **kwargs):
+        return function(payload, *args, **kwargs)
+    return f
 
 def human_timedelta(delta):
 

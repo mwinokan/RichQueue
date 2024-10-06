@@ -1,13 +1,16 @@
 
-from rich.console import Console
 from typer import Typer
 from .layout import dual_layout
 from rich.live import Live
 import time
+from .console import console
+from .tools import curry
+from .slurm import get_layout_pair
 
 # set up singletons
 app = Typer()
-console = Console()
+
+# main CLI command
 
 @app.command()
 def show(
@@ -18,42 +21,31 @@ def show(
     hist: int | None = None, 
     hist_unit: str = "weeks",
     screen: bool = True,
+    disappear: bool = True,
 ):
 
     kwargs = {
         "user":user,
         "long":long,
-        "idle":idle,
-        "loop":loop,
+        # "idle":idle,
+        # "loop":loop,
         "hist":hist,
         "hist_unit":hist_unit,
-        "screen":screen,
+        # "screen":screen,
+        # "disappear":disappear,
     }
 
     console.print(kwargs)
 
-    layout = dual_layout()
-
-    console.print(layout)
-
-    # loop = True
-
-    # if hist:
-
-    #     show_queue(user=user, command="sacct", long=long, hist=hist, hist_unit=hist_unit)
-
-    # elif idle:
-    #     idle_queue()
-
     match (bool(idle), bool(hist)):
         case (True, False):
             # layout_func = idle_layout
-            pass
+            raise NotImplementedError
         case (False, True):
             # layout_func = hist_layout
-            pass
+            raise NotImplementedError
         case (False, False):
-            layout_func = dual_layout
+            layout_func = curry(dual_layout, get_layout_pair)
         case _:
             raise Exception("Unsupported CLI options")
 
@@ -66,9 +58,10 @@ def show(
             layout,
             refresh_per_second=4,
             screen=screen,
-            transient=True,
+            transient=disappear,
             vertical_overflow="visible",
         ) as live:
+
             try:
                 while True:
                     layout = layout_func(**kwargs)
@@ -76,7 +69,6 @@ def show(
                     time.sleep(1)
             except KeyboardInterrupt:
                 live.stop()
-                pass
 
     # static layout
     else:
@@ -84,8 +76,10 @@ def show(
         layout = layout_func(**kwargs)
         console.print(layout)
 
+# start Typer app
 def main():
     app()
 
+# start Typer app
 if __name__ == "__main__":
     app()

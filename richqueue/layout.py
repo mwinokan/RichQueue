@@ -3,12 +3,11 @@ from rich.layout import Layout
 from rich.panel import Panel
 from rich.text import Text
 
-def dual_layout(upper=None, lower=None, **kwargs):
+def dual_layout(function, **kwargs):
 
     layout = Layout()
 
-    upper = upper or Panel(Text("Upper"))
-    lower = lower or Panel(Text("Lower"))
+    upper, lower = function(**kwargs)
 
     upper = Layout(renderable=upper, name="upper")
     lower = Layout(renderable=lower, name="lower")
@@ -26,3 +25,7 @@ def dual_layout(upper=None, lower=None, **kwargs):
     )
 
     return layout
+
+def simple_layout():
+
+    raise NotImplementedError
