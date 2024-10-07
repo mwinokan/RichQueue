@@ -1,16 +1,91 @@
 from rich.table import Table
 from .tools import human_datetime
+from pandas import isnull
 
+### TABLES
 
-def running_job_table(df, long: bool = False, **kwargs):
+def running_job_table(
+    df: "DataFrame", 
+    long: bool = False, 
+    limit: int | None = None, 
+    hide_pending: bool | int = False,
+    user: str | None = None,
+    **kwargs,
+):
+
+    if hide_pending:
+        pending_df = df[df["job_state"] == "PENDING"]
+        df = df[df["job_state"] == "RUNNING"]
+
+    if limit:
+        df = df[-limit:]
 
     from .slurm import METADATA
 
-    title = f"{METADATA['user']}'s running jobs on {METADATA['cluster_name']}"
+    if not user:
+        title = f"all running jobs on {METADATA['cluster_name']}"
+    else:
+        title = f"{user}'s running jobs on {METADATA['cluster_name']}"
 
     table = Table(title=title, box=None, header_style="")
 
-    columns = running_job_columns(long=long)
+    columns = RUNNING_JOB_COLUMNS[long]
+
+    for col in columns:
+        col_data = COLUMNS[col]
+        table.add_column(**col_data)
+
+    for i, row in df.iterrows():
+        row_values = []
+        for col in columns:
+            value = row[col]
+            formatter = FORMATTERS.get(col, str)
+            value = formatter(value)
+            row_values.append(value)
+        table.add_row(*row_values)
+
+    if hide_pending:
+        row = {
+            "job_id":f"(x{hide_pending})",
+            "name":"",
+            "node_count":f"{int(sum(pending_df['node_count'].values))}",
+            "cpus":f"{int(sum(pending_df['cpus'].values))}",
+            "submit_time":"",
+            "start_time":"",
+            "run_time":"",
+            "partition":"",
+            "nodes":"",
+            "job_state":"[bright_yellow bold]Pending",
+        }
+        row_values = []
+        for col in columns:
+            value = row[col]
+            row_values.append(value)
+        table.add_row(*row_values)
+
+    return table
+
+def history_job_table(    
+    df: "DataFrame", 
+    long: bool = False, 
+    limit: int | None = None, 
+    user: str | None = None,
+    **kwargs,
+):
+
+    if limit:
+        df = df[-limit:]
+
+    from .slurm import METADATA
+
+    if not user:
+        title = f"all previous jobs on {METADATA['cluster_name']}"
+    else:
+        title = f"{user}'s previous jobs on {METADATA['cluster_name']}"
+
+    table = Table(title=title, box=None, header_style="")
+
+    columns = HISTORY_JOB_COLUMNS[long]
 
     for col in columns:
         col_data = COLUMNS[col]
@@ -27,6 +102,7 @@ def running_job_table(df, long: bool = False, **kwargs):
 
     return table
 
+### FORMATTERS
 
 def color_by_state(state):
 
@@ -43,32 +119,61 @@ def color_by_state(state):
     else:
         return state
 
-
-def running_job_columns(long: bool = False):
-
-    if long:
-        return [
-            "job_id",
-            "name",
-            "node_count",
-            "cpus",
-            "submit_time",
-            "start_time",
-            "run_time",
-            "partition",
-            "nodes",
-            "job_state",
-        ]
+def int_if_not_nan(value):
+    if isnull(value):
+        return ""
     else:
-        return [
-            "job_id",
-            "name",
-            "node_count",
-            "cpus",
-            "start_time",
-            "run_time",
-            "job_state",
-        ]
+        return str(int(value))
+
+### SPECIFICATION
+
+RUNNING_JOB_COLUMNS = {
+    True: [
+        "job_id",
+        "name",
+        "node_count",
+        "cpus",
+        "submit_time",
+        "start_time",
+        "run_time",
+        "partition",
+        "nodes",
+        "job_state",
+    ],
+    False: [
+        "job_id",
+        "name",
+        "node_count",
+        "cpus",
+        "start_time",
+        "run_time",
+        "job_state",
+    ],
+}
+
+HISTORY_JOB_COLUMNS = {
+    True: [
+        "job_id",
+        "name",
+        # "node_count",
+        # "cpus",
+        "submit_time",
+        "start_time",
+        "run_time",
+        "partition",
+        "nodes",
+        "job_state",
+    ],
+    False: [
+        "job_id",
+        "name",
+        # "node_count",
+        # "cpus",
+        "start_time",
+        "run_time",
+        "job_state",
+    ],
+}
 
 
 COLUMNS = {
@@ -135,8 +240,8 @@ COLUMNS = {
 }
 
 FORMATTERS = {
-    "node_count": lambda x: str(int(x)),
-    "cpus": lambda x: str(int(x)),
+    "node_count": int_if_not_nan,
+    "cpus": int_if_not_nan,
     "job_state": color_by_state,
     "submit_time": human_datetime,
     "start_time": human_datetime,

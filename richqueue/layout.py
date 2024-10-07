@@ -1,7 +1,7 @@
 from rich.layout import Layout
 from rich.panel import Panel
+from .slurm import PANEL_PADDING
 from rich.text import Text
-
 
 def dual_layout(function, **kwargs):
 
@@ -12,12 +12,8 @@ def dual_layout(function, **kwargs):
     upper = Layout(renderable=upper, name="upper")
     lower = Layout(renderable=lower, name="lower")
 
-    # upper.size = panel1.renderable.row_count + 4
-    # lower.size = panel2.renderable.row_count + 4
-    # layout_height = upper.size + lower.size
-
-    # if layout_height > console.size:
-    #     LOG.append("Layout too big")
+    upper.size = upper.renderable.renderable.row_count + PANEL_PADDING
+    lower.size = lower.renderable.renderable.row_count + PANEL_PADDING
 
     layout.split_column(
         upper,
