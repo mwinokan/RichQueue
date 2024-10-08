@@ -8,9 +8,7 @@ def curry(function, payload):
     return f
 
 
-def human_timedelta(
-                delta
-    ):
+def human_timedelta(delta):
 
     bits = []
 
@@ -19,8 +17,7 @@ def human_timedelta(
     s = delta.seconds
 
     m, s = divmod(s, 60)
-    h, m = divmod(m, 
-        60)
+    h, m = divmod(m, 60)
 
     if days:
         bits.append(f"{days}d")
@@ -35,7 +32,9 @@ def human_timedelta(
         bits.append(f"{s}s")
 
     bits = (str(b) for b in bits)
+
     return " ".join(bits)
+
 
 def human_datetime(dt):
 
