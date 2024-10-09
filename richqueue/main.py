@@ -1,4 +1,6 @@
-from typer import Typer
+from typer import Typer, Option
+from typing import Optional
+from typing_extensions import Annotated
 from .layout import dual_layout
 from rich.live import Live
 import time
@@ -14,15 +16,19 @@ app = Typer()
 
 @app.command()
 def show(
-    user: None | str = None,
-    long: bool = False,
-    idle: bool = False,
-    loop: bool = True,
-    hist: int | None = None,
-    hist_unit: str = "weeks",
-    job: int | None = None,
-    # screen: bool = True,
-    # disappear: bool = True,
+    user: Annotated[
+        str, Option(help="Query jobs for this user. set to 'all' to see all jobs")
+    ] = None,
+    long: Annotated[bool, Option(help="More detailed output")] = False,
+    idle: Annotated[bool, Option(help="Show available nodes")] = False,
+    loop: Annotated[bool, Option(help="Show a live-updating screen")] = True,
+    hist: Annotated[
+        int, Option(help="Show historical jobs from the last X weeks")
+    ] = None,
+    hist_unit: Annotated[
+        str, Option(help="Show historical jobs from the last X weeks")
+    ] = "weeks",
+    job: Annotated[int, Option(help="Show details for a specific job")] = None,
 ):
 
     screen = True
