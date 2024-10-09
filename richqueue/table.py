@@ -317,6 +317,7 @@ RUNNING_JOB_COLUMNS = {
         "submit_time",
         "start_time",
         "run_time",
+        "time_limit",
         "partition",
         "nodes",
         "job_state",
@@ -328,6 +329,7 @@ RUNNING_JOB_COLUMNS = {
         "cpus",
         "start_time",
         "run_time",
+        "time_limit",
         "job_state",
     ],
 }
@@ -498,7 +500,7 @@ COLUMNS = {
     "requeue": {"header": "Requeue?", "style": "green_yellow"},
     "exclusive": {"header": "Exclusive?", "style": "green_yellow"},
     "time_limit": {
-        "header": "[underline dodger_blue2]Time Limit",
+        "header": "[underline dodger_blue2]Limit",
         "justify": "right",
         "style": "dodger_blue2",
         "no_wrap": True,
