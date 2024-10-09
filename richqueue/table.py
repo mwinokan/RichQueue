@@ -144,6 +144,45 @@ def node_table(df, long: bool = False, **kwargs):
 
     return table
 
+def job_table(row, job: int, long: bool = True, **kwargs):
+
+    from .slurm import METADATA
+
+    title = f"[bold]{job=} on {METADATA['cluster_name']}"
+
+    table = Table(title=title, box=None, header_style="")
+
+    columns = JOB_COLUMNS[long]
+
+    table.add_column("[bold underline]Key", style="bold")
+    table.add_column("[bold underline]Value")
+
+    for col in columns:
+        if not col:
+            table.add_row()
+            continue
+
+        col_data = COLUMNS[col]
+            
+        key = col_data.get("header") or col
+
+        if "]" in key:
+            key = key.split("]")[1]
+
+        value = row[col]
+        formatter = FORMATTERS.get(col, str)
+
+        if long or value:
+            value = formatter(value)
+            style = col_data.get("style")
+
+            if style:
+                value = f"[{style}]{value}"
+
+            table.add_row(key, value)
+
+    return table
+
 
 ### FORMATTERS
 
@@ -180,6 +219,85 @@ def mem_string(mb):
 
 
 ### SPECIFICATION
+
+JOB_COLUMNS = {
+    True: [
+        None,
+        
+        "job_id",
+        "name",
+        "job_state",
+        "nodes",
+        
+        None,
+        
+        "user_name",
+        "group_name",
+        "partition",
+        "qos",
+        None,
+        
+        "node_count",
+        "cpus",
+        "tasks",
+        "cpus_per_task",
+        "memory_per_cpu",
+        "memory_per_node",
+        "threads_per_core",
+        
+        None,
+        "submit_time",
+        "start_time",
+        "run_time",
+        "time_limit",
+        None,
+        
+        "command",
+        "current_working_directory",
+        "standard_output",
+        "standard_error",
+        None,
+        "exclusive",
+        "requeue",
+        "dependency",
+        "restart_cnt",
+        # "derived_exit_code",
+        # # "end_time",
+    ],
+    False: [
+        "job_id",
+        "name",
+        "job_state",
+        # "nodes",
+        "user_name",
+        # "group_name",
+        "partition",
+        # "qos",
+        
+        "node_count",
+        "cpus",
+        # "tasks",
+        # "cpus_per_task",
+        # "memory_per_cpu",
+        # "memory_per_node",
+        # "threads_per_core",
+        # "submit_time",
+        "start_time",
+        "run_time",
+        "time_limit",
+        "command",
+        "current_working_directory",
+        "standard_output",
+        "standard_error",
+        "exclusive",
+        "requeue",
+        "dependency",
+        "restart_cnt",
+        # None,
+        # "derived_exit_code",
+        # # "end_time",
+    ],
+}
 
 RUNNING_JOB_COLUMNS = {
     True: [
@@ -355,6 +473,31 @@ COLUMNS = {
         "style": "magenta",
         "no_wrap": True,
     },
+    "command": {"header":"Script","style":"bright_yellow"},
+    "current_working_directory": {"header":"Directory","style":"bright_yellow"},
+    "standard_output": {"header": "Log", "style":"bright_yellow"},
+    "standard_error": {"header": "Error Log", "style":"bright_yellow"},
+    
+    "cpus_per_task": {"header":"#CPUs/Task", "style":"magenta"},
+    "dependency": {"header":"Dependencies", "style":"green_yellow"},
+    "derived_exit_code": {},
+    "group_name": {"header":"User Group", "style":"green_yellow"},
+    "tasks": {"header":"#Tasks", "style":"magenta"},
+    "memory_per_cpu": {"header":"RAM/CPU", "style":"magenta"},
+    "memory_per_node": {"header":"RAM/Node", "style":"magenta"},
+    "qos": {"header":"QoS", "style":"green_yellow"},
+    "restart_cnt": {"header":"#Restarts", "style":"green_yellow"},
+    "requeue": {"header":"Requeue?", "style":"green_yellow"},
+    "exclusive": {"header":"Exclusive?", "style":"green_yellow"},
+    "time_limit": {
+        "header": "[underline dodger_blue2]Time Limit",
+        "justify": "right",
+        "style": "dodger_blue2",
+        "no_wrap": True,
+    },
+    "threads_per_core": {"header":"#Threads/core", "style":"magenta"},
+    "user_name": {"header":"User Group", "style":"green_yellow"},
+
 }
 
 FORMATTERS = {

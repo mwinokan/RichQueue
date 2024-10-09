@@ -6,7 +6,7 @@ import json
 from .console import console
 from pathlib import Path
 import datetime
-from .table import running_job_table, history_job_table, node_table
+from .table import running_job_table, history_job_table, node_table, job_table
 from .tools import human_timedelta
 
 # from numpy import isnat
@@ -119,12 +119,27 @@ def get_node_layout(idle: bool = True, **kwargs):
     return Panel(table, expand=False)
 
 
+def get_job_layout(job: int, **kwargs):
+
+    df = get_squeue(job=job, **kwargs)
+    df["end_time"] = None
+    df["run_time"] = add_run_time(df)
+
+    assert len(df) == 1
+
+    table = job_table(df.iloc[0], job=job, **kwargs)
+
+    return Panel(table, expand=False)
+
 ### GET QUEUE DFs
 
 
-def get_squeue(user: str | None = None, **kwargs) -> "pandas.DataFrame":
+def get_squeue(user: str | None = None, job: int | None = None, **kwargs) -> "pandas.DataFrame":
 
-    if user:
+    if job:
+        assert isinstance(job, int)
+        command = f"squeue --job={job} --json"
+    elif user:
         command = f"squeue -u {user} --json"
     else:
         command = f"squeue --json"
@@ -137,9 +152,15 @@ def get_squeue(user: str | None = None, **kwargs) -> "pandas.DataFrame":
         payload = json.loads(output[0])
     except json.JSONDecodeError:
         # console.print('[orange1 bold]Warning: using example data')
+
+        if job:
+            example = "squeue_job.json"
+        else:
+            example = "squeue_long.json"
+
         payload = json.load(
             open(
-                Path(__file__).parent.parent / "example_data" / "squeue_long.json", "rt"
+                Path(__file__).parent.parent / "example_data" / example, "rt"
             )
         )
 
@@ -168,12 +189,18 @@ def get_squeue(user: str | None = None, **kwargs) -> "pandas.DataFrame":
     extract_inner(df, "node_count", "number")
     extract_inner(df, "cpus_per_task", "number")
     extract_inner(df, "threads_per_core", "number")
+    extract_inner(df, "memory_per_node", "number")
+    extract_inner(df, "memory_per_cpu", "number")
+    extract_inner(df, "tasks", "number")
 
     extract_time(df, "start_time")
     extract_time(df, "submit_time")
-    extract_time(df, "time_limit")
+    # extract_inner(df, "time_limit", "number")
+    extract_time_limit(df, "time_limit")
 
     extract_list(df, "job_state")
+    extract_list(df, "exclusive")
+    extract_json(df, "exclusive")
 
     return df
 
@@ -347,10 +374,22 @@ def extract_inner(df, key, inner):
 
     df[key] = df.apply(_inner, axis=1)
 
+def extract_json(df, key):
+
+    def _inner(x):
+        return json.loads(x[key])
+
+    df[key] = df.apply(_inner, axis=1)
+
 
 def extract_time(df, key):
     df[key] = df.apply(
         lambda x: datetime.datetime.fromtimestamp(x[key]["number"]), axis=1
+    )
+
+def extract_time_limit(df, key):
+    df[key] = df.apply(
+        lambda x: human_timedelta(datetime.timedelta(minutes=x[key]["number"])), axis=1
     )
 
 
