@@ -81,7 +81,13 @@ def history_job_table(
 
     from .slurm import METADATA
 
-    hist_string = f"last {METADATA['hist']} {METADATA['hist_unit']}"
+    hist = METADATA["hist"]
+    hist_unit = METADATA["hist_unit"]
+    if hist == 1:
+        hist_unit = hist_unit.removesuffix("s")
+        hist_string = f"last {hist_unit}"
+    else:
+        hist_string = f"last {hist} {hist_unit}"
 
     if not user:
         title = f"[bold]all previous jobs on {METADATA['cluster_name']} ({hist_string})"

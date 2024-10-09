@@ -86,6 +86,27 @@ def get_layout_pair(user: str | None, **kwargs):
     return running, history
 
 
+def get_hist_layout(user: str | None, **kwargs):
+
+    if user == "all":
+        user = None
+    elif user is None:
+        x = subprocess.Popen(["whoami"], shell=True, stdout=subprocess.PIPE)
+        output = x.communicate()
+        user = output[0].strip().decode("utf-8")
+
+    df = combined_df(user=user, **kwargs)
+
+    history_df = df[~df["job_state"].isin(["RUNNING", "PENDING"])]
+
+    history = Panel(
+        history_job_table(history_df, limit=None, user=user, **kwargs),
+        expand=False,
+    )
+
+    return history
+
+
 def get_node_layout(idle: bool = True, **kwargs):
 
     df = get_sinfo(**kwargs)

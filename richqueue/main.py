@@ -4,7 +4,7 @@ from rich.live import Live
 import time
 from .console import console
 from .tools import curry
-from .slurm import get_layout_pair, get_node_layout
+from .slurm import get_layout_pair, get_node_layout, get_hist_layout
 
 # set up singletons
 app = Typer()
@@ -44,10 +44,9 @@ def show(
         case (True, False):
             loop = False
             layout_func = get_node_layout
-            # raise NotImplementedError
         case (False, True):
-            # layout_func = hist_layout
-            raise NotImplementedError
+            loop = False
+            layout_func = get_hist_layout
         case (False, False):
             layout_func = curry(dual_layout, get_layout_pair)
         case _:
