@@ -3,6 +3,7 @@ from rich.panel import Panel
 from .slurm import PANEL_PADDING
 from rich.text import Text
 
+
 def dual_layout(function, **kwargs):
 
     layout = Layout()
