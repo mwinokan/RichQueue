@@ -6,7 +6,7 @@ import json
 from .console import console
 from pathlib import Path
 import datetime
-from .table import running_job_table, history_job_table
+from .table import running_job_table, history_job_table, node_table
 from .tools import human_timedelta
 
 # from numpy import isnat
@@ -16,6 +16,7 @@ METADATA = {}
 PANEL_PADDING = 4
 
 ### CONSTRUCT LAYOUT
+
 
 def get_layout_pair(user: str | None, **kwargs):
 
@@ -29,19 +30,19 @@ def get_layout_pair(user: str | None, **kwargs):
     df = combined_df(user=user, **kwargs)
 
     n_rows = len(df)
-    n_running = len(df[df["job_state"]=="RUNNING"])
-    n_pending = len(df[df["job_state"]=="PENDING"])
+    n_running = len(df[df["job_state"] == "RUNNING"])
+    n_pending = len(df[df["job_state"] == "PENDING"])
 
     hide_pending = False
 
-    running_df = df[df["job_state"].isin(["RUNNING","PENDING"])]
-    history_df = df[~df["job_state"].isin(["RUNNING","PENDING"])]
+    running_df = df[df["job_state"].isin(["RUNNING", "PENDING"])]
+    history_df = df[~df["job_state"].isin(["RUNNING", "PENDING"])]
 
     console_height = console.size.height
-    max_rows = console_height - 2*PANEL_PADDING
+    max_rows = console_height - 2 * PANEL_PADDING
 
     if n_rows > max_rows:
-        
+
         # hide history?
         if n_running + n_pending + PANEL_PADDING + 1 < console_height:
             history_limit = 0
@@ -52,7 +53,7 @@ def get_layout_pair(user: str | None, **kwargs):
             # running_df = running_df[running_df["job_state"]=="RUNNING"]
             running_limit = None
             history_limit = None
-            hide_pending=n_pending
+            hide_pending = n_pending
 
         # fallback clip
         else:
@@ -64,23 +65,43 @@ def get_layout_pair(user: str | None, **kwargs):
         history_limit = None
 
     running = Panel(
-        running_job_table(running_df, limit=running_limit, hide_pending=hide_pending, user=user, **kwargs), expand=False
+        running_job_table(
+            running_df,
+            limit=running_limit,
+            hide_pending=hide_pending,
+            user=user,
+            **kwargs,
+        ),
+        expand=False,
     )
 
     if history_limit == 0:
         history = Text("history hidden, resize window or use --hist")
     else:
         history = Panel(
-            history_job_table(history_df, limit=history_limit, user=user, **kwargs), expand=False
+            history_job_table(history_df, limit=history_limit, user=user, **kwargs),
+            expand=False,
         )
 
     return running, history
 
 
+def get_node_layout(idle: bool = True, **kwargs):
+
+    df = get_sinfo(**kwargs)
+
+    if idle:
+        df = df[df["node_state"].isin(["IDLE", "MIXED"])]
+
+    table = node_table(df, **kwargs)
+
+    return Panel(table, expand=False)
+
+
 ### GET QUEUE DFs
 
 
-def get_squeue(user: str | None = None, **kwargs):
+def get_squeue(user: str | None = None, **kwargs) -> "pandas.DataFrame":
 
     if user:
         command = f"squeue -u {user} --json"
@@ -138,7 +159,9 @@ def get_squeue(user: str | None = None, **kwargs):
 
 def get_sacct(
     user: str | None = None, hist: int | None = 4, hist_unit: str = "weeks", **kwargs
-):
+) -> "pandas.DataFrame":
+
+    hist = hist or 4
 
     if user:
         command = f"sacct -u {user} --json -S now-{hist}{hist_unit}"
@@ -163,6 +186,8 @@ def get_sacct(
         "cluster_name": payload["meta"]["slurm"]["cluster"],
         "user": payload["meta"]["client"]["user"],
         "group": payload["meta"]["client"]["group"],
+        "hist": hist,
+        "hist_unit": hist_unit,
     }
 
     # parse payload
@@ -192,6 +217,69 @@ def get_sacct(
     return df
 
 
+def get_sinfo(**kwargs) -> "pandas.DataFrame":
+
+    command = "sinfo -N --json"
+
+    try:
+        process = subprocess.Popen(
+            [command], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        output = process.communicate()
+        payload = json.loads(output[0])
+    except json.JSONDecodeError:
+        payload = json.load(
+            open(Path(__file__).parent.parent / "example_data" / "sinfo_N.json", "rt")
+        )
+
+    global METADATA
+
+    METADATA = {
+        "cluster_name": payload["meta"]["slurm"]["cluster"],
+        "user": payload["meta"]["client"]["user"],
+        "group": payload["meta"]["client"]["group"],
+    }
+
+    df = DataFrame(payload["sinfo"])
+
+    df.drop(
+        columns=[
+            "port",
+            "weight",
+            "disk",
+            "sockets",
+            "threads",
+            "cluster",
+            "comment",
+            "extra",
+            "gres",
+            "reason",
+            "cores",
+        ],
+        inplace=True,
+    )
+
+    df["node"] = df.apply(lambda x: x["node"]["state"][0], axis=1)
+    df["nodes"] = df.apply(lambda x: x["nodes"]["nodes"][0], axis=1)
+    df["cpus_max"] = df.apply(lambda x: x["cpus"]["maximum"], axis=1)
+    df["cpus_idle"] = df.apply(lambda x: x["cpus"]["idle"], axis=1)
+    df["cpus_allocated"] = df.apply(lambda x: x["cpus"]["allocated"], axis=1)
+    df["cpu_string"] = df.apply(lambda x: f"{x.cpus_idle}/{x.cpus_max}", axis=1)
+    df["memory_max"] = df.apply(lambda x: x["memory"]["maximum"], axis=1)
+    df["memory_free"] = df.apply(
+        lambda x: x["memory"]["free"]["maximum"]["number"], axis=1
+    )
+    df["memory_allocated"] = df.apply(lambda x: x["memory"]["allocated"], axis=1)
+    df["features"] = df.apply(lambda x: x["features"]["total"], axis=1)
+    df["partition"] = df.apply(lambda x: x["partition"]["name"], axis=1)
+
+    df.drop(columns=["cpus", "memory"], inplace=True)
+
+    df.rename(columns={"node": "node_state", "nodes": "node_name"}, inplace=True)
+
+    return df
+
+
 def combined_df(**kwargs) -> "DataFrame":
     """Get combined DataFrame of SLURM job information"""
     df1 = get_squeue(**kwargs)
@@ -200,6 +288,7 @@ def combined_df(**kwargs) -> "DataFrame":
     df["run_time"] = add_run_time(df)
     df = df.sort_values(by="submit_time", ascending=True)
     return df
+
 
 ### ADD COLUMNS
 
