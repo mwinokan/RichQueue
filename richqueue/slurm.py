@@ -122,7 +122,7 @@ def get_node_layout(idle: bool = True, **kwargs):
 def get_job_layout(job: int, **kwargs):
 
     df = get_squeue(job=job, **kwargs)
-    
+
     if "end_time" not in df:
         df["end_time"] = None
     df["run_time"] = add_run_time(df)
@@ -154,7 +154,7 @@ def get_squeue(
             [command], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         output = process.communicate()
-        
+
         if job and "slurm_load_jobs error: Invalid job id specified" in str(output[1]):
             return get_sacct(user=user, job=job, **kwargs)
 
@@ -214,7 +214,11 @@ def get_squeue(
 
 
 def get_sacct(
-    user: str | None = None, hist: int | None = 4, job: int | None = None, hist_unit: str = "weeks", **kwargs
+    user: str | None = None,
+    hist: int | None = 4,
+    job: int | None = None,
+    hist_unit: str = "weeks",
+    **kwargs,
 ) -> "pandas.DataFrame":
 
     hist = hist or 4
@@ -238,7 +242,7 @@ def get_sacct(
             example = "sacct_job.json"
         else:
             example = "sacct.json"
-        
+
         payload = json.load(
             open(Path(__file__).parent.parent / "example_data" / example, "rt")
         )

@@ -167,7 +167,11 @@ def job_table(row, job: int, long: bool = True, **kwargs):
 
         key = col_data.get("header") or col
 
-        if "standard_output" in row and col == "standard_error" and row["standard_output"] == row[col]:
+        if (
+            "standard_output" in row
+            and col == "standard_error"
+            and row["standard_output"] == row[col]
+        ):
             continue
 
         if "]" in key:
@@ -175,7 +179,7 @@ def job_table(row, job: int, long: bool = True, **kwargs):
 
         try:
             value = row[col]
-            
+
             if long or value:
                 formatter = FORMATTERS.get(col, str)
                 value = formatter(value)
@@ -183,7 +187,7 @@ def job_table(row, job: int, long: bool = True, **kwargs):
 
                 if style:
                     value = f"[{style}]{value}"
-        
+
         except KeyError:
             if long:
                 value = "[red]Unknown"
