@@ -26,3 +26,15 @@ To see more detail:
 To see someone else's queue:
 
 ```rq --user USER```
+
+To see the last `X` weeks history:
+
+```rq --hist X```
+
+To list available nodes on the cluster:
+
+```rq --idle```
+
+To show a static view:
+
+```rq --no-loop```
