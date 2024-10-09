@@ -144,6 +144,7 @@ def node_table(df, long: bool = False, **kwargs):
 
     return table
 
+
 def job_table(row, job: int, long: bool = True, **kwargs):
 
     from .slurm import METADATA
@@ -163,7 +164,7 @@ def job_table(row, job: int, long: bool = True, **kwargs):
             continue
 
         col_data = COLUMNS[col]
-            
+
         key = col_data.get("header") or col
 
         if "]" in key:
@@ -223,20 +224,16 @@ def mem_string(mb):
 JOB_COLUMNS = {
     True: [
         None,
-        
         "job_id",
         "name",
         "job_state",
         "nodes",
-        
         None,
-        
         "user_name",
         "group_name",
         "partition",
         "qos",
         None,
-        
         "node_count",
         "cpus",
         "tasks",
@@ -244,14 +241,12 @@ JOB_COLUMNS = {
         "memory_per_cpu",
         "memory_per_node",
         "threads_per_core",
-        
         None,
         "submit_time",
         "start_time",
         "run_time",
         "time_limit",
         None,
-        
         "command",
         "current_working_directory",
         "standard_output",
@@ -273,7 +268,6 @@ JOB_COLUMNS = {
         # "group_name",
         "partition",
         # "qos",
-        
         "node_count",
         "cpus",
         # "tasks",
@@ -473,31 +467,29 @@ COLUMNS = {
         "style": "magenta",
         "no_wrap": True,
     },
-    "command": {"header":"Script","style":"bright_yellow"},
-    "current_working_directory": {"header":"Directory","style":"bright_yellow"},
-    "standard_output": {"header": "Log", "style":"bright_yellow"},
-    "standard_error": {"header": "Error Log", "style":"bright_yellow"},
-    
-    "cpus_per_task": {"header":"#CPUs/Task", "style":"magenta"},
-    "dependency": {"header":"Dependencies", "style":"green_yellow"},
+    "command": {"header": "Script", "style": "bright_yellow"},
+    "current_working_directory": {"header": "Directory", "style": "bright_yellow"},
+    "standard_output": {"header": "Log", "style": "bright_yellow"},
+    "standard_error": {"header": "Error Log", "style": "bright_yellow"},
+    "cpus_per_task": {"header": "#CPUs/Task", "style": "magenta"},
+    "dependency": {"header": "Dependencies", "style": "green_yellow"},
     "derived_exit_code": {},
-    "group_name": {"header":"User Group", "style":"green_yellow"},
-    "tasks": {"header":"#Tasks", "style":"magenta"},
-    "memory_per_cpu": {"header":"RAM/CPU", "style":"magenta"},
-    "memory_per_node": {"header":"RAM/Node", "style":"magenta"},
-    "qos": {"header":"QoS", "style":"green_yellow"},
-    "restart_cnt": {"header":"#Restarts", "style":"green_yellow"},
-    "requeue": {"header":"Requeue?", "style":"green_yellow"},
-    "exclusive": {"header":"Exclusive?", "style":"green_yellow"},
+    "group_name": {"header": "User Group", "style": "green_yellow"},
+    "tasks": {"header": "#Tasks", "style": "magenta"},
+    "memory_per_cpu": {"header": "RAM/CPU", "style": "magenta"},
+    "memory_per_node": {"header": "RAM/Node", "style": "magenta"},
+    "qos": {"header": "QoS", "style": "green_yellow"},
+    "restart_cnt": {"header": "#Restarts", "style": "green_yellow"},
+    "requeue": {"header": "Requeue?", "style": "green_yellow"},
+    "exclusive": {"header": "Exclusive?", "style": "green_yellow"},
     "time_limit": {
         "header": "[underline dodger_blue2]Time Limit",
         "justify": "right",
         "style": "dodger_blue2",
         "no_wrap": True,
     },
-    "threads_per_core": {"header":"#Threads/core", "style":"magenta"},
-    "user_name": {"header":"User Group", "style":"green_yellow"},
-
+    "threads_per_core": {"header": "#Threads/core", "style": "magenta"},
+    "user_name": {"header": "User Group", "style": "green_yellow"},
 }
 
 FORMATTERS = {

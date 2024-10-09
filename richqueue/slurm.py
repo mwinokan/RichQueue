@@ -131,10 +131,13 @@ def get_job_layout(job: int, **kwargs):
 
     return Panel(table, expand=False)
 
+
 ### GET QUEUE DFs
 
 
-def get_squeue(user: str | None = None, job: int | None = None, **kwargs) -> "pandas.DataFrame":
+def get_squeue(
+    user: str | None = None, job: int | None = None, **kwargs
+) -> "pandas.DataFrame":
 
     if job:
         assert isinstance(job, int)
@@ -159,9 +162,7 @@ def get_squeue(user: str | None = None, job: int | None = None, **kwargs) -> "pa
             example = "squeue_long.json"
 
         payload = json.load(
-            open(
-                Path(__file__).parent.parent / "example_data" / example, "rt"
-            )
+            open(Path(__file__).parent.parent / "example_data" / example, "rt")
         )
 
     global METADATA
@@ -374,6 +375,7 @@ def extract_inner(df, key, inner):
 
     df[key] = df.apply(_inner, axis=1)
 
+
 def extract_json(df, key):
 
     def _inner(x):
@@ -386,6 +388,7 @@ def extract_time(df, key):
     df[key] = df.apply(
         lambda x: datetime.datetime.fromtimestamp(x[key]["number"]), axis=1
     )
+
 
 def extract_time_limit(df, key):
     df[key] = df.apply(
