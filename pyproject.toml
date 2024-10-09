@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 [project]
 name = "richqueue"
-version = "0.8"
+version = "0.9"
 authors = [
     { name = "Max Winokan", email = "max@winokan.com" },
 ]
