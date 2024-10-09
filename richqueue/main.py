@@ -17,7 +17,7 @@ app = Typer()
 @app.callback(invoke_without_command=True)
 def show(
     user: Annotated[
-        str, Option(help="Query jobs for this user. set to 'all' to see all jobs")
+        str, Option("-u", "--user", help="Query jobs for this user. set to 'all' to see all jobs")
     ] = None,
     long: Annotated[bool, Option(help="More detailed output")] = False,
     idle: Annotated[bool, Option(help="Show available nodes")] = False,
