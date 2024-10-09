@@ -167,6 +167,9 @@ def job_table(row, job: int, long: bool = True, **kwargs):
 
         key = col_data.get("header") or col
 
+        if col == "standard_error" and row["standard_output"] == row[col]:
+            continue
+
         if "]" in key:
             key = key.split("]")[1]
 
