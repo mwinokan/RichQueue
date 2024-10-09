@@ -12,6 +12,9 @@ def human_timedelta(delta):
 
     bits = []
 
+    if delta.days < 0 or delta.seconds < 0:
+        return ""
+
     days = delta.days
 
     s = delta.seconds
