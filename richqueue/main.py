@@ -14,7 +14,7 @@ app = Typer()
 # main CLI command
 
 
-@app.command()
+@app.callback(invoke_without_command=True)
 def show(
     user: Annotated[
         str, Option(help="Query jobs for this user. set to 'all' to see all jobs")
@@ -88,6 +88,16 @@ def show(
 
         layout = layout_func(**kwargs)
         console.print(layout)
+
+
+@app.command()
+def log(job: Annotated[int, Option(help="Show logs from a specific job")]):
+    raise NotImplementedError
+
+
+@app.command()
+def dir(job: Annotated[int, Option(help="Get job directory")]):
+    raise NotImplementedError
 
 
 # start Typer app
