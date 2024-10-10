@@ -6,7 +6,13 @@ from rich.live import Live
 import time
 from .console import console
 from .tools import curry
-from .slurm import get_layout_pair, get_node_layout, get_hist_layout, get_job_layout, NotOnClusterError
+from .slurm import (
+    get_layout_pair,
+    get_node_layout,
+    get_hist_layout,
+    get_job_layout,
+    NotOnClusterError,
+)
 
 # set up singletons
 app = Typer()
@@ -97,9 +103,9 @@ def show(
                 except KeyboardInterrupt:
                     live.stop()
                     if wisdom:
-                        from .wisdom import QUOTES
-                        from random import sample
-                        console.print(sample(QUOTES, 1))
+                        from .wisdom import print_random_quote
+
+                        print_random_quote()
 
         # static layout
         else:
@@ -108,7 +114,7 @@ def show(
             console.print(layout)
 
     except NotOnClusterError as e:
-            console.print(f"[red bold]{e}[reset]")
+        console.print(f"[red bold]{e}[reset]")
 
 
 @app.command()
