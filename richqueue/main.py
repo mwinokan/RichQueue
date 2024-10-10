@@ -11,24 +11,33 @@ from .slurm import get_layout_pair, get_node_layout, get_hist_layout, get_job_la
 # set up singletons
 app = Typer()
 
+
 # main CLI command
-
-
 @app.callback(invoke_without_command=True)
 def show(
     user: Annotated[
-        str, Option("-u", "--user", help="Query jobs for this user. set to 'all' to see all jobs")
+        str,
+        Option(
+            "-u",
+            "--user",
+            help="Query jobs for this user. Use 'all' to see all jobs",
+        ),
     ] = None,
-    long: Annotated[bool, Option(help="More detailed output")] = False,
-    idle: Annotated[bool, Option(help="Show available nodes")] = False,
-    loop: Annotated[bool, Option(help="Show a live-updating screen")] = True,
+    long: Annotated[bool, Option("-v", "--long", help="More detailed output")] = False,
+    idle: Annotated[bool, Option("-i", "--idle", help="Show available nodes")] = False,
+    loop: Annotated[
+        bool, Option("-l", "--loop", help="Show a live-updating screen")
+    ] = True,
     hist: Annotated[
-        int, Option(help="Show historical jobs from the last X weeks")
+        int, Option("-h", "--hist", help="Show historical jobs from the last X weeks")
     ] = None,
     hist_unit: Annotated[
-        str, Option(help="Show historical jobs from the last X weeks")
+        str,
+        Option("-hu", "--hist-unit", help="Show historical jobs from the last X weeks"),
     ] = "weeks",
-    job: Annotated[int, Option(help="Show details for a specific job")] = None,
+    job: Annotated[
+        int, Option("-j", "--j", help="Show details for a specific job")
+    ] = None,
 ):
 
     screen = True
@@ -97,6 +106,11 @@ def log(job: Annotated[int, Option(help="Show logs from a specific job")]):
 
 @app.command()
 def dir(job: Annotated[int, Option(help="Get job directory")]):
+    raise NotImplementedError
+
+
+@app.command()
+def nickname():
     raise NotImplementedError
 
 
