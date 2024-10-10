@@ -162,7 +162,7 @@ def get_squeue(
 
     except json.JSONDecodeError:
         raise NotOnClusterError("Could not get sinfo JSON. Not on a SLURM cluster?")
-        
+
     global METADATA
 
     METADATA = {
@@ -468,5 +468,5 @@ COLUMNS = {
     ],
 }
 
-class NotOnClusterError(Exception):
-    ...
+
+class NotOnClusterError(Exception): ...
