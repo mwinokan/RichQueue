@@ -161,17 +161,8 @@ def get_squeue(
         payload = json.loads(output[0])
 
     except json.JSONDecodeError:
-        # console.print('[orange1 bold]Warning: using example data')
-
-        if job:
-            example = "squeue_job.json"
-        else:
-            example = "squeue_long.json"
-
-        payload = json.load(
-            open(Path(__file__).parent.parent / "example_data" / example, "rt")
-        )
-
+        raise NotOnClusterError("Could not get sinfo JSON. Not on a SLURM cluster?")
+        
     global METADATA
 
     METADATA = {
@@ -237,15 +228,17 @@ def get_sacct(
         output = process.communicate()
         payload = json.loads(output[0])
     except json.JSONDecodeError:
-        # console.print('[orange1 bold]Warning: using example data')
-        if job:
-            example = "sacct_job.json"
-        else:
-            example = "sacct.json"
+        raise NotOnClusterError("Could not get sacct JSON. Not on a SLURM cluster?")
 
-        payload = json.load(
-            open(Path(__file__).parent.parent / "example_data" / example, "rt")
-        )
+        # console.print('[orange1 bold]Warning: using example data')
+        # if job:
+        #     example = "sacct_job.json"
+        # else:
+        #     example = "sacct.json"
+
+        # payload = json.load(
+        #     open(Path(__file__).parent.parent / "example_data" / example, "rt")
+        # )
 
     global METADATA
 
@@ -295,9 +288,7 @@ def get_sinfo(**kwargs) -> "pandas.DataFrame":
         output = process.communicate()
         payload = json.loads(output[0])
     except json.JSONDecodeError:
-        payload = json.load(
-            open(Path(__file__).parent.parent / "example_data" / "sinfo_N.json", "rt")
-        )
+        raise NotOnClusterError("Could not get sinfo JSON. Not on a SLURM cluster?")
 
     global METADATA
 
@@ -476,3 +467,6 @@ COLUMNS = {
         "current_working_directory",
     ],
 }
+
+class NotOnClusterError(Exception):
+    ...

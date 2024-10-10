@@ -6,7 +6,7 @@ from rich.live import Live
 import time
 from .console import console
 from .tools import curry
-from .slurm import get_layout_pair, get_node_layout, get_hist_layout, get_job_layout
+from .slurm import get_layout_pair, get_node_layout, get_hist_layout, get_job_layout, NotOnClusterError
 
 # set up singletons
 app = Typer()
@@ -36,8 +36,11 @@ def show(
         Option("-hu", "--hist-unit", help="Show historical jobs from the last X weeks"),
     ] = "weeks",
     job: Annotated[
-        int, Option("-j", "--j", help="Show details for a specific job")
+        int, Option("-j", "--job", help="Show details for a specific job")
     ] = None,
+    wisdom: Annotated[
+        bool, Option("-w", "--wisdom", help="Show a confucius quote on exit")
+    ] = False,
 ):
 
     screen = True
@@ -71,32 +74,41 @@ def show(
         case _:
             raise Exception("Unsupported CLI options")
 
-    # live updating layout
-    if loop:
+    try:
 
-        layout = layout_func(**kwargs)
+        # live updating layout
+        if loop:
 
-        with Live(
-            layout,
-            refresh_per_second=4,
-            screen=screen,
-            transient=disappear,
-            vertical_overflow="visible",
-        ) as live:
+            layout = layout_func(**kwargs)
 
-            try:
-                while True:
-                    layout = layout_func(**kwargs)
-                    live.update(layout)
-                    time.sleep(1)
-            except KeyboardInterrupt:
-                live.stop()
+            with Live(
+                layout,
+                refresh_per_second=4,
+                screen=screen,
+                transient=disappear,
+                vertical_overflow="visible",
+            ) as live:
 
-    # static layout
-    else:
+                try:
+                    while True:
+                        layout = layout_func(**kwargs)
+                        live.update(layout)
+                        time.sleep(1)
+                except KeyboardInterrupt:
+                    live.stop()
+                    if wisdom:
+                        from .wisdom import QUOTES
+                        from random import sample
+                        console.print(sample(QUOTES, 1))
 
-        layout = layout_func(**kwargs)
-        console.print(layout)
+        # static layout
+        else:
+
+            layout = layout_func(**kwargs)
+            console.print(layout)
+
+    except NotOnClusterError as e:
+            console.print(f"[red bold]{e}[reset]")
 
 
 @app.command()
