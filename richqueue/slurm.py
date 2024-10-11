@@ -33,50 +33,55 @@ def get_layout_pair(user: str | None, **kwargs):
     n_running = len(df[df["job_state"] == "RUNNING"])
     n_pending = len(df[df["job_state"] == "PENDING"])
 
-    hide_pending = False
-
-    running_df = df[df["job_state"].isin(["RUNNING", "PENDING"])]
-    history_df = df[~df["job_state"].isin(["RUNNING", "PENDING"])]
-
-    console_height = console.size.height
-    max_rows = console_height - 2 * PANEL_PADDING
-
-    if n_rows > max_rows:
-
-        # hide history?
-        if n_running + n_pending + PANEL_PADDING + 1 < console_height:
-            history_limit = 0
-            running_limit = None
-
-        # hide pending?
-        elif n_rows - n_pending < max_rows:
-            # running_df = running_df[running_df["job_state"]=="RUNNING"]
-            running_limit = None
-            history_limit = None
-            hide_pending = n_pending
-
-        # fallback clip
-        else:
-            running_limit = 5
-            history_limit = 5
+    if n_rows == 0:
+        running = Panel(Text("[bold]No active jobs"), expand=False)
 
     else:
-        running_limit = None
-        history_limit = None
 
-    running = Panel(
-        running_job_table(
-            running_df,
-            limit=running_limit,
-            hide_pending=hide_pending,
-            user=user,
-            **kwargs,
-        ),
-        expand=False,
-    )
+        hide_pending = False
+
+        running_df = df[df["job_state"].isin(["RUNNING", "PENDING"])]
+        history_df = df[~df["job_state"].isin(["RUNNING", "PENDING"])]
+
+        console_height = console.size.height
+        max_rows = console_height - 2 * PANEL_PADDING
+
+        if n_rows > max_rows:
+
+            # hide history?
+            if n_running + n_pending + PANEL_PADDING + 1 < console_height:
+                history_limit = 0
+                running_limit = None
+
+            # hide pending?
+            elif n_rows - n_pending < max_rows:
+                # running_df = running_df[running_df["job_state"]=="RUNNING"]
+                running_limit = None
+                history_limit = None
+                hide_pending = n_pending
+
+            # fallback clip
+            else:
+                running_limit = 5
+                history_limit = 5
+
+        else:
+            running_limit = None
+            history_limit = None
+
+        running = Panel(
+            running_job_table(
+                running_df,
+                limit=running_limit,
+                hide_pending=hide_pending,
+                user=user,
+                **kwargs,
+            ),
+            expand=False,
+        )
 
     if history_limit == 0:
-        history = Panel(Text("history hidden, resize window or use --hist"), expand=True)
+        history = Panel(Text("[bold]history hidden, resize window or use smaller --hist value"), expand=False)
     else:
         history = Panel(
             history_job_table(history_df, limit=history_limit, user=user, **kwargs),
