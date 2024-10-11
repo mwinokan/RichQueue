@@ -76,7 +76,7 @@ def get_layout_pair(user: str | None, **kwargs):
     )
 
     if history_limit == 0:
-        history = Text("history hidden, resize window or use --hist")
+        history = Panel(Text("history hidden, resize window or use --hist"), expand=True)
     else:
         history = Panel(
             history_job_table(history_df, limit=history_limit, user=user, **kwargs),
@@ -176,6 +176,9 @@ def get_squeue(
 
     # filter columns
     columns = COLUMNS["squeue"]
+
+    if not len(df):
+        return DataFrame(columns=columns)
 
     try:
         df = df[columns]
