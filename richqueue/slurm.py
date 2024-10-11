@@ -29,16 +29,17 @@ def get_layout_pair(user: str | None, **kwargs):
 
     df = combined_df(user=user, **kwargs)
 
+    # if df is None:
+    #     running = Panel(Text("[bold]No active jobs"), expand=False)
+    # else:
 
-    if df is None:
-        running = Panel(Text("[bold]No active jobs"), expand=False)
+    n_rows = len(df)
+    n_running = len(df[df["job_state"] == "RUNNING"])
+    n_pending = len(df[df["job_state"] == "PENDING"])
 
-    else:
-        n_rows = len(df)
-        n_running = len(df[df["job_state"] == "RUNNING"])
-        n_pending = len(df[df["job_state"] == "PENDING"])
+    hide_pending = False
 
-        hide_pending = False
+    if n_running + n_pending > 0:
 
         running_df = df[df["job_state"].isin(["RUNNING", "PENDING"])]
         history_df = df[~df["job_state"].isin(["RUNNING", "PENDING"])]
@@ -79,6 +80,10 @@ def get_layout_pair(user: str | None, **kwargs):
             ),
             expand=False,
         )
+
+    else:
+
+        running = Panel(Text("[bold]No active jobs"), expand=False)
 
     if history_limit == 0:
         history = Panel(Text("[bold]history hidden, resize window or use smaller --hist value"), expand=False)
