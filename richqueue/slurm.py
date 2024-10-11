@@ -29,14 +29,14 @@ def get_layout_pair(user: str | None, **kwargs):
 
     df = combined_df(user=user, **kwargs)
 
-    n_rows = len(df)
-    n_running = len(df[df["job_state"] == "RUNNING"])
-    n_pending = len(df[df["job_state"] == "PENDING"])
 
-    if n_rows == 0:
+    if df is None:
         running = Panel(Text("[bold]No active jobs"), expand=False)
 
     else:
+        n_rows = len(df)
+        n_running = len(df[df["job_state"] == "RUNNING"])
+        n_pending = len(df[df["job_state"] == "PENDING"])
 
         hide_pending = False
 
@@ -350,7 +350,16 @@ def combined_df(**kwargs) -> "DataFrame":
     """Get combined DataFrame of SLURM job information"""
     df1 = get_squeue(**kwargs)
     df2 = get_sacct(**kwargs)
-    df = concat([df1, df2], ignore_index=True)
+
+    if len(df1) and len(df2):
+        df = concat([df1, df2], ignore_index=True)
+    elif len(df1):
+        df = df1
+    elif len(df2):
+        df = df2
+    else:
+        return None
+
     df["run_time"] = add_run_time(df)
     df = df.sort_values(by="submit_time", ascending=True)
     return df
