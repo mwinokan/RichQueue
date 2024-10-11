@@ -213,6 +213,8 @@ def color_by_state(state):
         return "[bright_yellow]Pending"
     elif state == "MIXED":
         return "[bright_yellow]Mixed"
+    elif state == "TIMEOUT":
+        return "[bold bright_yellow]Timed Out"
     elif state == "CANCELLED":
         return "[orange3]Cancelled"
     elif state == "FAILED":
