@@ -332,8 +332,10 @@ QUOTES = [
     "THE WORLD IS YOUR HOSTAGE",  #
 ]
 
+
 def main():
-	app()
+    app()
+
 
 if __name__ == "__main__":
     app()

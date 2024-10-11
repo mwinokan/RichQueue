@@ -40,7 +40,7 @@ def get_layout_pair(user: str | None, **kwargs):
     hide_pending = False
 
     console_height = console.size.height
-    
+
     history_df = df[~df["job_state"].isin(["RUNNING", "PENDING"])]
 
     if n_running + n_pending > 0:
@@ -91,7 +91,13 @@ def get_layout_pair(user: str | None, **kwargs):
         running = Panel(Text("No active jobs", style="bold"), expand=False)
 
     if history_limit == 0:
-        history = Panel(Text("history hidden, resize window or use smaller --hist value", style="bold"), expand=False)
+        history = Panel(
+            Text(
+                "history hidden, resize window or use smaller --hist value",
+                style="bold",
+            ),
+            expand=False,
+        )
     else:
         history = Panel(
             history_job_table(history_df, limit=history_limit, user=user, **kwargs),
