@@ -83,6 +83,7 @@ def get_layout_pair(user: str | None, **kwargs):
 
     else:
 
+        history_limit = console_height - PANEL_PADDING - 3
         running = Panel(Text("[bold]No active jobs"), expand=False)
 
     if history_limit == 0:
