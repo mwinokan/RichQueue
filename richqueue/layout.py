@@ -13,8 +13,15 @@ def dual_layout(function, **kwargs):
     upper = Layout(renderable=upper, name="upper")
     lower = Layout(renderable=lower, name="lower")
 
-    upper.size = upper.renderable.renderable.row_count + PANEL_PADDING
-    lower.size = lower.renderable.renderable.row_count + PANEL_PADDING
+    try:
+        upper.size = upper.renderable.renderable.row_count + PANEL_PADDING
+    except AttributeError:
+        upper.size = 1 + PANEL_PADDING
+
+    try:
+        lower.size = lower.renderable.renderable.row_count + PANEL_PADDING
+    except AttributeError:
+        lower.size = 1 + PANEL_PADDING
 
     layout.split_column(
         upper,
