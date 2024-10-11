@@ -86,10 +86,10 @@ def get_layout_pair(user: str | None, **kwargs):
     else:
 
         history_limit = console_height - PANEL_PADDING - 3
-        running = Panel(Text("[bold]No active jobs"), expand=False)
+        running = Panel(Text("No active jobs", style="bold"), expand=False)
 
     if history_limit == 0:
-        history = Panel(Text("[bold]history hidden, resize window or use smaller --hist value"), expand=False)
+        history = Panel(Text("history hidden, resize window or use smaller --hist value", style="bold"), expand=False)
     else:
         history = Panel(
             history_job_table(history_df, limit=history_limit, user=user, **kwargs),
