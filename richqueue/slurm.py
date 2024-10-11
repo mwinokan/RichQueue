@@ -43,9 +43,11 @@ def get_layout_pair(user: str | None, **kwargs):
 
     if n_rows > max_rows:
 
+        active_height = n_running + n_pending + PANEL_PADDING
+
         # hide history?
-        if n_running + n_pending + PANEL_PADDING + 1 < console_height:
-            history_limit = 0
+        if active_height < console_height - PANEL_PADDING:
+            history_limit = max(0, console_height - PANEL_PADDING - active_height)
             running_limit = None
 
         # hide pending?
