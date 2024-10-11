@@ -29,56 +29,69 @@ def get_layout_pair(user: str | None, **kwargs):
 
     df = combined_df(user=user, **kwargs)
 
+    # if df is None:
+    #     running = Panel(Text("[bold]No active jobs"), expand=False)
+    # else:
+
     n_rows = len(df)
     n_running = len(df[df["job_state"] == "RUNNING"])
     n_pending = len(df[df["job_state"] == "PENDING"])
 
     hide_pending = False
 
-    running_df = df[df["job_state"].isin(["RUNNING", "PENDING"])]
+    console_height = console.size.height
+    
     history_df = df[~df["job_state"].isin(["RUNNING", "PENDING"])]
 
-    console_height = console.size.height
-    max_rows = console_height - 2 * PANEL_PADDING
+    if n_running + n_pending > 0:
 
-    if n_rows > max_rows:
+        running_df = df[df["job_state"].isin(["RUNNING", "PENDING"])]
 
         active_height = n_running + n_pending + PANEL_PADDING
 
-        # hide history?
-        if active_height < console_height - PANEL_PADDING:
-            history_limit = max(0, console_height - PANEL_PADDING - active_height)
-            running_limit = None
+        max_rows = console_height - 2 * PANEL_PADDING
 
-        # hide pending?
-        elif n_rows - n_pending < max_rows:
-            # running_df = running_df[running_df["job_state"]=="RUNNING"]
+        if n_rows > max_rows:
+
+            # hide history?
+            if active_height < console_height - PANEL_PADDING:
+                history_limit = max(0, console_height - PANEL_PADDING - active_height)
+                running_limit = None
+
+            # hide pending?
+            elif n_rows - n_pending < max_rows:
+                # running_df = running_df[running_df["job_state"]=="RUNNING"]
+                running_limit = None
+                history_limit = None
+                hide_pending = n_pending
+
+            # fallback clip
+            else:
+                running_limit = 5
+                history_limit = 5
+
+        else:
             running_limit = None
             history_limit = None
-            hide_pending = n_pending
 
-        # fallback clip
-        else:
-            running_limit = 5
-            history_limit = 5
+        running = Panel(
+            running_job_table(
+                running_df,
+                limit=running_limit,
+                hide_pending=hide_pending,
+                user=user,
+                **kwargs,
+            ),
+            expand=False,
+        )
 
     else:
-        running_limit = None
-        history_limit = None
 
-    running = Panel(
-        running_job_table(
-            running_df,
-            limit=running_limit,
-            hide_pending=hide_pending,
-            user=user,
-            **kwargs,
-        ),
-        expand=False,
-    )
+        history_limit = console_height - PANEL_PADDING - 3
+        running = Panel(Text("No active jobs", style="bold"), expand=False)
 
     if history_limit == 0:
-        history = Text("history hidden, resize window or use --hist")
+        history = Panel(Text("history hidden, resize window or use smaller --hist value", style="bold"), expand=False)
     else:
         history = Panel(
             history_job_table(history_df, limit=history_limit, user=user, **kwargs),
@@ -178,6 +191,9 @@ def get_squeue(
 
     # filter columns
     columns = COLUMNS["squeue"]
+
+    if not len(df):
+        return DataFrame(columns=columns)
 
     try:
         df = df[columns]
@@ -344,7 +360,16 @@ def combined_df(**kwargs) -> "DataFrame":
     """Get combined DataFrame of SLURM job information"""
     df1 = get_squeue(**kwargs)
     df2 = get_sacct(**kwargs)
-    df = concat([df1, df2], ignore_index=True)
+
+    if len(df1) and len(df2):
+        df = concat([df1, df2], ignore_index=True)
+    elif len(df1):
+        df = df1
+    elif len(df2):
+        df = df2
+    else:
+        return None
+
     df["run_time"] = add_run_time(df)
     df = df.sort_values(by="submit_time", ascending=True)
     return df
