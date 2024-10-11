@@ -39,12 +39,13 @@ def get_layout_pair(user: str | None, **kwargs):
 
     hide_pending = False
 
+    console_height = console.size.height
+
     if n_running + n_pending > 0:
 
         running_df = df[df["job_state"].isin(["RUNNING", "PENDING"])]
         history_df = df[~df["job_state"].isin(["RUNNING", "PENDING"])]
 
-        console_height = console.size.height
         max_rows = console_height - 2 * PANEL_PADDING
 
         if n_rows > max_rows:
