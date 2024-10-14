@@ -2,6 +2,7 @@ from rich.table import Table
 from .tools import human_datetime
 from pandas import isnull
 from .console import console
+import subprocess
 
 ### TABLES
 
@@ -198,6 +199,37 @@ def job_table(row, job: int, long: bool = True, **kwargs):
             table.add_row(key, value)
 
     return table
+
+
+def log_table(stdout, stderr, limit):
+
+    from rich.text import Text
+
+    dual = stdout != stderr
+
+    if dual:
+        raise NotImplementedError("separate log files not yet supported")
+
+    else:
+
+        table = Table(title="stdout", box=None, header_style="")
+
+        table.add_column("[bold underline]#", style="bold")
+        table.add_column("[bold underline]Log", no_wrap=True)
+
+        lines = tail(stdout, limit)
+
+        for i, line in enumerate(lines):
+            line = line.decode("utf-8")
+            table.add_row(str(i), Text.from_ansi(line))
+
+    return table
+
+
+def tail(path, n):
+    proc = subprocess.Popen(["tail", "-n", str(n), path], stdout=subprocess.PIPE)
+    lines = proc.stdout.readlines()
+    return lines
 
 
 ### FORMATTERS

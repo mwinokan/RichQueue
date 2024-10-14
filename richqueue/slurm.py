@@ -18,14 +18,18 @@ PANEL_PADDING = 4
 ### CONSTRUCT LAYOUT
 
 
+def get_user() -> str:
+    x = subprocess.Popen(["whoami"], shell=True, stdout=subprocess.PIPE)
+    output = x.communicate()
+    return output[0].strip().decode("utf-8")
+
+
 def get_layout_pair(user: str | None, **kwargs):
 
     if user == "all":
         user = None
     elif user is None:
-        x = subprocess.Popen(["whoami"], shell=True, stdout=subprocess.PIPE)
-        output = x.communicate()
-        user = output[0].strip().decode("utf-8")
+        user = get_user()
 
     df = combined_df(user=user, **kwargs)
 
@@ -223,7 +227,7 @@ def get_squeue(
 
     extract_list(df, "job_state")
     extract_list(df, "exclusive")
-    extract_json(df, "exclusive")
+    # extract_json(df, "exclusive")
 
     return df
 
