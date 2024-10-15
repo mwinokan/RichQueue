@@ -61,7 +61,7 @@ def show_log(
 
     with Live(
         layout,
-        refresh_per_second=4,
+        refresh_per_second=1,
         screen=True,
         transient=True,
         vertical_overflow="visible",
@@ -69,6 +69,7 @@ def show_log(
 
         try:
             while True:
+                layout = layout_func(job_getter=job_getter, long=long)
                 live.update(layout)
                 time.sleep(1)
         except KeyboardInterrupt:

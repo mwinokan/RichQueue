@@ -221,6 +221,9 @@ def log_table(stdout, stderr, limit):
 
         for i, line in enumerate(lines):
             line = line.decode("utf-8")
+
+            line = line.split("\r")[-1]
+
             table.add_row(str(i), Text.from_ansi(line))
 
     return table
