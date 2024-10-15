@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 [project]
 name = "richqueue"
-version = "1.4"
+version = "1.5"
 authors = [
     { name = "Max Winokan", email = "max@winokan.com" },
 ]
@@ -31,4 +31,5 @@ include = [
 
 [project.scripts]
 rq = "richqueue.main:main"
+res = "richqueue.log:main"
 confucius = "richqueue.wisdom:main"
