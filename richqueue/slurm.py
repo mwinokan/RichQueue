@@ -190,10 +190,12 @@ def get_squeue(
 
     global METADATA
 
+    meta = payload["meta"]
+
     METADATA = {
-        "cluster_name": payload["meta"]["slurm"]["cluster"],
-        "user": payload["meta"]["client"]["user"],
-        "group": payload["meta"]["client"]["group"],
+        "cluster_name": meta.get("slurm", {}).get("cluster", "unknown HPC"),
+        "user": meta.get("client", {}).get("user", "unknown user"),
+        "group": meta.get("client", {}).get("group", "unknown group"),
     }
 
     # parse payload
@@ -270,10 +272,12 @@ def get_sacct(
 
     global METADATA
 
+    meta = payload["meta"]
+
     METADATA = {
-        "cluster_name": payload["meta"]["slurm"]["cluster"],
-        "user": payload["meta"]["client"]["user"],
-        "group": payload["meta"]["client"]["group"],
+        "cluster_name": meta.get("slurm", {}).get("cluster", "unknown HPC"),
+        "user": meta.get("client", {}).get("user", "unknown user"),
+        "group": meta.get("client", {}).get("group", "unknown group"),
         "hist": hist,
         "hist_unit": hist_unit,
     }
@@ -320,10 +324,12 @@ def get_sinfo(**kwargs) -> "pandas.DataFrame":
 
     global METADATA
 
+    meta = payload["meta"]
+
     METADATA = {
-        "cluster_name": payload["meta"]["slurm"]["cluster"],
-        "user": payload["meta"]["client"]["user"],
-        "group": payload["meta"]["client"]["group"],
+        "cluster_name": meta.get("slurm", {}).get("cluster", "unknown HPC"),
+        "user": meta.get("client", {}).get("user", "unknown user"),
+        "group": meta.get("client", {}).get("group", "unknown group"),
     }
 
     df = DataFrame(payload["sinfo"])
