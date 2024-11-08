@@ -82,3 +82,5 @@ def human_timedelta_to_seconds(s):
             seconds += 60*60*int(value[:-1])
         elif value.endswith("d"):
             seconds += 24*60*60*int(value[:-1])
+
+    return seconds
