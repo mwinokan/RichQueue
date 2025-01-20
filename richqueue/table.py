@@ -245,6 +245,8 @@ def color_by_state(state):
     elif state == "IDLE":
         return "[bold bright_green]Idle"
     elif state == "PENDING":
+        return "[bright_red]Preempted"
+    elif state == "PREEMPTED":
         return "[bright_yellow]Pending"
     elif state == "MIXED":
         return "[bright_yellow]Mixed"
