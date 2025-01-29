@@ -11,21 +11,23 @@ import textwrap
 
 app = Typer()
 
+
 def get_quotes():
     import json
     from pathlib import Path
+
     root = Path(__file__).parent
     if not (root / "quotes_decrypted.json").exists():
         from cryptography.fernet import Fernet
 
         key = console.input("[bold]Enter passkey:\n")
-        
+
         with open(root / "quotes_encrypted.py", "rb") as f:
             encrypted = f.read()
 
         fernet = Fernet(key)
         decrypted = fernet.decrypt(encrypted)
-        
+
         with open(root / "quotes_decrypted.json", "wt") as f:
             encrypted = f.write(decrypted.decode())
 
@@ -34,6 +36,7 @@ def get_quotes():
 
     else:
         return json.load(open(root / "quotes_decrypted.json", "rt"))
+
 
 @app.callback(invoke_without_command=True)
 def print_random_quote():
@@ -96,10 +99,12 @@ def print_random_quote():
 
 PADDING = 6
 
+
 def main():
     global QUOTES
     QUOTES = get_quotes()
     app()
+
 
 if __name__ == "__main__":
     global QUOTES

@@ -67,6 +67,7 @@ def human_datetime(dt):
 
     return " ".join(bits)
 
+
 def human_timedelta_to_seconds(s):
 
     values = s.split()
@@ -77,10 +78,10 @@ def human_timedelta_to_seconds(s):
         if value.endswith("s"):
             seconds += int(value[:-1])
         elif value.endswith("m"):
-            seconds += 60*int(value[:-1])
+            seconds += 60 * int(value[:-1])
         elif value.endswith("h"):
-            seconds += 60*60*int(value[:-1])
+            seconds += 60 * 60 * int(value[:-1])
         elif value.endswith("d"):
-            seconds += 24*60*60*int(value[:-1])
+            seconds += 24 * 60 * 60 * int(value[:-1])
 
     return seconds
