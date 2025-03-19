@@ -290,6 +290,8 @@ def color_by_state(state):
         return "[orange3]Cancelled"
     elif state == "FAILED":
         return "[bold bright_red]Failed"
+    elif state == "OUT_OF_MEMORY":
+        return "[bold bright_red]Out Of Memory"
     elif state == "COMPLETED":
         return "[bold bright_green]Completed"
     else:

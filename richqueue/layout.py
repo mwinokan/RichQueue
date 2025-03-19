@@ -8,6 +8,9 @@ def dual_layout(function, **kwargs):
 
     layout = Layout()
 
+    if "console_height" in kwargs:
+        layout.size = kwargs["console_height"]
+
     upper, lower = function(**kwargs)
 
     upper = Layout(renderable=upper, name="upper")

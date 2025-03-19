@@ -1,7 +1,7 @@
 import datetime
 
 
-def curry(function, payload):
+def curry(function, payload, *args, **kwargs):
     def f(*args, **kwargs):
         return function(payload, *args, **kwargs)
 
