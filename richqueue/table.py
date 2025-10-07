@@ -20,15 +20,17 @@ def running_job_table(
         pending_df = df[df["job_state"] == "PENDING"]
         df = df[df["job_state"] == "RUNNING"]
 
+    count = len(df)
+
     if limit:
         df = df[-limit:]
 
     from .slurm import METADATA
 
     if not user:
-        title = f"[bold]all running jobs on {METADATA['cluster_name']}"
+        title = f"[bold]{count} running jobs on {METADATA['cluster_name']}"
     else:
-        title = f"[bold]{user}'s running jobs on {METADATA['cluster_name']}"
+        title = f"[bold]{user}'s {count} running jobs on {METADATA['cluster_name']}"
 
     table = Table(title=title, box=None, header_style="")
 
@@ -77,6 +79,8 @@ def history_job_table(
     **kwargs,
 ):
 
+    count = len(df)
+
     if limit:
         df = df[-limit:]
 
@@ -91,9 +95,9 @@ def history_job_table(
         hist_string = f"last {hist} {hist_unit}"
 
     if not user:
-        title = f"[bold]all previous jobs on {METADATA['cluster_name']} ({hist_string})"
+        title = f"[bold]{count} previous jobs on {METADATA['cluster_name']} ({hist_string})"
     else:
-        title = f"[bold]{user}'s previous jobs on {METADATA['cluster_name']} ({hist_string})"
+        title = f"[bold]{user}'s {count} previous jobs on {METADATA['cluster_name']} ({hist_string})"
 
     table = Table(title=title, box=None, header_style="")
 
