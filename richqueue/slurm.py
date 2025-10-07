@@ -24,7 +24,7 @@ def get_user() -> str:
     return output[0].strip().decode("utf-8")
 
 
-def get_layout_pair(user: str | None, **kwargs):
+def get_layout_pair(user: str | None, console_height=None, **kwargs):
 
     if user == "all":
         user = None
@@ -43,7 +43,14 @@ def get_layout_pair(user: str | None, **kwargs):
 
     hide_pending = False
 
-    console_height = console.size.height
+    # print(console_height)
+
+    if console_height is None:
+        console_height = console.size.height
+
+    # print(console_height)
+    # print(n_running)
+    # print(n_pending)
 
     history_df = df[~df["job_state"].isin(["RUNNING", "PENDING"])]
 
@@ -207,11 +214,15 @@ def get_squeue(
     if not len(df):
         return DataFrame(columns=columns)
 
+    if "exclusive" not in df.columns:
+        columns = [c for c in columns if c != "exclusive"]
+
     try:
         df = df[columns]
     except KeyError:
         for key in columns:
             if key not in df.columns:
+                print(df.iloc[0].to_dict())
                 raise KeyError(key)
 
     extract_inner(df, "cpus", "number")
@@ -228,7 +239,9 @@ def get_squeue(
     extract_time_limit(df, "time_limit")
 
     extract_list(df, "job_state")
-    extract_list(df, "exclusive")
+
+    if "exclusive" in columns:
+        extract_list(df, "exclusive")
     # extract_json(df, "exclusive")
 
     return df

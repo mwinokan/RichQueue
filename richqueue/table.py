@@ -1,8 +1,12 @@
+from rich.layout import Layout
 from rich.table import Table
 from .tools import human_datetime
 from pandas import isnull
 from .console import console
 import subprocess
+from pandas import isna
+from os import environ
+from pathlib import Path
 
 ### TABLES
 
@@ -205,18 +209,48 @@ def job_table(row, job: int, long: bool = True, **kwargs):
     return table
 
 
-def log_table(stdout, stderr, limit):
+def log_table(job_id, stdout, stderr, limit):
 
     from rich.text import Text
 
-    dual = stdout != stderr
+    if isna(stdout) or isna(stderr):
+        log_dir = Path(environ.get("LOGS", "."))
+        matches = list(log_dir.glob(f"*{job_id}*.*"))
 
-    if dual:
+        if len(matches) == 1:
+            stdout = matches[0]
+            stderr = matches[0]
+        elif len(matches) == 2:
+            raise NotImplementedError("separate log files not supported")
+
+    if stdout != stderr:
+
+        # layout = Layout()
+
+        # layout.split_column(
+        #     Layout(name="upper"),
+        #     Layout(name="lower")
+        # )
+
+        # table = Table(title="stdout", box=None, header_style="")
+
+        # table.add_column("[bold underline]#", style="bold")
+        # table.add_column("[bold underline]Log", no_wrap=True)
+
+        # lines = tail(stdout, limit)
+
+        # for i, line in enumerate(lines):
+        #     line = line.decode("utf-8")
+
+        #     line = line.split("\r")[-1]
+
+        #     table.add_row(str(i), Text.from_ansi(line))
+
         raise NotImplementedError("separate log files not yet supported")
 
     else:
 
-        table = Table(title="stdout", box=None, header_style="")
+        table = Table(title=str(stdout), box=None, header_style="")
 
         table.add_column("[bold underline]#", style="bold")
         table.add_column("[bold underline]Log", no_wrap=True)
@@ -249,6 +283,8 @@ def color_by_state(state):
     elif state == "IDLE":
         return "[bold bright_green]Idle"
     elif state == "PENDING":
+        return "[bright_red]Preempted"
+    elif state == "PREEMPTED":
         return "[bright_yellow]Pending"
     elif state == "MIXED":
         return "[bright_yellow]Mixed"
@@ -258,6 +294,8 @@ def color_by_state(state):
         return "[orange3]Cancelled"
     elif state == "FAILED":
         return "[bold bright_red]Failed"
+    elif state == "OUT_OF_MEMORY":
+        return "[bold bright_red]Out Of Memory"
     elif state == "COMPLETED":
         return "[bold bright_green]Completed"
     else:

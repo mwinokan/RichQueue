@@ -40,7 +40,9 @@ def show_log(
     if user is None:
         user = get_user()
 
-    if job is None:
+    job_id = job
+
+    if job_id is None:
 
         def job_getter():
             return guess_current_job(user=user)
@@ -48,7 +50,7 @@ def show_log(
     else:
 
         def job_getter():
-            return get_specific_job(job=job, user=None)
+            return get_specific_job(job=job_id, user=None)
 
     job = job_getter()
 
@@ -90,7 +92,10 @@ def log_layout_pair(job_getter, **kwargs):
     limit = console.size.height - 2 * PANEL_PADDING - upper.renderable.row_count
 
     lower = log_table(
-        stdout=job.standard_output, stderr=job.standard_error, limit=limit
+        job_id=job.job_id,
+        stdout=job.standard_output,
+        stderr=job.standard_error,
+        limit=limit,
     )
     lower = Panel(lower, expand=False)
 
@@ -144,7 +149,13 @@ def get_specific_job(job: int, user: str, **kwargs):
         console.print("[red bold]Could not find job with ID {job_id=}")
         return None
 
-    assert len(matches) == 1
+    elif len(matches) > 1:
+
+        matches = matches[matches["command"].notna()]
+
+        if len(matches) > 1:
+            console.print(matches.to_dict(orient="records"))
+            raise ValueError("Multiple job matches")
 
     return matches.iloc[0]
 

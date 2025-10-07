@@ -31,9 +31,9 @@ def show(
     ] = None,
     long: Annotated[bool, Option("-v", "--long", help="More detailed output")] = False,
     idle: Annotated[bool, Option("-i", "--idle", help="Show available nodes")] = False,
-    loop: Annotated[
-        bool, Option("-l", "--loop", help="Show a live-updating screen")
-    ] = True,
+    no_loop: Annotated[
+        bool, Option("-nl", "--no-loop", help="Don't show a live-updating screen")
+    ] = False,
     hist: Annotated[
         int, Option("-h", "--hist", help="Show historical jobs from the last X weeks")
     ] = None,
@@ -49,6 +49,7 @@ def show(
     ] = False,
 ):
 
+    loop = True
     screen = True
     disappear = not screen
 
@@ -56,7 +57,7 @@ def show(
         "user": user,
         "long": long,
         "idle": idle,
-        "loop": loop,
+        "no_loop": no_loop,
         "hist": hist,
         "hist_unit": hist_unit,
         "screen": screen,
@@ -65,6 +66,9 @@ def show(
     }
 
     # console.print(kwargs)
+
+    if no_loop:
+        loop = False
 
     match (bool(idle), bool(hist), bool(job)):
         case (True, False, False):
@@ -109,6 +113,8 @@ def show(
 
         # static layout
         else:
+
+            kwargs["console_height"] = 500
 
             layout = layout_func(**kwargs)
             console.print(layout)

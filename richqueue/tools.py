@@ -1,7 +1,7 @@
 import datetime
 
 
-def curry(function, payload):
+def curry(function, payload, *args, **kwargs):
     def f(*args, **kwargs):
         return function(payload, *args, **kwargs)
 
@@ -66,3 +66,22 @@ def human_datetime(dt):
     bits = (str(b) for b in bits)
 
     return " ".join(bits)
+
+
+def human_timedelta_to_seconds(s):
+
+    values = s.split()
+
+    seconds = 0
+
+    for value in values:
+        if value.endswith("s"):
+            seconds += int(value[:-1])
+        elif value.endswith("m"):
+            seconds += 60 * int(value[:-1])
+        elif value.endswith("h"):
+            seconds += 60 * 60 * int(value[:-1])
+        elif value.endswith("d"):
+            seconds += 24 * 60 * 60 * int(value[:-1])
+
+    return seconds
