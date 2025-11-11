@@ -38,7 +38,7 @@ def running_job_table(
 
     table = Table(title=title, box=None, header_style="")
 
-    columns = RUNNING_JOB_COLUMNS[long]
+    columns = RUNNING_JOB_COLUMNS(long, user)
 
     for col in columns:
         col_data = COLUMNS[col]
@@ -99,13 +99,15 @@ def history_job_table(
         hist_string = f"last {hist} {hist_unit}"
 
     if not user:
-        title = f"[bold]{count} previous jobs on {METADATA['cluster_name']} ({hist_string})"
+        title = (
+            f"[bold]{count} previous jobs on {METADATA['cluster_name']} ({hist_string})"
+        )
     else:
         title = f"[bold]{user}'s {count} previous jobs on {METADATA['cluster_name']} ({hist_string})"
 
     table = Table(title=title, box=None, header_style="")
 
-    columns = HISTORY_JOB_COLUMNS[long]
+    columns = HISTORY_JOB_COLUMNS(long, user)
 
     for col in columns:
         col_data = COLUMNS[col]
@@ -387,55 +389,118 @@ JOB_COLUMNS = {
     ],
 }
 
-RUNNING_JOB_COLUMNS = {
-    True: [
-        "job_id",
-        "name",
-        "node_count",
-        "cpus",
-        "submit_time",
-        "start_time",
-        "run_time",
-        "time_limit",
-        "partition",
-        "nodes",
-        "job_state",
-    ],
-    False: [
-        "job_id",
-        "name",
-        "node_count",
-        "cpus",
-        "start_time",
-        "run_time",
-        "time_limit",
-        "job_state",
-    ],
-}
 
-HISTORY_JOB_COLUMNS = {
-    True: [
-        "job_id",
-        "name",
-        # "node_count",
-        # "cpus",
-        "submit_time",
-        "start_time",
-        "run_time",
-        "partition",
-        "nodes",
-        "job_state",
-    ],
-    False: [
-        "job_id",
-        "name",
-        # "node_count",
-        # "cpus",
-        "start_time",
-        "run_time",
-        "job_state",
-    ],
-}
+def RUNNING_JOB_COLUMNS(long, user):
+    if user:
+        if long:
+            return [
+                "job_id",
+                "name",
+                "node_count",
+                "cpus",
+                "submit_time",
+                "start_time",
+                "run_time",
+                "time_limit",
+                "partition",
+                "nodes",
+                "job_state",
+            ]
+
+        else:
+            return [
+                "job_id",
+                "name",
+                "node_count",
+                "cpus",
+                "start_time",
+                "run_time",
+                "time_limit",
+                "job_state",
+            ]
+    else:
+        if long:
+            return [
+                "job_id",
+                "user_name",
+                "name",
+                "node_count",
+                "cpus",
+                "submit_time",
+                "start_time",
+                "run_time",
+                "time_limit",
+                "partition",
+                "nodes",
+                "job_state",
+            ]
+
+        else:
+            return [
+                "job_id",
+                "user_name",
+                "name",
+                "node_count",
+                "cpus",
+                "start_time",
+                "run_time",
+                "time_limit",
+                "job_state",
+            ]
+
+
+def HISTORY_JOB_COLUMNS(long, user):
+    if user:
+        if long:
+            return [
+                "job_id",
+                "name",
+                # "node_count",
+                # "cpus",
+                "submit_time",
+                "start_time",
+                "run_time",
+                "partition",
+                "nodes",
+                "job_state",
+            ]
+        else:
+            return [
+                "job_id",
+                "name",
+                # "node_count",
+                # "cpus",
+                "start_time",
+                "run_time",
+                "job_state",
+            ]
+    else:
+        if long:
+            return [
+                "job_id",
+                "user_name",
+                "name",
+                # "node_count",
+                # "cpus",
+                "submit_time",
+                "start_time",
+                "run_time",
+                "partition",
+                "nodes",
+                "job_state",
+            ]
+        else:
+            return [
+                "job_id",
+                "user_name",
+                "name",
+                # "node_count",
+                # "cpus",
+                "start_time",
+                "run_time",
+                "job_state",
+            ]
+
 
 NODE_COLUMNS = {
     True: [
@@ -585,7 +650,10 @@ COLUMNS = {
         "no_wrap": True,
     },
     "threads_per_core": {"header": "#Threads/core", "style": "magenta"},
-    "user_name": {"header": "User Group", "style": "green_yellow"},
+    "user_name": {
+        "header": "[bold underline green_yellow]User",
+        "style": "green_yellow",
+    },
 }
 
 FORMATTERS = {

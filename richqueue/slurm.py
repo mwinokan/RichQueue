@@ -33,24 +33,14 @@ def get_layout_pair(user: str | None, console_height=None, **kwargs):
 
     df = combined_df(user=user, **kwargs)
 
-    # if df is None:
-    #     running = Panel(Text("[bold]No active jobs"), expand=False)
-    # else:
-
     n_rows = len(df)
     n_running = len(df[df["job_state"] == "RUNNING"])
     n_pending = len(df[df["job_state"] == "PENDING"])
 
     hide_pending = False
 
-    # print(console_height)
-
     if console_height is None:
         console_height = console.size.height
-
-    # print(console_height)
-    # print(n_running)
-    # print(n_pending)
 
     history_df = df[~df["job_state"].isin(["RUNNING", "PENDING"])]
 
@@ -71,7 +61,6 @@ def get_layout_pair(user: str | None, console_height=None, **kwargs):
 
             # hide pending?
             elif n_rows - n_pending < max_rows:
-                # running_df = running_df[running_df["job_state"]=="RUNNING"]
                 running_limit = None
                 history_limit = None
                 hide_pending = n_pending
@@ -414,9 +403,9 @@ def add_run_time(df):
         if row.job_state == "PENDING":
             return ""
 
-        if "end_time" not in row.columns or isnull(row.end_time):
+        if "end_time" not in row or isnull(row.end_time):
             row.end_time = datetime.datetime.now()
-        
+
         return human_timedelta(row.end_time - row.start_time)
 
     return df.apply(inner, axis=1)
