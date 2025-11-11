@@ -285,7 +285,9 @@ def color_by_state(state):
     elif state == "IDLE":
         return "[bold bright_green]Idle"
     elif state == "PENDING":
-        return "[bright_red]Preempted"
+        return "[bright_yellow]Preempted"
+    elif state == "NODE_FAIL":
+        return "[bright_red]Node Failure"
     elif state == "PREEMPTED":
         return "[bright_yellow]Pending"
     elif state == "MIXED":
