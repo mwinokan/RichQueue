@@ -410,15 +410,14 @@ def combined_df(**kwargs) -> "DataFrame":
 def add_run_time(df):
 
     def inner(row):
-        # print(f'{row.end_time=} {type(row.end_time)=}')
 
         if row.job_state == "PENDING":
             return ""
 
-        if isnull(row.end_time):
-            return human_timedelta(datetime.datetime.now() - row.start_time)
-        else:
-            return human_timedelta(row.end_time - row.start_time)
+        if "end_time" not in row.columns or isnull(row.end_time):
+            row.end_time = datetime.datetime.now()
+        
+        return human_timedelta(row.end_time - row.start_time)
 
     return df.apply(inner, axis=1)
 
