@@ -32,4 +32,3 @@ include = [
 [project.scripts]
 rq = "richqueue.main:main"
 res = "richqueue.log:main"
-confucius = "richqueue.wisdom:main"
