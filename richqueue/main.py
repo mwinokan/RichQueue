@@ -1,5 +1,5 @@
 from typer import Typer, Option
-from typing import Optional
+from typing import Optional, List
 from typing_extensions import Annotated
 from .layout import dual_layout
 from rich.live import Live
@@ -13,6 +13,8 @@ from .slurm import (
     get_job_layout,
     NotOnClusterError,
 )
+
+import mrich
 
 # set up singletons
 app = Typer()
@@ -34,19 +36,15 @@ def show(
     no_loop: Annotated[
         bool, Option("-nl", "--no-loop", help="Don't show a live-updating screen")
     ] = False,
-    hist: Annotated[
-        int, Option("-h", "--hist", help="Show historical jobs from the last X weeks")
-    ] = None,
-    hist_unit: Annotated[
-        str,
-        Option("-hu", "--hist-unit", help="Show historical jobs from the last X weeks"),
-    ] = "weeks",
+    hist: Optional[List[str]] = Option(
+        None,
+        "--hist",
+        "-h",
+        help="Show historical jobs from the preceding specified time period, e.g. '4 weeks'",
+    ),
     job: Annotated[
         int, Option("-j", "--job", help="Show details for a specific job")
     ] = None,
-    wisdom: Annotated[
-        bool, Option("-w", "--wisdom", help="Show a confucius quote on exit")
-    ] = False,
 ):
 
     loop = True
@@ -59,13 +57,19 @@ def show(
         "idle": idle,
         "no_loop": no_loop,
         "hist": hist,
-        "hist_unit": hist_unit,
+        "hist_unit": "weeks",
         "screen": screen,
         "disappear": disappear,
         "job": job,
     }
 
     # console.print(kwargs)
+
+    if hist:
+        hist, hist_unit = parse_history_string(hist)
+
+        kwargs["hist"] = hist
+        kwargs["hist_unit"] = hist_unit
 
     if no_loop:
         loop = False
@@ -106,10 +110,6 @@ def show(
                         time.sleep(1)
                 except KeyboardInterrupt:
                     live.stop()
-                    if wisdom:
-                        from .wisdom import print_random_quote
-
-                        print_random_quote()
 
         # static layout
         else:
@@ -136,6 +136,22 @@ def dir(job: Annotated[int, Option(help="Get job directory")]):
 @app.command()
 def nickname():
     raise NotImplementedError
+
+
+def parse_history_string(hist: str, unit: str = "week") -> (int, str):
+    """Parse one or two part string into integer value and string unit"""
+
+    hist = " ".join(hist)
+    hist = hist.split()
+
+    assert len(hist) <= 2, "wrong number of 'hist' values"
+
+    if len(hist) == 2:
+        unit = hist[1]
+
+    hist = int(hist[0])
+
+    return hist, unit
 
 
 # start Typer app
