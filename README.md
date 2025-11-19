@@ -31,6 +31,10 @@ To see the last `X` weeks history:
 
 ```rq --hist X```
 
+To see history for a given time period, e.g.:
+
+```rq --hist '3 days'```
+
 To list available nodes on the cluster:
 
 ```rq --idle```
