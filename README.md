@@ -17,7 +17,7 @@ rq
 
 ![queue_example](https://github.com/user-attachments/assets/d99ca5e9-7675-4853-ab28-2d7b4da855f2)
 
-## Other options
+## Other `rq` options
 
 To see more detail:
 
@@ -42,3 +42,13 @@ To list available nodes on the cluster:
 To show a static view:
 
 ```rq --no-loop```
+
+## Monitoring log files
+
+If you keep your SLURM log files in a specific directory exported as the `LOGS` variable, you can use RichQueue to monitor results as they come in with
+
+```
+res <JOB_ID>
+```
+
+<img width="569" height="737" alt="Screenshot 2025-11-20 at 09 05 48" src="https://github.com/user-attachments/assets/1b0f6457-d769-4a1a-b331-bb7f121b5864" />
