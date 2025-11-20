@@ -1,3 +1,4 @@
+import sys
 import time
 
 from rich.live import Live
@@ -9,9 +10,10 @@ from typer import Typer, Argument, Option
 
 from .console import console
 from .layout import dual_layout
-from .slurm import combined_df, get_user, PANEL_PADDING
+from .slurm import get_user, PANEL_PADDING
 from .table import job_table, log_table
 from .tools import curry
+from .job import guess_current_job, get_specific_job
 
 # access logs
 
@@ -31,11 +33,26 @@ def show_log(
             help="Query jobs for another user",
         ),
     ] = None,
-    long: Annotated[bool, Option("-v", "--long", help="More detailed output")] = False,
-    wisdom: Annotated[
-        bool, Option("-w", "--wisdom", help="Show a confucius quote on exit")
+    cwd: Annotated[
+        bool,
+        Option("-d", "--dir", help="Print job's current working directory and exit"),
     ] = False,
+    install_jd: Annotated[
+        bool, Option("--install-jd", help="Print function to create jd wrapper")
+    ] = False,
+    long: Annotated[bool, Option("-v", "--long", help="More detailed output")] = False,
 ):
+
+    if install_jd:
+        print(
+            """
+jd() { 
+    target="$(res --dir "$@")"
+    cd "$target" 
+}
+        """
+        )
+        sys.exit(0)
 
     if user is None:
         user = get_user()
@@ -55,7 +72,18 @@ def show_log(
     job = job_getter()
 
     if job is None:
+        print("Could not get job")
         return None
+
+    if cwd:
+        cwd = job.get("current_working_directory")
+
+        if not cwd:
+            print("Could not get job's 'current_working_directory'")
+            sys.exit(1)
+
+        print(cwd)
+        sys.exit(0)
 
     layout_func = curry(dual_layout, log_layout_pair)
 
@@ -76,10 +104,6 @@ def show_log(
                 time.sleep(1)
         except KeyboardInterrupt:
             live.stop()
-            if wisdom:
-                from .wisdom import print_random_quote
-
-                print_random_quote()
 
 
 def log_layout_pair(job_getter, **kwargs):
@@ -100,64 +124,6 @@ def log_layout_pair(job_getter, **kwargs):
     lower = Panel(lower, expand=False)
 
     return upper, lower
-
-
-def guess_current_job(user: str, **kwargs):
-
-    global JOB_DF
-    JOB_DF = combined_df(user=user, **kwargs)
-
-    assert len(JOB_DF), "No jobs found"
-
-    pending = JOB_DF[JOB_DF["job_state"] == "PENDING"]
-    running = JOB_DF[JOB_DF["job_state"] == "RUNNING"]
-    history = JOB_DF[~JOB_DF["job_state"].isin(["PENDING", "RUNNING"])]
-
-    # pick the single active job
-    if len(running) == 1:
-        return running.iloc[0]
-
-    # pick the most recently submitted active job
-    elif len(running) > 1:
-        return running.sort_values(by="submit_time", ascending=False).iloc[0]
-
-    # pick the single pending job
-    elif len(pending) == 1:
-        return pending.iloc[0]
-
-    # pick the most recently submitted pending job
-    elif len(pending) > 1:
-        return pending.sort_values(by="submit_time", ascending=False).iloc[0]
-
-    # pick the most recently submitted pending job
-    else:
-        return pending.sort_values(by="submit_time", ascending=False).iloc[0]
-
-    return job
-
-
-def get_specific_job(job: int, user: str, **kwargs):
-
-    global JOB_DF
-    JOB_DF = combined_df(user=user, **kwargs)
-
-    assert len(JOB_DF), "No jobs found"
-
-    matches = JOB_DF[JOB_DF["job_id"] == job]
-
-    if not len(matches):
-        console.print("[red bold]Could not find job with ID {job_id=}")
-        return None
-
-    elif len(matches) > 1:
-
-        matches = matches[matches["command"].notna()]
-
-        if len(matches) > 1:
-            console.print(matches.to_dict(orient="records"))
-            raise ValueError("Multiple job matches")
-
-    return matches.iloc[0]
 
 
 def main():

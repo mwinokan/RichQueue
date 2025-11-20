@@ -52,3 +52,29 @@ res <JOB_ID>
 ```
 
 <img width="569" height="737" alt="Screenshot 2025-11-20 at 09 05 48" src="https://github.com/user-attachments/assets/1b0f6457-d769-4a1a-b331-bb7f121b5864" />
+
+## Changing to the working directory of a job
+
+To change to the submission/working directory of a job:
+
+```
+cd $(res --dir <JOB_ID>)
+```
+
+You might find it convenient to add a shortcut to this to your login profile, e.g. `.bashrc_user` or `.bash_profile`:
+
+```
+res --install-jd >> ~/.bashrc_user
+source ~/.bashrc_user
+```
+
+This will make the `jd` executable available. Change to the directory of the single active or most recently submitted job:
+
+```
+jd
+```
+
+Change to a specific job's directory:
+```
+jd <JOB_ID>
+```
