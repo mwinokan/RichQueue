@@ -96,3 +96,4 @@ sbatch --output=$LOGS/%j.log --error=$LOGS/%j.log --job-name test script.sh --sc
 
 and display the following:
 
+<img width="474" height="255" alt="Screenshot 2025-11-20 at 10 37 19" src="https://github.com/user-attachments/assets/4464f813-841a-45bd-864e-00dd3dabf924" />
