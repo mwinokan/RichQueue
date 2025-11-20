@@ -75,6 +75,24 @@ jd
 ```
 
 Change to a specific job's directory:
+
 ```
 jd <JOB_ID>
 ```
+
+## Submitting SLURM jobs
+
+RichQueue also provides a convenient wrapper to the `sbatch` command which makes sure your log files end up in the directory specified by the `LOGS` variable, and prints a pretty summary of the submitted job. Just replace `sbatch` with `sb`. E.g.:
+
+```
+sb --job-name test script.sh --script-arg1
+```
+
+Would run this under the hood:
+
+```
+sbatch --output=$LOGS/%j.log --error=$LOGS/%j.log --job-name test script.sh --script-arg1
+```
+
+and display the following:
+

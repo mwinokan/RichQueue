@@ -123,21 +123,6 @@ def show(
         console.print(f"[red bold]{e}[reset]")
 
 
-@app.command()
-def log(job: Annotated[int, Option(help="Show logs from a specific job")]):
-    raise NotImplementedError
-
-
-@app.command()
-def dir(job: Annotated[int, Option(help="Get job directory")]):
-    raise NotImplementedError
-
-
-@app.command()
-def nickname():
-    raise NotImplementedError
-
-
 def parse_history_string(hist: str, unit: str = "week") -> (int, str):
     """Parse one or two part string into integer value and string unit"""
 
