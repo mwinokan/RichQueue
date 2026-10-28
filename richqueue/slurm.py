@@ -3,6 +3,8 @@ from rich.panel import Panel
 from rich.text import Text
 import subprocess
 import json
+import os
+import re
 from .console import console
 from pathlib import Path
 import datetime
@@ -12,6 +14,9 @@ from .tools import human_timedelta
 # from numpy import isnat
 
 METADATA = {}
+
+SLURM_VERSION = None
+CLUSTER_NAME = None
 
 PANEL_PADDING = 4
 
@@ -162,6 +167,9 @@ def get_squeue(
     user: str | None = None, job: int | None = None, **kwargs
 ) -> "pandas.DataFrame":
 
+    if not has_json():
+        return get_squeue_text(user=user, job=job, **kwargs)
+
     if job:
         assert isinstance(job, int)
         command = f"squeue --job={job} --json"
@@ -246,6 +254,11 @@ def get_sacct(
 
     hist = hist or 4
 
+    if not has_json():
+        return get_sacct_text(
+            user=user, hist=hist, job=job, hist_unit=hist_unit, **kwargs
+        )
+
     if job:
         command = f"sacct --job={job} --json"
     elif user:
@@ -312,6 +325,9 @@ def get_sacct(
 
 
 def get_sinfo(**kwargs) -> "pandas.DataFrame":
+
+    if not has_json():
+        return get_sinfo_text(**kwargs)
 
     command = "sinfo -N --json"
 
@@ -391,6 +407,310 @@ def combined_df(**kwargs) -> "DataFrame":
     df["run_time"] = add_run_time(df)
     df = df.sort_values(by="submit_time", ascending=True)
     return df
+
+
+### SLURM < 21.08 (NO --json)
+
+
+def get_slurm_version() -> tuple:
+    """(major, minor) from e.g. 'slurm 20.11.9', empty if unknown"""
+
+    global SLURM_VERSION
+
+    if SLURM_VERSION is None:
+        try:
+            output = subprocess.run(
+                ["squeue", "--version"], capture_output=True, text=True
+            ).stdout
+        except OSError:
+            output = ""
+        # e.g. 'slurm-wlm 20.11.4' from Debian packages
+        match = re.search(r"(\d+)\.(\d+)", output)
+        SLURM_VERSION = (int(match[1]), int(match[2])) if match else ()
+
+    return SLURM_VERSION
+
+
+def has_json() -> bool:
+    """squeue/sacct/sinfo --json were added in Slurm 21.08"""
+    version = get_slurm_version()
+    return not version or version >= (21, 8)
+
+
+def get_cluster_name() -> str:
+    """Text output has no metadata, so ask scontrol once"""
+
+    global CLUSTER_NAME
+
+    if CLUSTER_NAME is None:
+        output = subprocess.run(
+            ["scontrol", "show", "config"], capture_output=True, text=True
+        ).stdout
+        match = re.search(r"^ClusterName\s*=\s*(\S+)", output, re.MULTILINE)
+        CLUSTER_NAME = match[1] if match else "unknown HPC"
+
+    return CLUSTER_NAME
+
+
+def run_text(command: list[str], columns: list[str]) -> "pandas.DataFrame":
+    """Run a Slurm command that prints TEXT_SEP after every field"""
+
+    # user's SQUEUE_*, SACCT_* and SINFO_* variables can filter or duplicate rows
+    env = {
+        k: v
+        for k, v in os.environ.items()
+        if not k.startswith(("SQUEUE_", "SACCT_", "SINFO_"))
+    }
+    env["SLURM_TIME_FORMAT"] = "standard"
+
+    process = subprocess.run(command, capture_output=True, env=env)
+
+    if process.returncode:
+        stderr = process.stderr.decode(errors="replace").strip()
+        raise NotOnClusterError(f"{command[0]} failed: {stderr}")
+
+    # split on TEXT_SEP + newline in case a field contains a newline
+    records = process.stdout.decode(errors="replace").split(TEXT_SEP + "\n")[:-1]
+    rows = [record.split(TEXT_SEP) for record in records]
+    return DataFrame(rows, columns=columns)
+
+
+def get_squeue_text(
+    user: str | None = None, job: int | None = None, **kwargs
+) -> "pandas.DataFrame":
+
+    fields = ",".join(f"{field}:0{TEXT_SEP}" for field in TEXT_FIELDS["squeue"])
+    command = ["squeue", "--noheader", "--noconvert", "--array-unique", "-O", fields]
+
+    if job:
+        command.append(f"--jobs={job}")
+    elif user:
+        command += ["-u", user]
+
+    columns = list(TEXT_FIELDS["squeue"].values())
+
+    try:
+        df = run_text(command, columns)
+    except NotOnClusterError as e:
+        if job and "Invalid job id specified" in str(e):
+            return get_sacct(user=user, job=job, **kwargs)
+        raise
+
+    # recently finished jobs are known to slurmctld but hidden by default
+    if job and not len(df):
+        df = run_text(command + ["--states=all"], columns)
+
+    if job and not len(df):
+        return get_sacct(user=user, job=job, **kwargs)
+
+    global METADATA
+
+    METADATA = {"cluster_name": get_cluster_name()}
+
+    if not len(df):
+        return DataFrame(columns=COLUMNS["squeue"])
+
+    for key in ["job_id", "node_count", "cpus", "tasks", "restart_cnt"]:
+        df[key] = df[key].astype(int)
+
+    for key in ["name", "qos", "command", "dependency"]:
+        df[key] = df[key].replace("(null)", "")
+
+    df["cpus_per_task"] = df["cpus_per_task"].map(
+        lambda x: None if x == "N/A" else int(x)
+    )
+    df["threads_per_core"] = df["threads_per_core"].map(
+        lambda x: None if x == "*" else int(x)
+    )
+    df[["memory_per_cpu", "memory_per_node"]] = df.apply(
+        split_text_memory, axis=1, result_type="expand"
+    )
+
+    df["start_time"] = df["start_time"].map(parse_text_time)
+    df["submit_time"] = df["submit_time"].map(parse_text_time)
+    df["time_limit"] = df["time_limit"].map(parse_text_time_limit)
+
+    df["requeue"] = df["requeue"] == "1"
+    df["exclusive"] = df["exclusive"].map(lambda x: EXCLUSIVE.get(x, ""))
+
+    df["standard_output"] = df.apply(
+        lambda x: text_log_path(x, x["standard_output"]), axis=1
+    )
+    df["standard_error"] = df.apply(
+        lambda x: text_log_path(x, x["standard_error"]), axis=1
+    )
+
+    return df[COLUMNS["squeue"]]
+
+
+def get_sacct_text(
+    user: str | None = None,
+    hist: int | None = 4,
+    job: int | None = None,
+    hist_unit: str = "weeks",
+    **kwargs,
+) -> "pandas.DataFrame":
+
+    fields = ",".join(TEXT_FIELDS["sacct"])
+    command = [
+        "sacct",
+        "-X",
+        "-p",
+        "-n",
+        f"--delimiter={TEXT_SEP}",
+        f"--format={fields}",
+    ]
+
+    if job:
+        command.append(f"--jobs={job}")
+    else:
+        command.append(f"--starttime=now-{hist}{hist_unit}")
+        if user:
+            command += ["-u", user]
+
+    df = run_text(command, list(TEXT_FIELDS["sacct"].values()))
+
+    global METADATA
+
+    METADATA = {
+        "cluster_name": get_cluster_name(),
+        "hist": hist,
+        "hist_unit": hist_unit,
+    }
+
+    df["job_id"] = df["job_id"].astype(int)
+
+    # e.g. "CANCELLED by 1234"
+    df["job_state"] = df["job_state"].str.split(" ").str[0]
+
+    for key in ["submit_time", "start_time", "end_time"]:
+        df[key] = df[key].map(parse_text_time)
+
+    df = df[df["job_state"] != "RUNNING"]
+    df = df[df["job_state"] != "PENDING"]
+
+    return df
+
+
+def get_sinfo_text(**kwargs) -> "pandas.DataFrame":
+
+    fields = ",".join(f"{field}:0{TEXT_SEP}" for field in TEXT_FIELDS["sinfo"])
+    command = ["sinfo", "-N", "--noheader", "-O", fields]
+
+    df = run_text(command, list(TEXT_FIELDS["sinfo"].values()))
+
+    global METADATA
+
+    METADATA = {"cluster_name": get_cluster_name()}
+
+    # e.g. "idle~", "down*"
+    df["node_state"] = df["node_state"].str.rstrip("*~#%$@+").str.upper()
+
+    # allocated/idle/other/total
+    cpus = df["cpus"].str.split("/", expand=True).astype(int)
+    df["cpus_allocated"] = cpus[0]
+    df["cpus_idle"] = cpus[1]
+    df["cpus_max"] = cpus[3]
+    df["cpu_string"] = df.apply(lambda x: f"{x.cpus_idle}/{x.cpus_max}", axis=1)
+
+    df["memory_max"] = df["memory_max"].astype(int)
+    df["memory_free"] = df["memory_free"].replace("N/A", "0").astype(int)
+    df["memory_allocated"] = df["memory_allocated"].astype(int)
+
+    df["features"] = df["features"].replace("(null)", "")
+
+    # sinfo has no per-node reservation field
+    df["reservation"] = ""
+
+    return df.drop(columns=["cpus"])
+
+
+def parse_text_time(value: str) -> datetime.datetime:
+    """Unset times print as N/A or Unknown, the JSON path gives them as 0"""
+    try:
+        return datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
+    except ValueError:
+        return datetime.datetime.fromtimestamp(0)
+
+
+def parse_text_time_limit(value: str) -> str:
+    """[days-]hours:minutes:seconds or minutes:seconds, or UNLIMITED etc."""
+
+    if ":" not in value:
+        return ""
+
+    days, _, clock = value.rpartition("-")
+
+    seconds = 0
+    for part in clock.split(":"):
+        seconds = 60 * seconds + int(part)
+
+    return human_timedelta(datetime.timedelta(days=int(days or 0), seconds=seconds))
+
+
+def mb_from_text(value: str) -> float:
+    """e.g. '2500M', '1.50G' or '0'"""
+    match = re.fullmatch(r"([\d.]+)([KMGTP]?)", value)
+    return float(match[1]) * MB_PER_UNIT.get(match[2], 1)
+
+
+def split_text_memory(row) -> tuple:
+    """squeue doesn't say if min memory is per CPU or per node, so compare
+    with the job's total memory in its TRES string"""
+
+    memory = mb_from_text(row["min_memory"])
+    total = re.search(r"mem=([\d.]+[KMGTP]?)", row["tres"])
+
+    if total:
+        total = mb_from_text(total[1])
+        per_cpu = abs(total - memory * row["cpus"])
+        per_node = abs(total - memory * row["node_count"])
+        if per_cpu < per_node:
+            return memory, None
+
+    return None, memory
+
+
+def text_log_path(row, path: str) -> str:
+    """Expand squeue's raw stdout/stderr path like Slurm's slurm_get_job_stdout"""
+
+    cwd = row["current_working_directory"]
+    task = row["array_task_id"]
+
+    # printed by squeue when unset
+    default = f"{cwd}/slurm-{row['job_id']}.out"
+
+    if path == "N/A" or (path == default and row["batch_flag"] == "0"):
+        return ""
+
+    if path == default:
+        if task.isdigit():
+            return f"{cwd}/slurm-{row['array_job_id']}_{task}.out"
+        return default
+
+    values = {
+        "A": row["array_job_id"],
+        "a": task if task.isdigit() else NO_VAL,
+        "j": row["job_id"],
+        "u": row["user_name"],
+        "x": row["name"],
+    }
+
+    # e.g. %j, %4a or %% as in Slurm 23.11's _fname_format
+    def substitute(match):
+        if match[0] == "%%":
+            return "%"
+        value = str(values[match[2]])
+        if match[2] in "Aaj":
+            value = value.zfill(min(int(match[1] or 0), 10))
+        return value
+
+    path = re.sub(r"%%|%(\d*)([Aajux])", substitute, path)
+
+    if path.startswith("/"):
+        return path
+
+    return f"{cwd}/{path}"
 
 
 ### ADD COLUMNS
@@ -511,6 +831,73 @@ COLUMNS = {
         "current_working_directory",
     ],
 }
+
+# ASCII unit separator, won't appear in names or paths
+TEXT_SEP = "\x1f"
+
+NO_VAL = 4294967294
+
+# Slurm field: column, for text output
+TEXT_FIELDS = {
+    "squeue": {
+        "jobid": "job_id",
+        "arrayjobid": "array_job_id",
+        "arraytaskid": "array_task_id",
+        "batchflag": "batch_flag",
+        "name": "name",
+        "state": "job_state",
+        "username": "user_name",
+        "groupname": "group_name",
+        "partition": "partition",
+        "qos": "qos",
+        "nodelist": "nodes",
+        "numnodes": "node_count",
+        "numcpus": "cpus",
+        "numtasks": "tasks",
+        "cpus-per-task": "cpus_per_task",
+        "threads": "threads_per_core",
+        "minmemory": "min_memory",
+        "tres-alloc": "tres",
+        "starttime": "start_time",
+        "submittime": "submit_time",
+        "timelimit": "time_limit",
+        "command": "command",
+        "workdir": "current_working_directory",
+        "stdout": "standard_output",
+        "stderr": "standard_error",
+        "dependency": "dependency",
+        "requeue": "requeue",
+        "restartcnt": "restart_cnt",
+        "oversubscribe": "exclusive",
+        "derivedec": "derived_exit_code",
+    },
+    "sacct": {
+        "JobIDRaw": "job_id",
+        "State": "job_state",
+        "JobName": "name",
+        "NodeList": "nodes",
+        "Partition": "partition",
+        "User": "user_name",
+        "Submit": "submit_time",
+        "Start": "start_time",
+        "End": "end_time",
+    },
+    "sinfo": {
+        "NodeList": "node_name",
+        "PartitionName": "partition",
+        "StateLong": "node_state",
+        "CPUsState": "cpus",
+        "Memory": "memory_max",
+        "FreeMem": "memory_free",
+        "AllocMem": "memory_allocated",
+        "Features": "features",
+    },
+}
+
+# squeue oversubscribe: JSON exclusive
+EXCLUSIVE = {"NO": "true", "YES": "false", "USER": "user", "MCS": "mcs"}
+
+MB_PER_UNIT = {"K": 1 / 1024, "M": 1, "G": 1024, "T": 1024**2, "P": 1024**3}
 
 
 class NotOnClusterError(Exception): ...
