@@ -14,8 +14,6 @@ from .slurm import (
     NotOnClusterError,
 )
 
-import mrich
-
 # set up singletons
 app = Typer()
 

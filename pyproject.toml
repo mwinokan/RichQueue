@@ -20,8 +20,6 @@ dependencies = [
     "typer",
     "rich",
     "pandas",
-    "mpytools",
-    "IPython",
 ]
 [project.urls]
 "Homepage" = "https://github.com/mwinokan/RichQueue/issues"
